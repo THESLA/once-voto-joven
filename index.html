@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Votá, Parcero — Todo lo que necesitas saber para votar en Colombia</title>
-  <meta name="description" content="Guía para jóvenes: por qué votar en Colombia, cómo funciona la votación y todo lo que debes saber para ejercer tu derecho al voto. Taller grado once.">
+  <title>Votá, Parcero — Módulo educativo: el voto en Colombia</title>
+  <meta name="description" content="Módulo educativo para jóvenes: qué es el voto, por qué votar, cómo funciona la votación en Colombia y todo lo que debes saber para ejercer tu derecho. Taller grado once.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -15,11 +15,14 @@
     <div class="nav-inner">
       <a href="#inicio" class="brand">VOTÁ<span>·</span>PARCERO</a>
       <nav class="nav-links" id="navLinks">
-        <a href="#por-que">¿Por qué votar?</a>
-        <a href="#como-votar">¿Cómo voto?</a>
-        <a href="#metodos">Métodos</a>
-        <a href="#datos">Lo que debes saber</a>
-        <a href="#mitos">Mitos</a>
+        <a href="#objetivos">Objetivos</a>
+        <a href="#unidad1">1. El voto</a>
+        <a href="#unidad2">2. ¿Por qué votar?</a>
+        <a href="#unidad3">3. Cómo votar</a>
+        <a href="#unidad4">4. Métodos</a>
+        <a href="#unidad5">5. Reglas</a>
+        <a href="#actividades">Actividades</a>
+        <a href="#quiz">Quiz</a>
         <a href="#glosario">Glosario</a>
       </nav>
       <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
@@ -31,179 +34,363 @@
   <main>
     <section class="hero" id="inicio">
       <div class="hero-content">
-        <p class="hero-tag">GUÍA PARA PRIMIVOTANTES · TALLER GRADO ONCE</p>
-        <h1>Tu voto vale.<br>Tu voz <span class="highlight">decide</span>.</h1>
+        <p class="hero-tag">MÓDULO EDUCATIVO · PARTICIPACIÓN CIUDADANA · GRADO ONCE</p>
+        <h1>Aprende sobre el voto<br>en Colombia</h1>
         <p class="hero-sub">
-          En Colombia, cada voto cuenta: con 680&nbsp;mil votos de diferencia se definió la presidencia en 2022.
-          Si no votas, otros deciden el país en el que vas a vivir. Aquí te explicamos todo: por qué votar, cómo hacerlo y qué necesitas.
+          Este módulo te explica, de forma clara y con datos, qué es el voto, por qué es importante que los jóvenes voten,
+          cómo funciona la votación en Colombia y todo lo que necesitas para ejercer tu derecho el día de las elecciones.
         </p>
         <div class="hero-actions">
-          <a href="#por-que" class="btn btn-yellow">¿Por qué votar?</a>
-          <a href="#como-votar" class="btn btn-outline">Aprende a votar</a>
+          <a href="#objetivos" class="btn btn-yellow">Empezar el módulo</a>
+          <a href="#quiz" class="btn btn-outline">Ir directo al quiz</a>
+        </div>
+        <div class="hero-meta">
+          <span>⏱️ Duración sugerida: 2 sesiones</span>
+          <span>📚 Material para el taller</span>
+          <span>🎯 Nivel: grado once</span>
         </div>
       </div>
     </section>
 
-    <section class="stats">
-      <div class="stat" data-count="6" data-suffix=" M+">
-        <span class="stat-num" id="stat1">0</span>
-        <p>jóvenes habilitados para votar en Colombia</p>
+    <section class="section" id="objetivos">
+      <div class="section-head">
+        <h2>Objetivos de aprendizaje</h2>
+        <p>Antes de empezar, mira lo que vas a lograr. Al finalizar este módulo serás capaz de:</p>
       </div>
-      <div class="stat" data-count="40" data-suffix=" %">
-        <span class="stat-num" id="stat2">0</span>
-        <p>de ellos salió a votar en la última presidencial</p>
+      <div class="objectives">
+        <div class="objective">
+          <span class="obj-num">1</span>
+          <div>
+            <h3>Explicar qué es el voto</h3>
+            <p>Definirlo como derecho y deber ciudadano, y reconocer qué cargos se eligen en Colombia.</p>
+          </div>
+        </div>
+        <div class="objective">
+          <span class="obj-num">2</span>
+          <div>
+            <h3>Argumentar por qué votar</h3>
+            <p>Sustentar con datos la importancia de la participación juvenil en las elecciones.</p>
+          </div>
+        </div>
+        <div class="objective">
+          <span class="obj-num">3</span>
+          <div>
+            <h3>Describir el paso a paso del voto</h3>
+            <p>Reconstruir el recorrido completo: inscripción, puesto de votación, día de la jornada y certificado.</p>
+          </div>
+        </div>
+        <div class="objective">
+          <span class="obj-num">4</span>
+          <div>
+            <h3>Distinguir los métodos de votación</h3>
+            <p>Diferenciar tarjetón, voto en blanco, listas abiertas y cerradas, y otras formas de participación.</p>
+          </div>
+        </div>
+        <div class="objective">
+          <span class="obj-num">5</span>
+          <div>
+            <h3>Identificar requisitos y reglas</h3>
+            <p>Reconocer documentos válidos, errores que anulan el voto y beneficios del certificado electoral.</p>
+          </div>
+        </div>
       </div>
-      <div class="stat" data-count="17.5" data-suffix=" M" data-decimals="1">
-        <span class="stat-num" id="stat3">0</span>
-        <p>de ciudadanos no votaron en las presidenciales de 2022</p>
-      </div>
-      <div class="stat" data-count="680" data-suffix=" mil">
-        <span class="stat-num" id="stat4">0</span>
-        <p>votos definieron la segunda vuelta presidencial de 2022</p>
+      <div class="callout callout-key">
+        <h4>🔑 ¿Cómo usar este módulo?</h4>
+        <p>El módulo tiene 5 unidades. Lee cada una, responde las preguntas de reflexión y al final evalúa lo aprendido con el quiz interactivo. Las actividades del taller se pueden hacer en grupo.</p>
       </div>
     </section>
 
-    <section class="section" id="por-que">
+    <section class="section section-dark" id="unidad1">
       <div class="section-head">
-        <h2>¿Por qué votar?</h2>
-        <p>Porque la política responde a quienes participan, no a quienes se quedan callados.</p>
+        <h2>Unidad 1 · ¿Qué es el voto?</h2>
+        <p>El punto de partida: concepto, marco legal y qué se elige en Colombia.</p>
       </div>
-      <div class="cards">
-        <article class="card">
-          <span class="card-num">01</span>
-          <h3>Es tu derecho, conquistado con sangre</h3>
-          <p>El voto es un derecho constitucional de todos los colombianos mayores de 18 años. Durante décadas la democracia se nos negó y se luchó por ella. No ejercerlo es regalar lo que muchas generaciones pelearon.</p>
-        </article>
-        <article class="card">
-          <span class="card-num">02</span>
-          <h3>La elección se define por poco</h3>
-          <p>En 2022, la segunda vuelta presidencial se definió por apenas 680&nbsp;mil votos, mientras 17,5&nbsp;millones de personas no votaron. Cada voto pesa más de lo que crees: millones deciden no usarlo.</p>
-        </article>
-        <article class="card">
-          <span class="card-num">03</span>
-          <h3>Si no votas, deciden por ti</h3>
-          <p>Quienes siempre votan son los grupos con más interés en el poder. Al abstenerte, dejas que otros —con sus propios intereses— definan las leyes, la educación, el empleo y la salud de tu generación.</p>
-        </article>
-        <article class="card">
-          <span class="card-num">04</span>
-          <h3>Tu generación es decisiva</h3>
-          <p>Más de 6 millones de jóvenes pueden votar. Si todos saliéramos a las urnas, el voto joven podría elegir presidente. Los políticos escuchan a quienes votan: si no apareces, tus temas no aparecen.</p>
-        </article>
-        <article class="card">
-          <span class="card-num">05</span>
-          <h3>Votar te da autoridad para exigir</h3>
-          <p>Si no participas, pierdes legitimidad para criticar. Votar no garantiza que todo cambie, pero no votar garantiza que nada cambie a tu favor. La queja sin acción es solo ruido.</p>
-        </article>
-        <article class="card">
-          <span class="card-num">06</span>
-          <h3>La democracia se construye colectiva</h3>
-          <p>Tu voto no sirve solo: la suma de millones sí. Es como un concierto: tu grito no se oye, pero sin la multitud no hay show. De voto en voto se consolida la democracia en Colombia.</p>
-        </article>
+
+      <div class="lesson">
+        <div class="callout callout-def">
+          <h4>📖 Definición</h4>
+          <p><strong>El voto</strong> es el acto mediante el cual los ciudadanos eligen a sus gobernantes y representantes, o deciden sobre asuntos públicos. En Colombia es un <strong>derecho y un deber ciudadano</strong> reconocido en el artículo 258 de la Constitución Política: es universal, igual, secreto y directo.</p>
+        </div>
+
+        <div class="lesson-text">
+          <h3>Derecho, no obligación</h3>
+          <p>En Colombia el voto no es obligatorio: es un <strong>derecho</strong> (nadie te lo puede quitar ni obligarte a votar por alguien) y un <strong>deber</strong> (los ciudadanos tenemos la responsabilidad de participar). Desde los <strong>18 años</strong>, todo colombiano puede ejercerlo con su cédula de ciudadanía.</p>
+          <p>Hay una excepción importante: si te designan <strong>jurado de votación</strong>, la asistencia a la mesa <strong>sí es obligatoria</strong> (y no asistir tiene multa).</p>
+        </div>
+
+        <div class="lesson-text">
+          <h3>¿Quiénes organizan las elecciones?</h3>
+          <p>En Colombia las elecciones las organiza la <strong>Registraduría Nacional del Estado Civil</strong> (prepara tarjetones, mesas y conteo) y las vigila el <strong>Consejo Nacional Electoral (CNE)</strong>, que garantiza la transparencia del proceso.</p>
+        </div>
+
+        <div class="lesson-text">
+          <h3>¿Qué elegimos los colombianos?</h3>
+          <p>En nuestro país hay elecciones cada año par o cada cuatro años. Los principales cargos que se eligen por voto popular son:</p>
+        </div>
+
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Cargo</th>
+                <th>¿Cada cuánto se elige?</th>
+                <th>¿Qué hace?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Presidente y Vicepresidente</strong></td>
+                <td>Cada 4 años</td>
+                <td>Dirigen el gobierno nacional y ejecutan las leyes.</td>
+              </tr>
+              <tr>
+                <td><strong>Congreso (Senado y Cámara de Representantes)</strong></td>
+                <td>Cada 4 años</td>
+                <td>Hacen las leyes y controlan al gobierno.</td>
+              </tr>
+              <tr>
+                <td><strong>Gobernadores, alcaldes, asambleas y concejos</strong></td>
+                <td>Cada 4 años</td>
+                <td>Gobiernan departamentos y municipios: educación, salud, seguridad local.</td>
+              </tr>
+              <tr>
+                <td><strong>Consejos de Juventud</strong></td>
+                <td>Cada 4 años</td>
+                <td>Representan a los jóvenes (14 a 28 años) ante el Estado.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-tip">
+          <h4>💡 Dato para tu generación</h4>
+          <p>En las elecciones de <strong>Consejos de Juventud</strong> pueden votar y ser elegidos jóvenes de <strong>14 a 28 años</strong>. Es la única votación donde los menores de 18 participan: es tu puerta de entrada a la participación.</p>
+        </div>
+
+        <div class="reflection">
+          <h4>❓ Preguntas para reflexionar</h4>
+          <ol>
+            <li>¿Por qué crees que el voto es secreto? ¿Qué pasaría si no lo fuera?</li>
+            <li>¿Qué diferencia hay entre "derecho" y "deber" aplicados al voto?</li>
+          </ol>
+        </div>
       </div>
     </section>
 
-    <section class="section section-dark" id="como-votar">
+    <section class="section" id="unidad2">
       <div class="section-head">
-        <h2>¿Cómo voto? Paso a paso</h2>
-        <p>Desde sacar la cédula hasta depositar el tarjetón: todo el camino del día electoral.</p>
+        <h2>Unidad 2 · ¿Por qué votar?</h2>
+        <p>Argumentos y datos para responder la pregunta que todos se hacen.</p>
       </div>
-      <ol class="timeline">
-        <li>
-          <span class="step">1</span>
-          <div>
-            <h3>Ten tu cédula vigente</h3>
-            <p>Necesitas ser mayor de 18 años y tener la cédula de ciudadanía (la amarilla con hologramas o la cédula digital). ¿Ya la tramitaste? Cuando la expides por primera vez, quedas inscrito automáticamente en el censo electoral del municipio donde la sacaste.</p>
-          </div>
-        </li>
-        <li>
-          <span class="step">2</span>
-          <div>
-            <h3>Inscribe tu cédula (si cambiaste de lugar)</h3>
-            <p>Solo debes hacerlo si cambiaste de residencia, volviste del exterior o tu cédula no está en el censo. Es <strong>presencial</strong>: ve a cualquier sede de la Registraduría con tu cédula original (te toman la huella). No se puede hacer por internet ni delegar en otra persona. Las fechas se anuncian con meses de anticipación, ¡no lo dejes para el final!</p>
-          </div>
-        </li>
-        <li>
-          <span class="step">3</span>
-          <div>
-            <h3>Consulta tu puesto de votación</h3>
-            <p>Entra a <a href="https://www.registraduria.gov.co" target="_blank" rel="noopener">registraduria.gov.co</a> y en "Consulte aquí su lugar de votación" digita tu cédula. Verás el puesto, la dirección y tu mesa. Hazlo días antes para no ir corriendo.</p>
-          </div>
-        </li>
-        <li>
-          <span class="step">4</span>
-          <div>
-            <h3>Ve a votar: de 8:00 a.m. a 4:00 p.m.</h3>
-            <p>Las urnas abren a las 8 de la mañana y cierran a las 4 de la tarde, en punto. Lleva tu cédula original. Te ubican en la mesa asignada, te verifican la identidad y te marcan el dedo con tinta indeleble.</p>
-          </div>
-        </li>
-        <li>
-          <span class="step">5</span>
-          <div>
-            <h3>Marca el tarjetón en el cubículo</h3>
-            <p>El voto es secreto: entras solo al cubículo. Marca con una <strong>X clara dentro del recuadro</strong> de una sola casilla. Para presidente, cada casilla tiene la foto del candidato, la del vicepresidente y el logo del partido. Marcar más de una opción anula tu voto.</p>
-          </div>
-        </li>
-        <li>
-          <span class="step">6</span>
-          <div>
-            <h3>Deposita y reclama tu certificado</h3>
-            <p>Dobla el tarjetón, deposítalo en la urna y reclama tu <strong>certificado electoral</strong>: te da beneficios como medio día de descanso remunerado, descuento en la matrícula de universidades públicas y en el pasaporte.</p>
-          </div>
-        </li>
-      </ol>
-    </section>
 
-    <section class="section" id="metodos">
-      <div class="section-head">
-        <h2>Métodos de votación</h2>
-        <p>Así funciona cada forma de votar en Colombia, de la más usada a la que viene en camino.</p>
-      </div>
-      <div class="cards">
-        <article class="card">
-          <span class="card-num">A</span>
-          <h3>Voto presencial manual (el actual)</h3>
-          <p>Es el método oficial hoy: marcas el <strong>tarjetón</strong> de papel en el cubículo y lo depositas en la urna. Es secreto, verificable y auditado por jurados, testigos y la MOE. Las urnas se cuentan al final de la jornada.</p>
-        </article>
-        <article class="card">
-          <span class="card-num">B</span>
-          <h3>Voto en blanco: ¡no es tirar el voto!</h3>
-          <p>En el tarjetón hay una casilla de voto en blanco. Es una forma válida de decir "ninguno me convence". Y tiene poder real: si el voto en blanco obtiene la mayoría, <strong>la elección se repite</strong> con nuevos candidatos (solo una vez).</p>
-        </article>
-        <article class="card">
-          <span class="card-num">C</span>
-          <h3>Listas abiertas y cerradas (Congreso)</h3>
-          <p>En Senado y Cámara: si el tarjetón muestra <strong>números junto al logo</strong> del partido, es lista abierta —puedes marcar el número de tu candidato o el símbolo del partido. Si no hay números, es lista cerrada: solo se marca la casilla del partido.</p>
-        </article>
-        <article class="card">
-          <span class="card-num">D</span>
-          <h3>Voto electrónico: en debate</h3>
-          <p>Está contemplado en la ley desde 2011, pero no se ha implementado. Existen pilotos y proyectos de "voto virtual" (votar por internet) que siguen en discusión. Mientras tanto, el tarjetón de papel sigue garantizando transparencia.</p>
-        </article>
-        <article class="card">
-          <span class="card-num">E</span>
-          <h3>Colombianos en el exterior</h3>
-          <p>Si estás fuera del país puedes votar en consulados y embajadas para las elecciones presidenciales. Desde 2026, la inscripción de cédula desde el exterior se puede hacer en línea con verificación biométrica del rostro.</p>
-        </article>
-        <article class="card">
-          <span class="card-num">F</span>
-          <h3>Más formas de participar</h3>
-          <p>El voto no es la única: hay <strong>consulta popular, referendo, plebiscito, cabildo abierto, iniciativa legislativa popular y revocatoria del mandato</strong>. Y cada 4 años se eligen los Consejos de Juventud: ahí pueden votar y ser elegidos jóvenes de 14 a 28 años.</p>
-        </article>
+      <div class="lesson">
+        <div class="callout callout-warn">
+          <h4>⚠️ El problema</h4>
+          <p>En 2022, <strong>17,5 millones</strong> de colombianos no votaron en las elecciones presidenciales, y la segunda vuelta se definió por apenas <strong>680.000 votos</strong>. Es decir: la decisión la tomaron millones de personas, y millones más se quedaron por fuera.</p>
+        </div>
+
+        <div class="lesson-text">
+          <h3>Argumento 1: si no votas, deciden por ti</h3>
+          <p>Quienes siempre votan —con sus propios intereses— son los que definen las leyes, la educación, el empleo y la salud. La política responde a quienes participan, no a quienes se quedan callados. No votar también es una decisión: la de dejar que otros elijan por ti.</p>
+        </div>
+
+        <div class="lesson-text">
+          <h3>Argumento 2: tu generación es decisiva</h3>
+          <p>Más de <strong>6 millones de jóvenes</strong> están habilitados para votar en Colombia, pero solo cerca del <strong>40%</strong> lo hace. Si la juventud saliera a votar masivamente, el voto joven podría inclinar cualquier elección. Los políticos escuchan a quienes votan: si no apareces, tus temas no aparecen.</p>
+        </div>
+
+        <div class="lesson-text">
+          <h3>Argumento 3: votar te da autoridad para exigir</h3>
+          <p>Votar no garantiza que todo cambie, pero no votar garantiza que nada cambie a tu favor. Además, quien no participa pierde legitimidad para criticar: primero se ejerce el derecho, luego se exige rendición de cuentas.</p>
+        </div>
+
+        <div class="lesson-text">
+          <h3>Argumento 4: la democracia se construye en colectivo</h3>
+          <p>Un solo voto no decide, pero millones sí. La democracia funciona por suma: de voto en voto se elige un gobierno. Es como una votación en clase: si nadie levanta la mano, decide el que más grite.</p>
+        </div>
+
+        <div class="callout callout-key">
+          <h4>🔑 Datos que respaldan el argumento</h4>
+          <ul>
+            <li><strong>51,25%</strong> de abstención en las elecciones de Congreso de 2022 (la más alta registrada).</li>
+            <li><strong>43,43%</strong> de abstención en las presidenciales de 2022.</li>
+            <li><strong>66%</strong> de los jóvenes dice que sí votará en las presidenciales, pero <strong>70%</strong> aún no sabe por quién (encuesta Cifras y Conceptos, 2026).</li>
+            <li>El <strong>61%</strong> de los jóvenes considera importante vivir en un país democrático.</li>
+          </ul>
+        </div>
+
+        <div class="reflection">
+          <h4>❓ Preguntas para reflexionar</h4>
+          <ol>
+            <li>¿Conoces a alguien que diga "para qué votar si nada cambia"? ¿Cómo le responderías con los datos de esta unidad?</li>
+            <li>¿Qué temas que te importan (educación, empleo, salud mental, medio ambiente) podrían cambiar si los jóvenes votaran más?</li>
+          </ol>
+        </div>
       </div>
     </section>
 
-    <section class="section section-dark" id="datos">
+    <section class="section section-dark" id="unidad3">
       <div class="section-head">
-        <h2>Lo que debes saber</h2>
-        <p>Requisitos, documentos y reglas del juego: lo que nadie te explicó y te puede salvar el día de la votación.</p>
+        <h2>Unidad 3 · El camino del voto: paso a paso</h2>
+        <p>Desde sacar la cédula hasta reclamar el certificado: así es el recorrido completo.</p>
       </div>
+
+      <div class="lesson">
+        <div class="phase">
+          <h3>Fase 1 · Antes de la jornada</h3>
+          <ol class="timeline">
+            <li>
+              <span class="step">1</span>
+              <div>
+                <h4>Ten tu cédula vigente</h4>
+                <p>Necesitas tener 18 años cumplidos y tu cédula de ciudadanía (la amarilla con hologramas o la cédula digital). Al expedirla por primera vez, quedas inscrito automáticamente en el <strong>censo electoral</strong> del municipio donde la tramitaste.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step">2</span>
+              <div>
+                <h4>Inscribe tu cédula (solo si es necesario)</h4>
+                <p>Debes inscribirla si cambiaste de residencia, volviste del exterior o no apareces en el censo. Es un trámite <strong>presencial</strong> en cualquier sede de la Registraduría: te toman la huella, así que no se puede hacer por internet ni delegar. Las fechas se anuncian con meses de anticipación.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step">3</span>
+              <div>
+                <h4>Consulta tu puesto de votación</h4>
+                <p>Entra a <a href="https://www.registraduria.gov.co" target="_blank" rel="noopener">registraduria.gov.co</a> → "Consulte aquí su lugar de votación" → digita tu número de cédula. Ahí verás el puesto, la dirección y tu mesa. Hazlo días antes, no el mismo día.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="phase">
+          <h3>Fase 2 · El día de la votación</h3>
+          <ol class="timeline">
+            <li>
+              <span class="step">4</span>
+              <div>
+                <h4>Llega a tu puesto entre 8:00 a.m. y 4:00 p.m.</h4>
+                <p>Las urnas abren a las 8 de la mañana y cierran en punto a las 4 de la tarde. Lleva tu cédula <strong>original</strong> (física o digital en el celular, mostrada al jurado). Te ubican en la mesa asignada y te marcan el dedo con tinta indeleble.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step">5</span>
+              <div>
+                <h4>Marca el tarjetón en el cubículo</h4>
+                <p>El voto es secreto: entras solo al cubículo. Marca con una <strong>X clara dentro del recuadro</strong> de <strong>una sola casilla</strong>. En las presidenciales, cada casilla trae la foto del candidato y la del vicepresidente, junto con el logo del partido.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step">6</span>
+              <div>
+                <h4>Deposita el tarjetón y reclama tu certificado</h4>
+                <p>Dobla el tarjetón, deposítalo en la urna y reclama tu <strong>certificado electoral</strong>: constata que votaste y te da beneficios legales (los ves en la Unidad 5).</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="phase">
+          <h3>Fase 3 · Después de la jornada</h3>
+          <div class="lesson-text">
+            <p>Los <strong>jurados de votación</strong> cuentan los tarjetones en cada mesa frente a testigos electorales. Los resultados se transmiten a la Registraduría y se publican. Cualquier ciudadano puede consultar los resultados oficiales en <a href="https://resultados.registraduria.gov.co" target="_blank" rel="noopener">resultados.registraduria.gov.co</a>. Organizaciones como la <strong>MOE (Misión de Observación Electoral)</strong> vigilan que todo el proceso sea transparente.</p>
+          </div>
+        </div>
+
+        <div class="reflection">
+          <h4>❓ Preguntas para reflexionar</h4>
+          <ol>
+            <li>¿Por qué crees que la ley exige que la inscripción sea presencial y con huella?</li>
+            <li>¿Qué pasaría si una persona pudiera votar más de una vez? ¿Cómo lo evita el sistema?</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="unidad4">
+      <div class="section-head">
+        <h2>Unidad 4 · Métodos y formas de votación</h2>
+        <p>Cómo se vota hoy y qué opciones existen (y cuáles están en debate).</p>
+      </div>
+
+      <div class="lesson">
+        <div class="lesson-text">
+          <h3>1. Voto presencial manual (el método actual)</h3>
+          <p>Es el método oficial hoy en Colombia: marcas el <strong>tarjetón</strong> de papel en el cubículo y lo depositas en la urna. Es secreto, y su conteo es auditado por jurados, testigos electorales y la MOE.</p>
+        </div>
+
+        <div class="lesson-text">
+          <h3>2. Voto en blanco</h3>
+          <p>En el tarjetón existe una casilla de <strong>voto en blanco</strong>: es una forma válida de decir "ninguna opción me convence". Y no es simbólico: si el voto en blanco obtiene la <strong>mayoría</strong>, la elección <strong>se repite una vez</strong> con nuevos candidatos.</p>
+        </div>
+
+        <div class="lesson-text">
+          <h3>3. Listas abiertas y listas cerradas (Congreso)</h3>
+          <p>Para Senado y Cámara de Representantes, la forma de votar depende del tarjetón. Esta tabla te ayuda a diferenciarlas:</p>
+        </div>
+
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Señal en el tarjetón</th>
+                <th>Tipo de lista</th>
+                <th>Cómo se marca el voto</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Aparecen <strong>números</strong> junto al logo del partido</td>
+                <td><strong>Lista abierta</strong></td>
+                <td>Marcas el número del candidato que prefieras, o el símbolo del partido.</td>
+              </tr>
+              <tr>
+                <td>No aparecen números</td>
+                <td><strong>Lista cerrada</strong></td>
+                <td>Solo puedes marcar la casilla del partido (el orden lo define el partido).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="lesson-text">
+          <h3>4. Voto electrónico y voto virtual (en debate)</h3>
+          <p>El voto electrónico está contemplado en la ley desde 2011 (Ley 1475), pero <strong>no se ha implementado</strong>: hay pilotos y un proyecto de "voto virtual" (votar por internet) en discusión en el Congreso. Por ahora, el tarjetón de papel sigue garantizando transparencia y conteo verificable.</p>
+        </div>
+
+        <div class="lesson-text">
+          <h3>5. Voto de colombianos en el exterior</h3>
+          <p>Los colombianos fuera del país pueden votar en <strong>consulados y embajadas</strong> en las elecciones presidenciales. Desde 2026, la inscripción desde el exterior puede hacerse <strong>en línea</strong>, con verificación biométrica del rostro.</p>
+        </div>
+
+        <div class="callout callout-tip">
+          <h4>💡 El voto no es la única forma de participar</h4>
+          <p>La Constitución reconoce otros mecanismos de participación ciudadana: <strong>consulta popular, referendo, plebiscito, cabildo abierto, iniciativa legislativa popular y revocatoria del mandato</strong>. Los Consejos de Juventud (14 a 28 años) son otro espacio de participación juvenil, además de las personerías estudiantiles en tu colegio.</p>
+        </div>
+
+        <div class="reflection">
+          <h4>❓ Preguntas para reflexionar</h4>
+          <ol>
+            <li>¿Qué ventajas y desventajas le ves al voto electrónico frente al tarjetón de papel?</li>
+            <li>Si pudieras proponer una ley mediante iniciativa popular, ¿qué propondrías?</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="unidad5">
+      <div class="section-head">
+        <h2>Unidad 5 · Requisitos, reglas y errores comunes</h2>
+        <p>Todo lo que debes saber para que tu voto sea válido y sin contratiempos.</p>
+      </div>
+
       <div class="grid">
         <div class="fact">
           <h3>Requisitos para votar</h3>
           <ul>
             <li>Ser colombiano mayor de 18 años</li>
             <li>Tener cédula de ciudadanía vigente (física o digital)</li>
-            <li>Estar en el censo electoral (al expedir tu cédula quedas inscrito)</li>
+            <li>Estar en el censo electoral</li>
             <li>Votar en el puesto asignado el día de la jornada</li>
           </ul>
         </div>
@@ -214,114 +401,162 @@
             <li>Libreta militar</li>
             <li>Licencia de conducción</li>
             <li>Denuncia de pérdida de la cédula</li>
-            <li>Copias o fotos del documento (solo cédula original)</li>
+            <li>Copias o fotos del documento</li>
           </ul>
         </div>
         <div class="fact">
           <h3>Errores que anulan tu voto</h3>
           <ul>
             <li>Marcar más de una casilla</li>
-            <li>Marcar fuera del recuadro o con símbolos extraños</li>
+            <li>Marcar fuera del recuadro</li>
             <li>Escribir nombres o frases en el tarjetón</li>
-            <li>No marcar nada (se cuenta como voto en blanco)</li>
+            <li>No marcar nada (cuenta como voto en blanco)</li>
             <li>Usar el celular cerca del cubículo</li>
           </ul>
         </div>
         <div class="fact">
           <h3>El día de la votación</h3>
           <ul>
-            <li>Horario: urnas abiertas de 8:00 a.m. a 4:00 p.m.</li>
-            <li>Marca solo la casilla de tu elección</li>
-            <li>Marca con X clara y dentro del recuadro</li>
+            <li>Urnas abiertas de 8:00 a.m. a 4:00 p.m.</li>
             <li>El voto es secreto: no muestres tu tarjetón</li>
+            <li>Puedes entrar con celular, pero no usarlo en el cubículo</li>
+            <li>Lleva tu cédula original</li>
           </ul>
         </div>
         <div class="fact">
-          <h3>Tu certificado electoral sirve para</h3>
+          <h3>Beneficios del certificado electoral</h3>
           <ul>
             <li>Medio día de descanso remunerado</li>
-            <li>Descuento en matrícula de universidades públicas</li>
+            <li>Descuento en la matrícula de universidades públicas</li>
             <li>Descuento en la expedición del pasaporte</li>
-            <li>Beneficios adicionales según tu ciudad</li>
+            <li>Otros beneficios según tu ciudad</li>
           </ul>
         </div>
         <div class="fact">
-          <h3>¿Te eligieron jurado de votación?</h3>
+          <h3>Si te eligen jurado de votación</h3>
           <ul>
-            <li>Es un deber ciudadano: la asistencia es obligatoria</li>
-            <li>Si no asistes, hay multa</li>
+            <li>Asistir es obligatorio; no asistir tiene multa</li>
             <li>Tienes derecho a medio día de descanso</li>
-            <li>Quienes son jurados no pueden votar en su propia mesa</li>
+            <li>Vigilas la mesa, entregas tarjetones y cuentas votos</li>
+            <li>Un jurado no puede votar en su propia mesa</li>
           </ul>
         </div>
+      </div>
+
+      <div class="callout callout-key">
+        <h4>🔑 Resumen de la unidad</h4>
+        <p>Para votar solo necesitas: <strong>18 años + cédula original + estar en el censo + ir a tu puesto entre 8 a.m. y 4 p.m.</strong> Marca una sola casilla con X clara. Reclama tu certificado. ¡Y nada de celular en el cubículo!</p>
+      </div>
+
+      <div class="reflection">
+        <h4>❓ Preguntas para reflexionar</h4>
+        <ol>
+          <li>¿Por qué crees que la ley prohíbe votar con documentos que no sean la cédula?</li>
+          <li>¿Qué le dirías a un amigo que considera que "su voto no vale"?</li>
+        </ol>
       </div>
     </section>
 
-    <section class="section" id="mitos">
+    <section class="section" id="actividades">
       <div class="section-head">
-        <h2>Mitos y realidades</h2>
-        <p>Lo que seguro escuchaste en el parche, con respuesta clara.</p>
+        <h2>Actividades para el taller</h2>
+        <p>Dinámicas para hacer en grupo, con el curso o con la familia.</p>
       </div>
-      <div class="faq">
-        <div class="faq-item">
-          <button class="faq-q" aria-expanded="false">"¿Para qué votar si nada va a cambiar?" <span class="faq-icon">+</span></button>
-          <div class="faq-a"><p>Votar no garantiza el cambio inmediato, pero no votar garantiza que otros decidan por ti. Las elecciones se ganan por cientos de miles de votos, no por millones: tu participación sí cuenta. Y la democracia es un proceso: solo cambia lo que la ciudadanía exige con su participación constante.</p></div>
+      <div class="cards">
+        <article class="card">
+          <span class="card-num">ACT 1</span>
+          <h3>Simulación de votación</h3>
+          <p>Armen un puesto de votación en el salón: mesas, tarjetones con candidatos ficticios y cubículos. Uno será jurado, otros votantes y otros testigos. Al final, cuenten los votos en público y analicen: ¿hubo votos nulos? ¿cómo se sintió votar en secreto?</p>
+        </article>
+        <article class="card">
+          <span class="card-num">ACT 2</span>
+          <h3>Debate: ¿vale la pena votar?</h3>
+          <p>Dividan el curso en dos grupos: uno defiende "votar cambia las cosas" y el otro "el voto no cambia nada". Cada grupo usa los datos del módulo. Cierren con una conclusión colectiva y un compromiso de participación.</p>
+        </article>
+        <article class="card">
+          <span class="card-num">ACT 3</span>
+          <h3>Cazadores de desinformación</h3>
+          <p>En redes circulan muchos mitos electorales. Busquen 3 afirmaciones virales sobre votar, verifíquenlas en fuentes oficiales (Registraduría, CNE, MOE) y preséntenlas al curso como verdadero o falso, explicando por qué.</p>
+        </article>
+        <article class="card">
+          <span class="card-num">ACT 4</span>
+          <h3>El país que quieres</h3>
+          <p>En grupos, elaboren una "agenda joven": 3 problemas que más les afectan y 3 soluciones concretas. Compartan la agenda con los candidatos locales por redes o en debates del colegio. Así se hace ciudadanía antes de cumplir 18.</p>
+        </article>
+        <article class="card">
+          <span class="card-num">ACT 5</span>
+          <h3>Entrevista a un primivotante</h3>
+          <p>Entrevisten a un familiar o amigo que haya votado por primera vez (o que esté por hacerlo): ¿cómo se sintió?, ¿qué dudas tenía?, ¿qué le diría a un joven de grado once? Compartan las respuestas con el curso.</p>
+        </article>
+        <article class="card">
+          <span class="card-num">ACT 6</span>
+          <h3>Mapa de participación</h3>
+          <p>En un mapa de Colombia, ubiquen los puestos de votación del barrio o municipio usando la consulta de la Registraduría. Calculen cuánto tiempo tardaría un estudiante de su colegio en llegar al suyo. Reflexionen sobre barreras de acceso.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="quiz">
+      <div class="section-head">
+        <h2>Evalúa lo aprendido: quiz</h2>
+        <p>10 preguntas sobre las 5 unidades. Al final obtendrás tu puntaje.</p>
+      </div>
+      <div class="quiz" id="quiz">
+        <div class="quiz-progress">
+          <div class="quiz-progress-bar" id="quizProgress"></div>
         </div>
-        <div class="faq-item">
-          <button class="faq-q" aria-expanded="false">"Mi voto no es obligatorio, así que da igual" <span class="faq-icon">+</span></button>
-          <div class="faq-a"><p>Es cierto que no es obligatorio: el voto es un derecho y un deber ciudadano, no una obligación legal. Pero "no obligatorio" no significa "sin consecuencias". Quienes no votan dejan el terreno libre a los que sí participan, y esos deciden las reglas que te tocan a ti.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" aria-expanded="false">"¿El voto en blanco es perder el voto?" <span class="faq-icon">+</span></button>
-          <div class="faq-a"><p>No. El voto en blanco es una opción legítima del tarjetón. Si obtiene la mayoría, la elección se repite una vez con nuevos candidatos. Es la forma de decir "ninguno me convence" sin quedarte por fuera.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" aria-expanded="false">"¿Puedo votar sin inscribir mi cédula?" <span class="faq-icon">+</span></button>
-          <div class="faq-a"><p>Si expediste tu cédula por primera vez, ya estás en el censo del municipio donde la tramitaste: puedes votar. La inscripción solo se necesita si cambiaste de ciudad, volviste del exterior o tu cédula quedó fuera del censo.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" aria-expanded="false">"¿Puedo llevar el celular al puesto de votación?" <span class="faq-icon">+</span></button>
-          <div class="faq-a"><p>Sí puedes entrar con el celular, pero no usarlo cerca de los cubículos de votación. Solo lo puedes mostrar para presentar la cédula digital. Hacer fotos al tarjetón o usarlo en el cubículo es motivo para invalidar tu voto.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" aria-expanded="false">"¿Puedo votar aunque tenga 16 o 17 años?" <span class="faq-icon">+</span></button>
-          <div class="faq-a"><p>Para las elecciones nacionales necesitas 18 años cumplidos. PERO en las elecciones de <strong>Consejos de Juventud</strong> pueden votar y ser elegidos jóvenes de 14 a 28 años: es tu oportunidad para participar antes de los 18.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" aria-expanded="false">"¿Votar en el exterior es difícil?" <span class="faq-icon">+</span></button>
-          <div class="faq-a"><p>No. Puedes votar en consulados y embajadas para las elecciones presidenciales con tu cédula o pasaporte. Desde las elecciones de 2026, la inscripción desde el exterior se puede hacer en línea con verificación biométrica de rostro, desde la página oficial de la Registraduría.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" aria-expanded="false">"¿Votar da beneficios reales o es puro cuento?" <span class="faq-icon">+</span></button>
-          <div class="faq-a"><p>Real. El certificado electoral te da medio día de descanso remunerado, descuento del 10% en la matrícula de universidades públicas y descuentos en el pasaporte. Y más allá de los beneficios: es tu poder de decisión sobre el país.</p></div>
+        <p class="quiz-counter" id="quizCounter">Pregunta 1 de 10</p>
+        <div class="quiz-body" id="quizBody"></div>
+        <div class="quiz-nav">
+          <button class="btn btn-outline quiz-btn" id="quizPrev" hidden>← Anterior</button>
+          <button class="btn btn-yellow quiz-btn" id="quizNext">Siguiente →</button>
+          <button class="btn btn-yellow quiz-btn" id="quizRestart" hidden>🔄 Reintentar</button>
         </div>
       </div>
     </section>
 
     <section class="section" id="glosario">
       <div class="section-head">
-        <h2>Glosario exprés</h2>
-        <p>Para que nadie te vea la cara en las discusiones del almuerzo.</p>
+        <h2>Glosario del módulo</h2>
+        <p>Los términos clave que viste en las unidades, con su definición.</p>
       </div>
       <div class="glossary">
         <div class="term"><h3>Censo electoral</h3><p>Lista de los ciudadanos habilitados para votar, elaborada por la Registraduría.</p></div>
-        <div class="term"><h3>Primivotante</h3><p>La persona que vota por primera vez. ¡En 2026 hay miles de ellos!</p></div>
+        <div class="term"><h3>Primivotante</h3><p>La persona que vota por primera vez.</p></div>
         <div class="term"><h3>Tarjetón electoral</h3><p>La papeleta oficial con las opciones de voto (candidatos o partidos).</p></div>
         <div class="term"><h3>Cubículo</h3><p>El espacio privado donde marcas tu voto en secreto.</p></div>
         <div class="term"><h3>Jurado de votación</h3><p>Ciudadano designado que vigila la mesa, entrega los tarjetones y hace el conteo.</p></div>
-        <div class="term"><h3>Testigo electoral</h3><p>Persona que vigila la transparencia del proceso en representación de un partido o movimiento.</p></div>
-        <div class="term"><h3>Voto nulo</h3><p>Voto marcado mal: más de una casilla o con símbolos que lo invalidan. No cuenta para nadie.</p></div>
+        <div class="term"><h3>Testigo electoral</h3><p>Persona que vigila la transparencia del proceso en representación de un partido.</p></div>
+        <div class="term"><h3>Voto nulo</h3><p>Voto marcado mal (más de una casilla o con símbolos inválidos). No cuenta para nadie.</p></div>
         <div class="term"><h3>Voto en blanco</h3><p>Opción de no apoyar a ningún candidato; si gana la mayoría, la elección se repite.</p></div>
-        <div class="term"><h3>Abstención</h3><p>Decidir no votar. En las elecciones de Congreso de 2022 la abstención fue del 51,25%.</p></div>
+        <div class="term"><h3>Abstención</h3><p>Decidir no votar. En las elecciones de Congreso de 2022 fue del 51,25%.</p></div>
         <div class="term"><h3>Registraduría Nacional</h3><p>Entidad que organiza y ejecuta las elecciones y el registro civil.</p></div>
         <div class="term"><h3>CNE</h3><p>Consejo Nacional Electoral: vigila que las elecciones sean justas y transparentes.</p></div>
         <div class="term"><h3>MOE</h3><p>Misión de Observación Electoral: organización que vigila la transparencia electoral.</p></div>
       </div>
     </section>
 
+    <section class="section" id="recursos">
+      <div class="section-head">
+        <h2>Recursos y fuentes consultadas</h2>
+        <p>Para profundizar, verificar datos o resolver dudas, usa estas fuentes oficiales y confiables.</p>
+      </div>
+      <div class="sources">
+        <ul>
+          <li><a href="https://www.registraduria.gov.co" target="_blank" rel="noopener">Registraduría Nacional del Estado Civil</a> — consulta de puesto de votación e inscripción de cédula.</li>
+          <li><a href="https://www.cne.gov.co" target="_blank" rel="noopener">Consejo Nacional Electoral</a> — regulación y vigilancia electoral.</li>
+          <li><a href="https://observatorio.registraduria.gov.co" target="_blank" rel="noopener">Observatorio Electoral de la Registraduría</a> — estadísticas de abstención y participación.</li>
+          <li><a href="https://resultados.registraduria.gov.co" target="_blank" rel="noopener">Resultados electorales oficiales</a> — conteo y resultados de cada jornada.</li>
+          <li><a href="https://moebogota.org" target="_blank" rel="noopener">Misión de Observación Electoral (MOE)</a> — informes de transparencia y pedagogía electoral.</li>
+          <li><a href="https://www.senado.gov.co" target="_blank" rel="noopener">Senado de la República</a> — guías de participación ciudadana y funcionamiento del Congreso.</li>
+        </ul>
+        <p class="sources-note">Datos de participación y abstención: Registraduría Nacional (Observatorio Electoral) y encuesta "Jóvenes en Sociedad" (Cifras y Conceptos, 2026). Material educativo independiente, no afiliado a ningún partido político.</p>
+      </div>
+    </section>
+
     <section class="cta">
-      <h2>El país que viene lo decides tú.</h2>
-      <p>Inscríbete, infórmate, vota. Y convence a un amigo de hacer lo mismo: la democracia se contagia.</p>
+      <h2>La próxima elección local es en 2027</h2>
+      <p>¿Cumples 18 antes? Prepárate: saca tu cédula, inscríbete si cambiaste de ciudad y convence a un amigo de hacer lo mismo. La democracia se contagia.</p>
       <a href="https://www.registraduria.gov.co" target="_blank" rel="noopener" class="btn btn-yellow">Consulta tu puesto de votación</a>
     </section>
   </main>
@@ -330,20 +565,23 @@
     <div class="footer-inner">
       <div>
         <p class="brand">VOTÁ<span>·</span>PARCERO</p>
-        <p>Taller de participación ciudadana · Grado once</p>
+        <p>Módulo educativo de participación ciudadana · Grado once</p>
         <p>Material educativo independiente, no afiliado a ningún partido político.</p>
       </div>
       <div class="footer-links">
-        <h4>Fuentes oficiales</h4>
+        <h4>Navegación del módulo</h4>
         <ul>
-          <li><a href="https://www.registraduria.gov.co" target="_blank" rel="noopener">Registraduría Nacional del Estado Civil</a></li>
-          <li><a href="https://www.cne.gov.co" target="_blank" rel="noopener">Consejo Nacional Electoral</a></li>
-          <li><a href="https://observatorio.registraduria.gov.co" target="_blank" rel="noopener">Observatorio Electoral</a></li>
-          <li><a href="https://moebogota.org" target="_blank" rel="noopener">Misión de Observación Electoral</a></li>
+          <li><a href="#objetivos">Objetivos de aprendizaje</a></li>
+          <li><a href="#unidad1">Unidad 1 · ¿Qué es el voto?</a></li>
+          <li><a href="#unidad2">Unidad 2 · ¿Por qué votar?</a></li>
+          <li><a href="#unidad3">Unidad 3 · Cómo votar</a></li>
+          <li><a href="#unidad4">Unidad 4 · Métodos de votación</a></li>
+          <li><a href="#unidad5">Unidad 5 · Requisitos y reglas</a></li>
+          <li><a href="#quiz">Quiz de evaluación</a></li>
         </ul>
       </div>
     </div>
-    <p class="footer-note">Hecho con la idea de que tu generación no se quede callada. Elecciones locales: próximas en 2027. Consejos de Juventud: cada 4 años.</p>
+    <p class="footer-note">Hecho con la idea de que tu generación no se quede callada. Fuentes oficiales y estadísticas enlazadas en "Recursos".</p>
   </footer>
 
   <script src="js/main.js"></script>
