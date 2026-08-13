@@ -1,0 +1,45 @@
+{
+  "titulo": "Registro de Estudiantes – Colegio San Luis",
+  "editor_url": "https://docs.google.com/forms/d/1BYfmwRgiFp03yyqh_E-E07WbRxq8F0maFvJvuBLt4_I/edit",
+  "secciones": [
+    {
+      "nombre": "SECCIÓN 1 — Tus datos",
+      "preguntas": [
+        { "tipo": "short", "texto": "1. Nombre completo", "requerida": true },
+        { "tipo": "short", "texto": "2. Correo electrónico", "requerida": true },
+        { "tipo": "short", "texto": "3. Teléfono / WhatsApp (número)" },
+        { "tipo": "short", "texto": "4. Ciudad donde vives actualmente" },
+        { "tipo": "short", "texto": "5. ¿Cómo se llamó tu promoción (o quintos)? (opcional)" }
+      ]
+    },
+    {
+      "nombre": "SECCIÓN 2 — Después del colegio",
+      "preguntas": [
+        { "tipo": "multiple", "texto": "6. ¿Qué piensas hacer al terminar el colegio?", "opciones": ["Estudiar", "Trabajar", "Ambos", "Otro"] },
+        { "tipo": "short", "texto": "7. Si piensas estudiar: ¿qué carrera te interesa?" },
+        { "tipo": "short", "texto": "8. Si piensas trabajar: ¿en qué te gustaría trabajar?" }
+      ]
+    },
+    {
+      "nombre": "SECCIÓN 3 — Compañeros",
+      "preguntas": [
+        { "tipo": "multiple", "texto": "9. ¿Conoces a otros compañeros de grado once que no hayan diligenciado este registro?", "opciones": ["Sí", "No"] },
+        { "tipo": "paragraph", "texto": "10. Si respondiste sí, ¿nos compartes sus datos? (nombre, correo o WhatsApp)" },
+        { "tipo": "multiple", "texto": "11. ¿Tienes familiares que estudien o hayan estudiado en el colegio (padres, tíos, hermanos)?", "opciones": ["Sí", "No", "No sé"] }
+      ]
+    },
+    {
+      "nombre": "SECCIÓN 4 — Participación",
+      "preguntas": [
+        { "tipo": "multiple", "texto": "12. ¿Te gustaría participar en las actividades de tu promoción y del colegio?", "opciones": ["Sí", "No"] },
+        { "tipo": "multiple", "texto": "13. ¿Te gustaría ser vocero/a de tu curso y ayudar a organizar las actividades?", "opciones": ["Sí", "No", "Quizás"] }
+      ]
+    },
+    {
+      "nombre": "SECCIÓN 5 — Consentimiento (obligatoria)",
+      "preguntas": [
+        { "tipo": "checkbox", "texto": "14. Autorizo el tratamiento de mis datos personales conforme a la Ley 1581 de 2012", "opciones": ["Sí, autorizo", "No autorizo"], "requerida": true }
+      ]
+    }
+  ]
+}
