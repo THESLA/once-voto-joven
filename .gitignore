@@ -1,3 +1,11 @@
-.DS_Store
-Thumbs.db
-node_modules/
+# Python
+__pycache__/
+*.pyc
+
+# Binarios / temporales
+scripts/chromedriver.exe
+*.wav
+*.zip
+
+# Logs
+*.log

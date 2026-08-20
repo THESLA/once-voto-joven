@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Taller de Evaluación – Grado Once | Colegio San Luis</title>
+<style>
+  :root{
+    --azul:#1d4ed8; --azul-osc:#1e3a8a; --rojo:#dc2626; --oro:#d97706;
+    --fondo:#f1f5f9; --blanco:#ffffff; --texto:#0f172a; --gris:#64748b; --borde:#e2e8f0;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:'Segoe UI',Arial,sans-serif; background:var(--fondo); color:var(--texto); line-height:1.6;}
+  .wrap{max-width:960px; margin:0 auto; padding:24px 16px 60px;}
+  header{background:linear-gradient(135deg,var(--azul),var(--azul-osc)); color:#fff; border-radius:16px; padding:28px; margin-bottom:18px;}
+  header h1{font-size:1.8rem; margin-bottom:8px;}
+  header p{font-size:1.02rem; opacity:.95;}
+  .chip{display:inline-block; background:rgba(255,255,255,.18); padding:6px 14px; border-radius:999px; margin:14px 8px 0 0; font-weight:600;}
+  /* Wizard */
+  .progreso{background:var(--blanco); border:1px solid var(--borde); border-radius:12px; padding:14px 18px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  .progreso .contador{font-weight:700; color:var(--azul-osc);}
+  .barra-prog{height:10px; background:#e2e8f0; border-radius:999px; flex:1; min-width:140px; overflow:hidden;}
+  .barra-prog .fill{height:100%; width:0%; background:var(--azul); transition:width .3s;}
+  .paso{display:none;}
+  .paso.activo{display:block; animation:aparecer .35s;}
+  @keyframes aparecer{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+  .caja{background:var(--blanco); border:1px solid var(--borde); border-radius:14px; padding:28px; margin-bottom:16px;}
+  .caja h2{font-size:1.45rem; margin-bottom:8px; display:flex; align-items:center; gap:10px;}
+  h2 .et{background:var(--azul); color:#fff; font-size:.78rem; padding:4px 12px; border-radius:999px; text-transform:uppercase; letter-spacing:.5px;}
+  h2 .et.pract{background:var(--oro);}
+  .sub{color:var(--gris); font-weight:600; margin-bottom:16px; font-size:1.02rem;}
+  .nav{display:flex; justify-content:space-between; gap:12px; margin-top:6px;}
+  .btn{background:var(--azul); color:#fff; border:none; padding:12px 22px; border-radius:10px; font-size:1rem; cursor:pointer; font-weight:700;}
+  .btn:hover{background:var(--azul-osc);}
+  .btn.sec{background:#e2e8f0; color:var(--texto);}
+  .btn.sec:hover{background:#cbd5e1;}
+  .btn:disabled{opacity:.45; cursor:not-allowed;}
+  /* Ponderación */
+  .ponderacion{display:flex; gap:18px; flex-wrap:wrap; margin:12px 0 4px;}
+  .barra{flex:1; min-width:200px; background:#eef2ff; border:1px solid var(--borde); border-radius:10px; padding:14px; text-align:center;}
+  .barra .pct{font-size:1.6rem; font-weight:800; color:var(--azul);}
+  .barra.practica .pct{color:var(--oro);}
+  .barra span{color:var(--gris); font-size:.9rem;}
+  /* Teórica */
+  .tema{margin:18px 0 6px; padding:12px 14px; background:#eef2ff; border-left:6px solid var(--azul); border-radius:8px;}
+  .tema h3{font-size:1.15rem;}
+  .pregunta{border:1px solid var(--borde); border-radius:10px; padding:14px 16px; margin:12px 0;}
+  .pregunta .q{font-weight:700; margin-bottom:10px;}
+  .opciones{display:grid; gap:8px;}
+  .opcion{display:flex; align-items:flex-start; gap:10px; padding:8px 12px; border:1px solid var(--borde); border-radius:8px; background:#fafafa;}
+  .opcion .letra{font-weight:800; color:var(--azul); min-width:18px;}
+  .pregunta.correcta-visible .opcion.correcta{background:#dcfce7; border-color:#22c55e;}
+  .pregunta.correcta-visible .opcion.correcta .letra{color:#16a34a;}
+  .temporizador{font-size:2rem;font-weight:800;color:var(--azul);text-align:center;padding:12px;background:#eef2ff;border:2px solid var(--azul);border-radius:10px;margin:14px 0;}
+  .temporizador.rojo{color:#fff;background:var(--rojo);border-color:var(--rojo);}
+  .alerta{background:#fee2e2;border:1px solid var(--rojo);color:var(--rojo);padding:12px 16px;border-radius:10px;font-weight:700;margin:12px 0;}
+  #pregunta-actual .num{color:var(--gris);font-weight:600;margin-bottom:8px;}
+  #pregunta-actual .q{font-weight:700;font-size:1.15rem;margin-bottom:14px;}
+  #pregunta-actual .opcion{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--borde);border-radius:8px;margin:8px 0;cursor:pointer;background:#fafafa;}
+  #pregunta-actual .opcion:hover{background:#f1f5f9;}
+  #pregunta-actual .opcion.sel{background:#dbeafe;border-color:var(--azul);}
+  #pregunta-actual .opcion input{margin:0;}
+  /* Práctica */
+  .entregable{border:1px solid var(--borde); border-left:6px solid var(--oro); border-radius:10px; padding:16px; margin:14px 0; background:#fffbeb;}
+  .entregable h4{font-size:1.1rem; margin-bottom:6px;}
+  .entregable .como{background:#fff7ed; border-radius:8px; padding:10px 12px; margin-top:10px; font-size:.95rem;}
+  .entregable .como b{color:var(--azul-osc);}
+  .correo{border:2px dashed var(--azul); border-radius:10px; padding:16px; text-align:center; margin-top:8px; background:#eff6ff; font-weight:700; font-size:1.1rem;}
+  .correo code{color:var(--azul); font-size:1.15rem;}
+  /* Rúbrica */
+  table{width:100%; border-collapse:collapse; margin-top:12px;}
+  th,td{border:1px solid var(--borde); padding:12px; text-align:left; font-size:.97rem;}
+  th{background:#eef2ff; color:var(--azul-osc);}
+  td.crit{font-weight:700;}
+  .boton-wrap{text-align:center; margin-top:16px;}
+  footer{text-align:center; color:var(--gris); font-size:.9rem; margin-top:20px;}
+  ul.dest{margin:6px 0 0 18px;}
+  ul.dest li{margin:4px 0;}
+  .final{text-align:center;}
+  .final .grande{font-size:1.6rem; font-weight:800; margin:10px 0;}
+  .final .correo{margin-top:18px;}
+  .res{color:#dc2626;font-weight:800;}
+  .res.v{color:#7c3aed;}
+  .res.o{color:#ea580c;}
+  .res.a{color:#0891b2;}
+  .res.g{color:#16a34a;}
+  .res.r{color:#dc2626;}
+  .info{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:12px 16px;margin-top:14px;}
+  .info h5{color:var(--azul-osc);margin-bottom:8px;font-size:1rem;}
+  .info p{margin:6px 0;}
+  .info .ejemplo{background:#fffbeb;border:1px dashed var(--oro);border-radius:8px;padding:10px 12px;margin-top:8px;font-style:italic;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🎓 Proyecto de Vida – Grado Once</h1>
+    <p>Colegio San Luis · Evaluación integral con parte <strong>teórica</strong> y parte <strong>práctica</strong>.</p>
+    <span class="chip">👥 Se realiza por parejas</span>
+    <span class="chip">⚖️ 30% Teórico · 70% Práctico</span>
+  </header>
+
+  <!-- PROGRESO -->
+  <div class="progreso">
+    <span class="contador" id="contador">Paso 1 de 12</span>
+    <span id="titulo-paso" style="font-weight:600;">Bienvenida</span>
+    <div class="barra-prog"><div class="fill" id="fill"></div></div>
+  </div>
+
+  <!-- PASO 1: BIENVENIDA -->
+  <div class="paso activo">
+    <div class="caja">
+      <h2><span class="et">Paso 1</span> 👋 Bienvenida</h2>
+      <p class="sub">Te vamos a guiar paso a paso. Lee cada pantalla con calma y presiona <strong>"Siguiente"</strong> al final de cada una.</p>
+      <p>En este taller tendrás <span class="res">dos partes</span>: una <strong>teórica</strong> (una evaluación de 35 preguntas) y una <strong>práctica</strong> (6 entregables que harás por parejas). Tu nota se reparte <span class="res">30% teoría</span> y <span class="res.o">70% práctica</span>.</p>
+      <p style="margin-top:10px;">Aquí te explicaremos, pantalla por pantalla, qué vas a hacer y qué debes entregar. Al final te diremos qué sigue. <span class="res.a">Esta guía es para ti</span>.</p>
+    </div>
+  </div>
+
+  <!-- PASO 2: PONDERACIÓN -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et">Paso 2</span> ⚖️ ¿Cómo se reparte la nota?</h2>
+      <p class="sub">Tu nota final se divide así:</p>
+      <div class="ponderacion">
+        <div class="barra"><div class="pct">30%</div><span>Parte teórica<br/>(preguntas ICFES)</span></div>
+        <div class="barra practica"><div class="pct">70%</div><span>Parte práctica<br/>(entregables)</span></div>
+      </div>
+      <p style="margin-top:14px;">Tu <strong>parte práctica</strong> vale más, así que es muy importante que <span class="res">entregues todos tus trabajos</span>.</p>
+    </div>
+  </div>
+
+  <!-- PASO 3: PARTE TEÓRICA -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et">Paso 3</span> 📝 Parte Teórica (30%)</h2>
+      <p class="sub">Responderás <span class="res">35 preguntas</span> tipo ICFES (cada una con <span class="res.a">3 opciones</span>). Tienes <span class="res">30 minutos</span> y <span class="res.v">no es repetible</span>: salen una por una y al final ves tu resultado.</p>
+
+      <div id="quiz-ui">
+        <div id="quiz-intro">
+          <div class="temporizador" id="temporizador-intro">⏱️ 30:00</div>
+          <p><strong>Instrucciones:</strong> tú responderás <strong>35 preguntas</strong>, una a la vez. Tienes <strong>30 minutos</strong>. Una vez la inicies <strong>no podrás repetirla</strong> ni retroceder. Al terminar (o al acabarse el tiempo) verás tu resultado.</p>
+          <div class="boton-wrap"><button class="btn" id="btn-iniciar">▶️ Comenzar evaluación</button></div>
+        </div>
+        <div id="quiz-run" hidden>
+          <div class="temporizador" id="temporizador"></div>
+          <div id="quiz-alerta" class="alerta" hidden></div>
+          <div id="pregunta-actual"></div>
+          <div class="boton-wrap"><button class="btn" id="btn-siguiente" hidden>➡️ Siguiente</button></div>
+        </div>
+        <div id="quiz-result" hidden></div>
+        <div id="quiz-lock" hidden>
+          <div class="alerta">🔒 Esta evaluación <strong>ya fue realizada</strong> en este equipo y <strong>no se puede repetir</strong>.</div>
+          <div id="quiz-lock-score"></div>
+        </div>
+      </div>
+
+      <button class="btn" id="btn-banco" style="margin-top:8px;background:var(--gris);">👩‍🏫 Ver banco de preguntas (profesor)</button>
+      <div id="banco" hidden>
+        <div class="tema"><h3>📡 Tema 1 · GPS <span style="color:var(--gris);font-weight:600;">(12 preguntas)</span></h3></div>
+        <div class="pregunta" data-resp="b"><div class="q">1. ¿Qué significa la sigla GPS?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>General Positioning Signal</div><div class="opcion correcta"><span class="letra">B)</span>Global Positioning System</div><div class="opcion"><span class="letra">C)</span>Global Path System</div></div></div>
+        <div class="pregunta" data-resp="b"><div class="q">2. ¿Cuántos satélites se necesitan como mínimo para que el GPS determine tu posición con precisión?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>10 satélites</div><div class="opcion correcta"><span class="letra">B)</span>3 satélites</div><div class="opcion"><span class="letra">C)</span>1 satélite</div></div></div>
+        <div class="pregunta" data-resp="b"><div class="q">3. ¿Cuál es el principio que usa el GPS para calcular tu ubicación?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>La altitud del lugar</div><div class="opcion correcta"><span class="letra">B)</span>El tiempo que tarda la señal desde el satélite al receptor</div><div class="opcion"><span class="letra">C)</span>La fuerza de la gravedad</div></div></div>
+        <div class="pregunta" data-resp="c"><div class="q">4. ¿Qué utilidad tiene el GPS en la vida cotidiana?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Medir la temperatura del ambiente</div><div class="opcion"><span class="letra">B)</span>Solo se usa en misiones espaciales</div><div class="opcion correcta"><span class="letra">C)</span>Conocer ubicación y rutas de navegación</div></div></div>
+        <div class="pregunta" data-resp="b"><div class="q">5. ¿Qué tipo de sistema es el GPS?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>De señal de radio terrestre</div><div class="opcion correcta"><span class="letra">B)</span>De navegación por satélite</div><div class="opcion"><span class="letra">C)</span>De ondas de sonido</div></div></div>
+        <div class="pregunta" data-resp="a"><div class="q">6. ¿Qué organización desarrolló originalmente el sistema GPS?</div><div class="opciones"><div class="opcion correcta"><span class="letra">A)</span>El ejército de los Estados Unidos</div><div class="opcion"><span class="letra">B)</span>La NASA de Europa</div><div class="opcion"><span class="letra">C)</span>La ONU</div></div></div>
+        <div class="pregunta" data-resp="c"><div class="q">7. ¿Qué es una "coordenada" en el contexto del GPS?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Una medida de velocidad del viento</div><div class="opcion"><span class="letra">B)</span>Un tipo de satélite</div><div class="opcion correcta"><span class="letra">C)</span>Un valor que indica una posición en el planeta</div></div></div>
+        <div class="pregunta" data-resp="c"><div class="q">8. ¿Dónde funciona mejor el GPS?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>En interiores</div><div class="opcion"><span class="letra">B)</span>Igual en ambos lugares</div><div class="opcion correcta"><span class="letra">C)</span>En lugares abiertos</div></div></div>
+        <div class="pregunta" data-resp="c"><div class="q">9. ¿Para qué sirven las aplicaciones de mapas con GPS en un celular?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Solo para hacer llamadas</div><div class="opcion"><span class="letra">B)</span>Para medir la presión arterial</div><div class="opcion correcta"><span class="letra">C)</span>Calcular rutas y tiempos de viaje</div></div></div>
+        <div class="pregunta" data-resp="b"><div class="q">10. ¿Qué significa "triangulación" en el funcionamiento del GPS?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Conectar tres teléfonos entre sí</div><div class="opcion correcta"><span class="letra">B)</span>Usar varias señales para ubicar un punto</div><div class="opcion"><span class="letra">C)</span>Medir tres lados de una figura</div></div></div>
+        <div class="pregunta" data-resp="a"><div class="q">11. ¿El GPS puede funcionar sin conexión a internet?</div><div class="opciones"><div class="opcion correcta"><span class="letra">A)</span>Sí, porque usa señales de satélite</div><div class="opcion"><span class="letra">B)</span>No, siempre necesita internet</div><div class="opcion"><span class="letra">C)</span>Solo con wifi</div></div></div>
+        <div class="pregunta" data-resp="c"><div class="q">12. ¿Cuál de estas actividades NO depende del GPS?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Localizar un teléfono perdido</div><div class="opcion"><span class="letra">B)</span>Navegación en un vehículo</div><div class="opcion correcta"><span class="letra">C)</span>Escuchar música en línea</div></div></div>
+        <div class="tema"><h3>💻 Tema 2 · Herramientas digitales <span style="color:var(--gris);font-weight:600;">(11 preguntas)</span></h3></div>
+        <div class="pregunta" data-resp="a"><div class="q">13. ¿Qué es una "herramienta digital"?</div><div class="opciones"><div class="opcion correcta"><span class="letra">A)</span>Un programa o aplicación que ayuda a hacer tareas con dispositivos</div><div class="opcion"><span class="letra">B)</span>Un aparato físico como una pala</div><div class="opcion"><span class="letra">C)</span>Un tipo de alimento</div></div></div>
+        <div class="pregunta" data-resp="a"><div class="q">14. ¿Cuál de estas es una herramienta digital de productividad?</div><div class="opciones"><div class="opcion correcta"><span class="letra">A)</span>Un procesador de texto</div><div class="opcion"><span class="letra">B)</span>Un cuaderno de papel</div><div class="opcion"><span class="letra">C)</span>Una calculadora de escritorio común</div></div></div>
+        <div class="pregunta" data-resp="a"><div class="q">15. ¿Qué función principal tiene el correo electrónico?</div><div class="opciones"><div class="opcion correcta"><span class="letra">A)</span>Enviar y recibir mensajes y archivos</div><div class="opcion"><span class="letra">B)</span>Hacer videollamadas</div><div class="opcion"><span class="letra">C)</span>Guardar archivos físicos</div></div></div>
+        <div class="pregunta" data-resp="a"><div class="q">16. ¿Qué es un buscador web?</div><div class="opciones"><div class="opcion correcta"><span class="letra">A)</span>Una herramienta que encuentra información en internet</div><div class="opcion"><span class="letra">B)</span>Un antivirus</div><div class="opcion"><span class="letra">C)</span>Un programa de dibujo</div></div></div>
+        <div class="pregunta" data-resp="c"><div class="q">17. ¿Qué significa "subir" un archivo a la nube?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Borrarlo del computador</div><div class="opcion"><span class="letra">B)</span>Imprimirlo</div><div class="opcion correcta"><span class="letra">C)</span>Guardarlo en un servidor para acceder desde cualquier lugar</div></div></div>
+        <div class="pregunta" data-resp="b"><div class="q">18. ¿Cuál es un ejemplo de plataforma de videoconferencia?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Un buscador</div><div class="opcion correcta"><span class="letra">B)</span>Una herramienta que permite reuniones por video</div><div class="opcion"><span class="letra">C)</span>Un procesador de texto</div></div></div>
+        <div class="pregunta" data-resp="c"><div class="q">19. ¿Para qué sirve una hoja de cálculo?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Enviar correos</div><div class="opcion"><span class="letra">B)</span>Hacer dibujos</div><div class="opcion correcta"><span class="letra">C)</span>Organizar datos y hacer cálculos</div></div></div>
+        <div class="pregunta" data-resp="c"><div class="q">20. ¿Qué debemos hacer para proteger nuestra información digital?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>No usar internet nunca</div><div class="opcion"><span class="letra">B)</span>Compartir nuestras claves con todos</div><div class="opcion correcta"><span class="letra">C)</span>Usar contraseñas seguras</div></div></div>
+        <div class="pregunta" data-resp="a"><div class="q">21. ¿Qué es un "correo no deseado" o spam?</div><div class="opciones"><div class="opcion correcta"><span class="letra">A)</span>Mensajes no solicitados que intentan engañar</div><div class="opcion"><span class="letra">B)</span>Un archivo de video</div><div class="opcion"><span class="letra">C)</span>Un mensaje importante de la escuela</div></div></div>
+        <div class="pregunta" data-resp="c"><div class="q">22. ¿Qué papel tienen las herramientas digitales en el estudio?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>No aportan nada al estudio</div><div class="opcion"><span class="letra">B)</span>Solo sirven para jugar</div><div class="opcion correcta"><span class="letra">C)</span>Facilitan buscar, organizar y compartir información</div></div></div>
+        <div class="pregunta" data-resp="b"><div class="q">23. ¿Qué es la "huella digital" en internet?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>La huella de nuestro dedo en el teclado</div><div class="opcion correcta"><span class="letra">B)</span>El rastro de nuestras actividades en línea</div><div class="opcion"><span class="letra">C)</span>Un tipo de contraseña</div></div></div>
+        <div class="tema"><h3>🗳️ Tema 3 · El voto <span style="color:var(--gris);font-weight:600;">(12 preguntas)</span></h3></div>
+        <div class="pregunta" data-resp="b"><div class="q">24. ¿Qué es el voto?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Un tipo de documento</div><div class="opcion correcta"><span class="letra">B)</span>La forma de elegir a nuestros representantes</div><div class="opcion"><span class="letra">C)</span>Un juego de mesa</div></div></div>
+        <div class="pregunta" data-resp="a"><div class="q">25. ¿Quién puede votar en una elección democrática?</div><div class="opciones"><div class="opcion correcta"><span class="letra">A)</span>Los ciudadanos que cumplen los requisitos legales</div><div class="opcion"><span class="letra">B)</span>Solo los niños</div><div class="opcion"><span class="letra">C)</span>Solo los extranjeros</div></div></div>
+        <div class="pregunta" data-resp="a"><div class="q">26. ¿Qué significa "votar en secreto"?</div><div class="opciones"><div class="opcion correcta"><span class="letra">A)</span>Que nadie puede ver por quién votas</div><div class="opcion"><span class="letra">B)</span>Que votas en voz alta</div><div class="opcion"><span class="letra">C)</span>Que vota otra persona por ti</div></div></div>
+        <div class="pregunta" data-resp="b"><div class="q">27. ¿Por qué es importante votar?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Porque es obligatorio para viajar</div><div class="opcion correcta"><span class="letra">B)</span>Porque así participamos en las decisiones del país</div><div class="opcion"><span class="letra">C)</span>Porque nos pagan por ello</div></div></div>
+        <div class="pregunta" data-resp="b"><div class="q">28. ¿Qué es el voto "consciente"?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Votar sin pensar por cualquiera</div><div class="opcion correcta"><span class="letra">B)</span>Informarse antes de elegir a un candidato</div><div class="opcion"><span class="letra">C)</span>Votar siempre igual</div></div></div>
+        <div class="pregunta" data-resp="c"><div class="q">29. ¿En qué consiste el proceso electoral?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Una competencia deportiva</div><div class="opcion"><span class="letra">B)</span>Un examen de matemáticas</div><div class="opcion correcta"><span class="letra">C)</span>Elegir candidatos mediante el voto</div></div></div>
+        <div class="pregunta" data-resp="b"><div class="q">30. ¿Qué significa "democracia"?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>La ausencia de reglas</div><div class="opcion correcta"><span class="letra">B)</span>Gobierno donde el pueblo participa y elige</div><div class="opcion"><span class="letra">C)</span>Un gobierno de una sola persona para siempre</div></div></div>
+        <div class="pregunta" data-resp="c"><div class="q">31. ¿Cuál de estos es un ejemplo de voto?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Hacer una tarea</div><div class="opcion"><span class="letra">B)</span>Pedir la hora</div><div class="opcion correcta"><span class="letra">C)</span>Elegir al representante del salón</div></div></div>
+        <div class="pregunta" data-resp="a"><div class="q">32. ¿Qué papel juega el voto en el fortalecimiento de la institución?</div><div class="opciones"><div class="opcion correcta"><span class="letra">A)</span>Permite elegir representantes estudiantiles</div><div class="opcion"><span class="letra">B)</span>Solo afecta a los adultos</div><div class="opcion"><span class="letra">C)</span>No tiene relación con la institución</div></div></div>
+        <div class="pregunta" data-resp="a"><div class="q">33. ¿Qué es el "sufragio"?</div><div class="opciones"><div class="opcion correcta"><span class="letra">A)</span>El derecho a votar</div><div class="opcion"><span class="letra">B)</span>Un tipo de moneda</div><div class="opcion"><span class="letra">C)</span>Una obligación de pagar impuestos</div></div></div>
+        <div class="pregunta" data-resp="c"><div class="q">34. ¿Por qué el voto se considera un deber ciudadano?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Porque se gana un premio</div><div class="opcion"><span class="letra">B)</span>Porque es un castigo no votar</div><div class="opcion correcta"><span class="letra">C)</span>Porque con él se fortalece la participación democrática</div></div></div>
+        <div class="pregunta" data-resp="b"><div class="q">35. ¿Qué debe hacer un ciudadano responsable antes de votar?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>No participar</div><div class="opcion correcta"><span class="letra">B)</span>Informarse sobre las propuestas</div><div class="opcion"><span class="letra">C)</span>Votar sin conocer a nadie</div></div></div>
+        <div class="boton-wrap"><button class="btn" onclick="verRespuestas()">👩‍🏫 Mostrar / ocultar respuestas (profesor)</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 4: PRÁCTICA - CÓMO ENTREGAR -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et pract">Paso 4</span> 🎨 Parte Práctica (70%) — ¿Cómo entregar?</h2>
+      <p class="sub">Ahora te explicamos tu parte práctica. En total son <span class="res">6 entregables</span> por pareja. Los <span class="res.a">digitales</span> los envías por correo del colegio y algunos <span class="res.o">físicos</span> los entregas aparte.</p>
+      <p style="font-weight:700; color:var(--azul-osc); margin-top:10px;">📮 Enviar los digitales a:</p>
+      <div class="correo"><code>sanluistrabajosestudiantes@gmail.com</code></div>
+      <p style="font-weight:700; color:var(--azul-osc); margin-top:14px;">✉️ Cómo escribir el correo (asunto):</p>
+      <div class="correo" style="border-style:solid;">Asunto: <code>Proyecto de Vida – Grado Once – [Nombre de la persona]</code></div>
+      <ul class="dest">
+        <li>Ejemplo: <code>Proyecto de Vida – Grado Once – Juan y María Pérez</code></li>
+        <li>El asunto lleva el nombre del taller y solo el <span class="res">nombre de la persona</span> que entrega.</li>
+        <li>Puedes enviar <span class="res">un solo correo</span> con todos tus entregables juntos.</li>
+      </ul>
+      <p style="font-weight:700; color:var(--azul-osc); margin-top:12px;">Reglas:</p>
+      <ul class="dest">
+        <li><span class="res.a">Digitales:</span> video, podcast, fotos y registro → se envían por correo electrónico del colegio.</li>
+        <li><span class="res.o">Físicos:</span> escarapela y tarjeta → se entregan en físico (además de su foto por correo).</li>
+      </ul>
+      <p style="margin-top:12px;">En las siguientes pantallas verás <strong>cada entregable</strong> con sus ítems exactos.</p>
+    </div>
+  </div>
+
+  <!-- PASO 5: ENTREGABLE 1 VIDEO -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et pract">Entregable 1</span> 🎬 Video de despedida</h2>
+      <p class="sub">Ustedes grabarán un video corto donde <span class="res">contarán sus aspiraciones</span> y sus planes a futuro. Para que no se queden sin palabras, sigan este <span class="res.v">guión</span> y respondan cada punto:</p>
+      <ul class="dest">
+        <li>🗣️ ¿<strong>Qué van a hacer</strong> ustedes después de graduarse?</li>
+        <li>📚 ¿<strong>Qué van a estudiar</strong>? (y en qué <strong>universidad</strong>)</li>
+        <li>💼 O, si van a <strong>trabajar</strong>: ¿en qué van a trabajar?</li>
+        <li>🎯 ¿<strong>Qué quieren estudiar</strong> realmente? ¿Cuál es su meta?</li>
+        <li>📍 ¿<strong>En qué lugar</strong> estudiarán? (¿en otro departamento, otra ciudad?)</li>
+      </ul>
+      <div class="entregable" style="margin-top:14px;"><div class="como"><b>Cómo lo entregas:</b> Suban el video a <span class="res">YouTube</span> y envíen el <span class="res.v">enlace del video</span> por correo a la dirección del colegio.</div></div>
+
+      <div class="info">
+        <h5>✨ ¿Qué es y cómo hacerlo?</h5>
+        <p><strong>Qué es:</strong> un video corto donde ustedes se graban contando sus aspiraciones, para dejar un recuerdo de su paso por el colegio.</p>
+        <p><strong>Cómo hacerlo:</strong> 1) piensen qué van a decir (usen el guión); 2) graben con el celular en un lugar tranquilo y con buena luz; 3) revisen que se escuche y se vea bien; 4) súbanlo a YouTube y envíen el enlace.</p>
+        <p><strong>Para que quede bien:</strong> que dure entre 1 y 3 minutos, hablen claro, aparezcan los dos (o presenten juntos) y que el audio y la imagen se entiendan.</p>
+        <p class="ejemplo">💡 <strong>Ejemplo más largo:</strong> “Hola, somos Juan Pérez y María García, estudiantes del grado once del Colegio San Luis. Hoy queremos contarles qué vamos a hacer después de graduarnos. Yo, Juan, quiero estudiar Ingeniería de Sistemas en la Universidad Nacional, porque desde pequeño me apasiona la tecnología. María quiere estudiar Medicina en la ciudad de Medellín, porque le encanta ayudar a las personas. Mientras decidimos, planeamos trabajar para ahorrar. Nuestro sueño es cumplir estas metas y volver a visitar nuestro colegio. ¡Gracias por el recuerdo!”</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 6: ENTREGABLE 2 PODCAST -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et pract">Entregable 2</span> 🎙️ Podcast</h2>
+      <p class="sub">Sobre el fortalecimiento de la institución.</p>
+      <p>Ustedes grabarán un podcast de <span class="res">mínimo 3 minutos</span> donde hablarán sobre <span class="res.v">un problema que tiene el colegio y cómo solucionarlo</span>.</p>
+      <div class="entregable" style="margin-top:14px;"><div class="como"><b>Cómo lo entregan:</b> Envíen el audio del podcast (mín. 3 minutos) por correo a la dirección del colegio.</div></div>
+
+      <div class="info">
+        <h5>✨ ¿Qué es un podcast y cómo hacerlo?</h5>
+        <p><strong>Qué es:</strong> un podcast es un audio grabado, como un programa de radio, donde ustedes hablan de un tema. Debe incluir <span class="res">música y sonidos de apoyo</span>.</p>
+        <p><strong>Cómo hacerlo:</strong> 1) elijan un problema del colegio; 2) preparen ideas y soluciones; 3) graben hablando (mínimo 3 minutos); 4) agréguele <span class="res">música de fondo</span> o de inicio/final y <span class="res">efectos de sonido</span> para que sea más ameno.</p>
+        <p><strong>Para que quede bien:</strong> que dure mínimo 3 minutos, hablen los dos, el tema sea claro (problema + solución) y tenga música y sonidos de apoyo.</p>
+        <p class="ejemplo">💡 <strong>Ejemplo más largo:</strong> “[Suena música de inicio] Hola, bienvenidos al podcast La voz del colegio, de los estudiantes de grado once. El día de hoy hablaremos de un problema que tiene nuestra institución: la falta de espacios verdes para descansar. Este es un problema porque no tenemos un lugar agradable para compartir [sonido de ambiente]. Como solución, proponemos organizar una jornada de siembra de árboles y crear un comité estudiantil que cuide las zonas verdes. Además, creemos que todos podemos aportar [música de fondo]. Gracias por escucharnos, ¡hasta la próxima! [música de cierre]”</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 7: ENTREGABLE 3 ESCARAPELA -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et pract">Entregable 3</span> 🎖️ Escarapela (Feria de Ciencias)</h2>
+      <p class="sub">Ustedes elaborarán la escarapela que llevarán a la <span class="res">Feria de Ciencias</span>.</p>
+      <p>Hagan que sea algo <span class="res.o">bien bonito y decente</span>, e incluyan la <span class="res">foto de cada uno de ustedes</span> y sus <span class="res.a">datos</span> (nombres y apellidos) para poder calificarles.</p>
+      <div class="entregable" style="margin-top:14px;"><div class="como"><b>Cómo lo entregan:</b> Envíen la foto de la escarapela por correo a la dirección del colegio y <b>entreguen la escarapela física</b>.</div></div>
+
+      <div class="info">
+        <h5>✨ ¿Qué es y cómo hacerla?</h5>
+        <p><strong>Qué es:</strong> una escarapela es una insignia que se lleva puesta para identificarse, aquí para la <span class="res">Feria de Ciencias</span>.</p>
+        <p><strong>Cómo hacerla:</strong> 1) recorten una forma (círculo, escudo) en cartulina o fomi; 2) decórenla con colores; 3) pongan la <span class="res">foto de cada uno</span> y sus <span class="res.a">datos</span> (nombres y apellidos); 4) agreguen una cinta para colgarla.</p>
+        <p><strong>Para que quede bien:</strong> que sea bonita, decente y ordenada, con la foto y los datos bien visibles, y que sea resistente.</p>
+        <p class="ejemplo">💡 <strong>Ejemplo más largo:</strong> una escarapela circular hecha en cartulina roja, con el nombre del Colegio San Luis escrito arriba, la foto de cada estudiante en el centro y, debajo, sus nombres completos y el grado. Se decora con cintas de colores en los bordes y se cuelga con un listón azul. Debe verse ordenada, bonita y con la foto y los datos bien visibles para poder calificar.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 8: ENTREGABLE 4 TARJETA -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et pract">Entregable 4</span> 💌 Tarjeta de agradecimiento</h2>
+      <p class="sub">Para el orientador/a.</p>
+      <p>Ustedes harán una <span class="res">tarjeta elaborada a mano</span>, como una <span class="res.v">artesanía</span>: hecha en <span class="res.o">papel, con colores, cintas y escarcha</span>. Debe ser <span class="res">original</span> — entre más original, <span class="res.a">más puntos</span>.</p>
+      <div class="entregable" style="margin-top:14px;"><div class="como"><b>Cómo lo entregan:</b> Envíen la foto de la tarjeta por correo a la dirección del colegio y <b>entreguen la tarjeta física</b>.</div></div>
+
+      <div class="info">
+        <h5>✨ ¿Qué es y cómo hacerla?</h5>
+        <p><strong>Qué es:</strong> una tarjeta de agradecimiento hecha a mano, para el orientador/a, que exprese su gratitud.</p>
+        <p><strong>Cómo hacerla:</strong> 1) doblen una cartulina o papel; 2) decórenla con <span class="res.o">colores, cintas y escarcha</span>; 3) escriban un mensaje de agradecimiento; 4) cuiden que se vea limpia y bonita.</p>
+        <p><strong>Para que quede bien:</strong> que sea <span class="res">original</span> y <span class="res.v">artesanal</span>, bien elaborada y con un mensaje sincero.</p>
+        <p class="ejemplo">💡 <strong>Ejemplo más largo:</strong> una tarjeta doblada a la mitad en cartulina de color, con la portada decorada con un corazón de escarcha, cintas y pequeños adornos de colores. Adentro se escribe un mensaje completo, por ejemplo: “Querido/a orientador/a: Gracias por guiarnos y acompañarnos en esta etapa. Su dedicación y apoyo nos ayudan a crecer y a tomar buenas decisiones. Con mucho cariño, Juan y María, grado once”. Cuiden que se vea limpia, bonita y original.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 9: ENTREGABLE 5 REGISTRO -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et pract">Entregable 5</span> 📋 Registro</h2>
+      <p class="sub">Un <span class="res">formulario de Google</span> (Google Form) con preguntas.</p>
+      <p>Si tú aún no lo has hecho, ingresa al enlace y <span class="res.v">diligencielo completo</span>: así la profesora tendrá tu evidencia en el computador.</p>
+      <div class="entregable" style="margin-top:14px;"><div class="como"><b>Cómo lo entregas:</b> Haz clic en el botón de abajo y respóndelo completo.<br/><br/><a class="btn" style="display:inline-block; text-decoration:none;" href="https://docs.google.com/forms/d/e/1FAIpQLSdBOk474lR5TCeZMHmrYXwb8HohcV9YmvoASa_2Bi6MUSpVAw/viewform" target="_blank" rel="noopener">📝 Abrir el registro (formulario)</a></div></div>
+
+      <div class="info">
+        <h5>✨ ¿Qué es y cómo hacerlo?</h5>
+        <p><strong>Qué es:</strong> un formulario de Google con preguntas que ustedes deben responder.</p>
+        <p><strong>Cómo hacerlo:</strong> 1) entren al enlace; 2) lean cada pregunta; 3) respondan con sinceridad y completando todo; 4) al final presionen "Enviar".</p>
+        <p><strong>Para que quede bien:</strong> responder <span class="res">todas las preguntas</span> y con datos verdaderos. La profesora verá tu evidencia en el computador.</p>
+        <p class="ejemplo">💡 <strong>Ejemplo:</strong> por cada pregunta del formulario escriban una respuesta clara y completa. Por ejemplo, si pregunta “¿Cuál es tu nombre completo?”, respondan: “Juan Pérez”. Si pregunta “¿Qué entregas realizaste?”, respondan: “Video, podcast, escarapela, tarjeta, registro y tarjeta robótica”. Así la profesora tendrá todo registrado.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 10: ENTREGABLE 6 TARJETA ROBÓTICA -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et pract">Entregable 6</span> 🤖 Tarjeta robótica (Processing)</h2>
+      <p class="sub">Tarjeta informativa de los robots del colegio, <span class="res">programada en Processing</span>.</p>
+      <p>Ustedes la harán a modo de <span class="res.v">inventario de cada robot</span>, e incluirán todos sus ítems:</p>
+      <ul class="dest">
+        <li>⚡ <strong>Qué electricidad usan</strong> (voltaje/energía).</li>
+        <li>📏 <strong>Cuánto miden</strong> (altura/dimensiones).</li>
+        <li>⚖️ <strong>Cuánto pesan</strong>.</li>
+        <li>🧩 <strong>Cuántas piezas tiene</strong> y <strong>cuántas son eléctricas</strong>.</li>
+        <li>🔋 <strong>Cuántas baterías</strong> usa.</li>
+        <li>ℹ️ <strong>Nombre</strong> de cada robot, <strong>para qué sirve</strong> y <strong>cómo se usa</strong>.</li>
+      </ul>
+      <div class="entregable" style="margin-top:14px;"><div class="como"><b>Cómo lo entregan:</b> Muestren la tarjeta <strong>programada en Processing</strong> y envíen la evidencia (captura o video) por correo a la dirección del colegio.</div></div>
+
+      <div class="info">
+        <h5>✨ ¿Qué es y cómo hacerla?</h5>
+        <p><strong>Qué es:</strong> una tarjeta informativa digital de los robots del colegio, <span class="res">programada en Processing</span>, que muestra el inventario de cada robot.</p>
+        <p><strong>Cómo hacerla:</strong> 1) escojan cada robot; 2) busquen sus datos (electricidad, medidas, peso, piezas, baterías); 3) prográmenla en <span class="res">Processing</span> mostrando el inventario; 4) tomen una captura o video como evidencia.</p>
+        <p><strong>Para que quede bien:</strong> que sea programada en <span class="res">Processing</span>, incluya todos los ítems del inventario y sea clara y ordenada.</p>
+        <p class="ejemplo">💡 <strong>Ejemplo más largo:</strong> en Processing se muestra una ficha por robot. Por ejemplo, para el Robot EV3 se escribe: “Robot EV3 – Nombre: Explorador – Electricidad: 5 voltios – Mide 20 cm de alto – Pesa 300 g – Tiene 8 piezas, de las cuales 3 son eléctricas – Usa 1 batería – Sirve para recorrer pistas y se maneja con sensores”. Ese mismo inventario se repite para cada robot que tengan en el colegio, y se programa y muestra como una tarjeta en Processing.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 11: RÚBRICA -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et">Paso 11</span> ✅ ¿Cómo se evalúan los entregables?</h2>
+      <p class="sub">Se evalúan con estos <span class="res">3 criterios</span>:</p>
+      <table>
+        <tr><th>Criterio</th><th>¿Qué se evalúa?</th></tr>
+        <tr><td class="crit">✅ Puntualidad</td><td>Que se entregue a tiempo y cumpliendo las indicaciones.</td></tr>
+        <tr><td class="crit">🎯 Coherencia</td><td>Que el resultado sea acorde a lo que se pide y a lo que se habla.</td></tr>
+        <tr><td class="crit">🎨 Creatividad</td><td>Originalidad, elaboración y presentación del trabajo.</td></tr>
+      </table>
+      <div class="ponderacion" style="margin-top:18px;">
+        <div class="barra"><div class="pct">30%</div><span>Parte teórica</span></div>
+        <div class="barra practica"><div class="pct">70%</div><span>Parte práctica</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 12: FINAL -->
+  <div class="paso">
+    <div class="caja final">
+      <h2><span class="et">Paso 12</span> 🏁 ¡Listo!</h2>
+      <div class="grande">🎉 Ya tienes todas las ideas.</div>
+      <p>Ahora ve y <span class="res">realiza tus trabajos</span>: el video, el podcast, la escarapela, la tarjeta, el registro y la tarjeta robótica. <span class="res.g">Tú tienes tiempo para hacerlos.</span> ¡Esperamos ver tus trabajos!</p>
+      <p style="margin-top:12px;">Recuerda enviar lo digital a:</p>
+      <div class="correo"><code>sanluistrabajosestudiantes@gmail.com</code></div>
+      <p style="margin-top:10px;">Con asunto: <code>Proyecto de Vida – Grado Once – [Tu nombre]</code> (puedes enviar <span class="res">un solo correo</span> con todo).</p>
+      <p style="margin-top:14px;">¡Muchos éxitos! 🌟</p>
+    </div>
+  </div>
+
+  <!-- NAVEGACIÓN -->
+  <div class="nav">
+    <button class="btn sec" id="btn-anterior">⬅️ Anterior</button>
+    <button class="btn" id="btn-siguiente-paso">Siguiente ➡️</button>
+  </div>
+
+  <footer>Colegio San Luis · Proyecto de Vida – Grado Once · Trabajo por parejas</footer>
+</div>
+
+<script>
+  function verRespuestas(){
+    document.querySelectorAll('#banco .pregunta').forEach(function(p){ p.classList.toggle('correcta-visible'); });
+  }
+
+  (function(){
+    var STORAGE='eval_grado_once_estado';
+    var LIMITE=30*60; // 30 minutos
+    var banco=document.getElementById('banco');
+    var preguntas=[];
+
+    banco.querySelectorAll('.pregunta').forEach(function(p){
+      var texto=p.querySelector('.q').textContent.trim();
+      var opts=[];
+      p.querySelectorAll('.opcion').forEach(function(o){
+        opts.push({texto:o.childNodes[o.childNodes.length-1].textContent.trim(), correcta:o.classList.contains('correcta')});
+      });
+      var correctaIdx=opts.findIndex(function(o){return o.correcta;});
+      preguntas.push({q:texto, opts:opts, correctaIdx:correctaIdx});
+    });
+    var TOTAL=preguntas.length;
+
+    var intro=document.getElementById('quiz-intro');
+    var run=document.getElementById('quiz-run');
+    var resultEl=document.getElementById('quiz-result');
+    var lockEl=document.getElementById('quiz-lock');
+    var temporizador=document.getElementById('temporizador');
+    var alerta=document.getElementById('quiz-alerta');
+    var preguntaEl=document.getElementById('pregunta-actual');
+    var btnSiguiente=document.getElementById('btn-siguiente');
+    var btnIniciar=document.getElementById('btn-iniciar');
+    var btnBanco=document.getElementById('btn-banco');
+
+    var estado=null;
+    try{ estado=localStorage.getItem(STORAGE); }catch(e){}
+
+    if(estado){
+      intro.hidden=true; run.hidden=true; resultEl.hidden=true; lockEl.hidden=false;
+      var res=null; try{ res=JSON.parse(localStorage.getItem('eval_grado_once_resultado')); }catch(e){}
+      var scoreEl=document.getElementById('quiz-lock-score');
+      if(res && scoreEl){
+        scoreEl.innerHTML='<div class="alerta" style="background:#dcfce7;border-color:#22c55e;color:#166534;">🏆 Resultado registrado: <strong>'+res.aciertos+' de '+res.total+'</strong> ('+res.pct+'%).</div>';
+      }
+    }
+
+    var idx=0, respuestas=[], seleccion=null, segRestantes=LIMITE, timer=null;
+
+    function fmt(s){
+      var m=Math.floor(s/60), ss=s%60;
+      return (m<10?'0':'')+m+':'+(ss<10?'0':'')+ss;
+    }
+    function alertaMsj(msg, ms){
+      alerta.hidden=false; alerta.textContent=msg;
+      setTimeout(function(){ alerta.hidden=true; }, ms||4000);
+    }
+    function actualizarTemporizador(){
+      temporizador.textContent='⏱️ '+fmt(segRestantes);
+      if(segRestantes<=60) temporizador.classList.add('rojo');
+    }
+    function renderPregunta(){
+      var p=preguntas[idx];
+      preguntaEl.innerHTML='';
+      var num=document.createElement('div'); num.className='num';
+      num.textContent='Pregunta '+(idx+1)+' de '+TOTAL;
+      var q=document.createElement('div'); q.className='q'; q.textContent=p.q;
+      var opc=document.createElement('div');
+      var letras=['A','B','C'];
+      p.opts.forEach(function(o,i){
+        var label=document.createElement('label'); label.className='opcion'+(seleccion===i?' sel':'');
+        var inp=document.createElement('input'); inp.type='radio'; inp.name='resp'; inp.value=i;
+        if(seleccion===i) inp.checked=true;
+        var span=document.createElement('span'); span.style.fontWeight='800'; span.style.color='var(--azul)'; span.textContent=letras[i]+')';
+        var txt=document.createElement('span'); txt.textContent=o.texto;
+        label.appendChild(inp); label.appendChild(span); label.appendChild(txt);
+        label.addEventListener('click', function(){ seleccion=i; renderPregunta(); });
+        opc.appendChild(label);
+      });
+      preguntaEl.appendChild(num); preguntaEl.appendChild(q); preguntaEl.appendChild(opc);
+      btnSiguiente.hidden=(seleccion===null);
+      btnSiguiente.textContent=(idx===TOTAL-1)?'🏁 Finalizar':'➡️ Siguiente';
+    }
+    function finalizar(){
+      clearInterval(timer);
+      var aciertos=0;
+      for(var i=0;i<TOTAL;i++){ if(respuestas[i]===preguntas[i].correctaIdx) aciertos++; }
+      var pct=Math.round(aciertos/TOTAL*100);
+      resultEl.innerHTML='<div class="alerta" style="background:#dcfce7;border-color:#22c55e;color:#166534;">'
+        +'🏆 ¡Evaluación terminada! Tu resultado: <strong>'+aciertos+' de '+TOTAL+'</strong> correctas ('+pct+'%).</div>';
+      intro.hidden=true; run.hidden=true; resultEl.hidden=false; lockEl.hidden=true;
+      try{
+        localStorage.setItem(STORAGE,'completado');
+        localStorage.setItem('eval_grado_once_resultado', JSON.stringify({aciertos:aciertos,total:TOTAL,pct:pct}));
+      }catch(e){}
+    }
+    function iniciarTimer(){
+      timer=setInterval(function(){
+        segRestantes--;
+        actualizarTemporizador();
+        if(segRestantes===600) alertaMsj('⏳ Llevas 20 minutos. Quedan 10.');
+        if(segRestantes===300) alertaMsj('⏳ Quedan 5 minutos.');
+        if(segRestantes===60) alertaMsj('⚠️ Queda 1 minuto.');
+        if(segRestantes<=0){ clearInterval(timer); finalizar(); }
+      },1000);
+    }
+
+    // Baraja el orden de las preguntas y la posición de sus opciones
+    function aleatorizar(){
+      var i,j,t;
+      for(i=preguntas.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=preguntas[i]; preguntas[i]=preguntas[j]; preguntas[j]=t; }
+      preguntas.forEach(function(p){
+        for(i=p.opts.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=p.opts[i]; p.opts[i]=p.opts[j]; p.opts[j]=t; }
+        p.correctaIdx=p.opts.findIndex(function(o){return o.correcta;});
+      });
+    }
+
+    btnIniciar.addEventListener('click', function(){
+      try{ localStorage.setItem(STORAGE,'iniciado'); }catch(e){}
+      idx=0; respuestas=[]; seleccion=null; segRestantes=LIMITE;
+      aleatorizar();
+      intro.hidden=true; run.hidden=false; resultEl.hidden=true; lockEl.hidden=true;
+      actualizarTemporizador(); renderPregunta(); iniciarTimer();
+    });
+
+    btnSiguiente.addEventListener('click', function(){
+      if(seleccion===null) return;
+      respuestas[idx]=seleccion; seleccion=null;
+      if(idx<TOTAL-1){ idx++; renderPregunta(); } else { finalizar(); }
+    });
+
+    btnBanco.addEventListener('click', function(){
+      banco.hidden=!banco.hidden;
+      btnBanco.textContent=banco.hidden?'👩‍🏫 Ver banco de preguntas (profesor)':'🙈 Ocultar banco (profesor)';
+    });
+
+    // Reinicio oculto del profesor: Ctrl + Shift + R
+    function resetEvaluacion(){
+      if(confirm('⚠️ ¿Reiniciar la evaluación para que se pueda volver a hacer? Se borrará el bloqueo y el resultado.')){
+        try{ localStorage.removeItem(STORAGE); localStorage.removeItem('eval_grado_once_resultado'); }catch(e){}
+        location.reload();
+      }
+    }
+    document.addEventListener('keydown', function(e){
+      if(e.ctrlKey && e.shiftKey && (e.key==='R'||e.key==='r')){
+        e.preventDefault();
+        resetEvaluacion();
+      }
+    });
+
+    // ===== GUÍA PASO A PASO =====
+    var pasos=document.querySelectorAll('.paso');
+    var total=pasos.length;
+    var actual=0;
+    var contador=document.getElementById('contador');
+    var tituloPaso=document.getElementById('titulo-paso');
+    var fill=document.getElementById('fill');
+    var btnAnt=document.getElementById('btn-anterior');
+    var btnSig=document.getElementById('btn-siguiente-paso');
+    var titulos=['Bienvenida','Ponderación','Parte Teórica','Parte Práctica','Video','Podcast','Escarapela','Tarjeta','Registro','Tarjeta robótica','Rúbrica','Final'];
+
+    function mostrarPaso(n){
+      pasos.forEach(function(p,i){ p.classList.toggle('activo', i===n); });
+      actual=n;
+      contador.textContent='Paso '+(n+1)+' de '+total;
+      tituloPaso.textContent=titulos[n]||'';
+      fill.style.width=((n+1)/total*100)+'%';
+      btnAnt.disabled=(n===0);
+      btnSig.hidden=(n===total-1);
+      btnSig.textContent=(n===total-2)?'🏁 Ver final':'Siguiente ➡️';
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+    btnSig.addEventListener('click', function(){ if(actual<total-1) mostrarPaso(actual+1); });
+    btnAnt.addEventListener('click', function(){ if(actual>0) mostrarPaso(actual-1); });
+    mostrarPaso(0);
+  })();
+</script>
+</body>
+</html>
