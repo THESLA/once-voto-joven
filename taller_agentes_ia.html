@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Taller Evolución y Uso Práctico de los Agentes IA</title>
+<style>
+  :root{
+    --azul:#0d9488; --azul-osc:#115e59; --rojo:#dc2626; --oro:#d97706;
+    --fondo:#f0fdfa; --blanco:#ffffff; --texto:#0f172a; --gris:#64748b; --borde:#ccfbf1;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:'Segoe UI',Arial,sans-serif; background:var(--fondo); color:var(--texto); line-height:1.6;}
+  .wrap{max-width:960px; margin:0 auto; padding:24px 16px 60px;}
+  header{background:linear-gradient(135deg,var(--azul),var(--azul-osc)); color:#fff; border-radius:16px; padding:28px; margin-bottom:18px;}
+  header h1{font-size:1.8rem; margin-bottom:8px;}
+  header p{font-size:1.02rem; opacity:.95;}
+  .chip{display:inline-block; background:rgba(255,255,255,.18); padding:6px 14px; border-radius:999px; margin:14px 8px 0 0; font-weight:600;}
+  /* Wizard */
+  .progreso{background:var(--blanco); border:1px solid var(--borde); border-radius:12px; padding:14px 18px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  .progreso .contador{font-weight:700; color:var(--azul-osc);}
+  .barra-prog{height:10px; background:#ccfbf1; border-radius:999px; flex:1; min-width:140px; overflow:hidden;}
+  .barra-prog .fill{height:100%; width:0%; background:var(--azul); transition:width .3s;}
+  .paso{display:none;}
+  .paso.activo{display:block; animation:aparecer .35s;}
+  @keyframes aparecer{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+  .caja{background:var(--blanco); border:1px solid var(--borde); border-radius:14px; padding:28px; margin-bottom:16px;}
+  .caja h2{font-size:1.45rem; margin-bottom:8px; display:flex; align-items:center; gap:10px;}
+  h2 .et{background:var(--azul); color:#fff; font-size:.78rem; padding:4px 12px; border-radius:999px; text-transform:uppercase; letter-spacing:.5px;}
+  h2 .et.pract{background:var(--oro);}
+  .sub{color:var(--gris); font-weight:600; margin-bottom:16px; font-size:1.02rem;}
+  .nav{display:flex; justify-content:space-between; gap:12px; margin-top:6px;}
+  .btn{background:var(--azul); color:#fff; border:none; padding:12px 22px; border-radius:10px; font-size:1rem; cursor:pointer; font-weight:700;}
+  .btn:hover{background:var(--azul-osc);}
+  .btn.sec{background:#ccfbf1; color:var(--texto);}
+  .btn.sec:hover{background:#99f6e4;}
+  .btn:disabled{opacity:.45; cursor:not-allowed;}
+  /* Resaltados */
+  .res{color:#dc2626;font-weight:800;}
+  .res.v{color:#7c3aed;}
+  .res.o{color:#ea580c;}
+  .res.a{color:#0891b2;}
+  .res.g{color:#16a34a;}
+  /* Timeline */
+  .timeline{position:relative;padding:10px 0 10px 30px;margin:12px 0;}
+  .timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:3px;background:var(--azul);border-radius:3px;}
+  .timeline .evento{position:relative;margin:14px 0;padding:10px 14px;background:#f0fdfa;border:1px solid var(--borde);border-radius:10px;}
+  .timeline .evento::before{content:'';position:absolute;left:-26px;top:14px;width:14px;height:14px;background:var(--azul);border:3px solid var(--blanco);border-radius:50%;}
+  .timeline .evento .fecha{font-weight:800;color:var(--azul);font-size:.9rem;}
+  /* Info */
+  .info{background:#f0fdfa;border:1px solid var(--borde);border-radius:8px;padding:12px 16px;margin-top:14px;}
+  .info h5{color:var(--azul-osc);margin-bottom:8px;font-size:1rem;}
+  .info p{margin:6px 0;}
+  .info .ejemplo{background:#fffbeb;border:1px dashed var(--oro);border-radius:8px;padding:10px 12px;margin-top:8px;font-style:italic;}
+  /* Entregable */
+  .entregable{border:1px solid var(--borde);border-left:6px solid var(--oro);border-radius:10px;padding:16px;margin:14px 0;background:#fffbeb;}
+  .entregable .como{background:#fff7ed;border-radius:8px;padding:10px 12px;margin-top:10px;font-size:.95rem;}
+  /* Correo */
+  .correo{border:2px dashed var(--azul);border-radius:10px;padding:16px;text-align:center;margin-top:8px;background:#ccfbf1;font-weight:700;font-size:1.1rem;}
+  .correo code{color:var(--azul-osc);font-size:1.15rem;}
+  /* Rúbrica */
+  table{width:100%;border-collapse:collapse;margin-top:12px;}
+  th,td{border:1px solid var(--borde);padding:12px;text-align:left;font-size:.97rem;}
+  th{background:#ccfbf1;color:var(--azul-osc);}
+  td.crit{font-weight:700;}
+  .boton-wrap{text-align:center;margin-top:16px;}
+  footer{text-align:center;color:var(--gris);font-size:.9rem;margin-top:20px;}
+  ul.dest{margin:6px 0 0 18px;}
+  ul.dest li{margin:4px 0;}
+  .final{text-align:center;}
+  .final .grande{font-size:1.6rem;font-weight:800;margin:10px 0;}
+  .final .correo{margin-top:18px;}
+  /* Quiz */
+  .temporizador{font-size:2rem;font-weight:800;color:var(--azul);text-align:center;padding:12px;background:#ccfbf1;border:2px solid var(--azul);border-radius:10px;margin:14px 0;}
+  .temporizador.rojo{color:#fff;background:var(--rojo);border-color:var(--rojo);}
+  .alerta{background:#fee2e2;border:1px solid var(--rojo);color:var(--rojo);padding:12px 16px;border-radius:10px;font-weight:700;margin:12px 0;}
+  #pregunta-actual .num{color:var(--gris);font-weight:600;margin-bottom:8px;}
+  #pregunta-actual .q{font-weight:700;font-size:1.15rem;margin-bottom:14px;}
+  #pregunta-actual .opcion{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--borde);border-radius:8px;margin:8px 0;cursor:pointer;background:#f0fdfa;}
+  #pregunta-actual .opcion:hover{background:#ccfbf1;}
+  #pregunta-actual .opcion.sel{background:#99f6e4;border-color:var(--azul);}
+  #pregunta-actual .opcion input{margin:0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🤖 Taller: Evolución y Uso Práctico de los Agentes IA</h1>
+    <p>Aprende qué es la IA, cómo ha evolucionado y cómo usar un agente de IA para organizar, estructurar y crear.</p>
+    <span class="chip">👥 Trabajo por parejas</span>
+    <span class="chip">🌐 Portales gratuitos (sin instalar)</span>
+  </header>
+
+  <!-- PROGRESO -->
+  <div class="progreso">
+    <span class="contador" id="contador">Paso 1 de 12</span>
+    <span id="titulo-paso" style="font-weight:600;">Bienvenida</span>
+    <div class="barra-prog"><div class="fill" id="fill"></div></div>
+  </div>
+
+  <!-- PASO 1: BIENVENIDA -->
+  <div class="paso activo">
+    <div class="caja">
+      <h2><span class="et">Paso 1</span> 👋 Bienvenida</h2>
+      <p class="sub">Te vamos a guiar paso a paso. Lee cada pantalla con calma y presiona <strong>"Siguiente"</strong> al final.</p>
+      <p>En este taller aprenderás <span class="res">qué es la Inteligencia Artificial</span>, cómo ha evolucionado, qué son los <span class="res.v">agentes de IA</span> y cómo usarlos de forma práctica para organizar documentos, estructurar ideas y generar contenido.</p>
+      <p style="margin-top:10px;">No necesitas instalar nada: usarás <span class="res.a">portales gratuitos</span> que trabajan desde el navegador. Al final tendrás una guía completa que podrás copiar y desarrollar en tu espacio y en tu tiempo.</p>
+      <div class="info">
+        <h5>📋 Instrucciones</h5>
+        <p>1) Lee cada paso con atención.</p>
+        <p>2) Cuando llegues al final, habrá una <strong>evaluación corta</strong> (8 preguntas).</p>
+        <p>3) Copia la guía completa para desarrollarla después.</p>
+        <p>4) Todo se hace por <strong>parejas</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 2: ¿QUÉ ES LA IA? -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et">Paso 2</span> 🧠 ¿Qué es la Inteligencia Artificial?</h2>
+      <p class="sub">La Inteligencia Artificial (IA) es un campo de la computadora que crea programas capaces de <span class="res">aprender, razonar y tomar decisiones</span>, similar a como lo haría un humano.</p>
+      <p>En palabras simples: es un software que <span class="res.v">simula capacidades humanas</span> como entender lenguaje, reconocer imágenes, escribir textos o resolver problemas.</p>
+      <div class="info">
+        <h5>💡 Ejemplos de IA en tu vida diaria</h5>
+        <p>📱 <strong>Siri / Google Asistente</strong> — entiende tu voz y responde preguntas.</p>
+        <p>🌐 <strong>Google Traductor</strong> — traduce textos de un idioma a otro.</p>
+        <p>🎵 <strong>Spotify / YouTube</strong> — te recomienda música o videos según lo que escuchas.</p>
+        <p>🚗 <strong>GPS / Waze</strong> — calcula la mejor ruta usando datos en tiempo real.</p>
+        <p>💬 <strong>ChatGPT / Gemini</strong> — escribe textos, responde preguntas y genera ideas.</p>
+      </div>
+      <p style="margin-top:12px;"><span class="res.a">Dato curioso:</span> el término "Inteligencia Artificial" fue creado en <strong>1956</strong> por John McCarthy en una conferencia en Dartmouth, Estados Unidos.</p>
+    </div>
+  </div>
+
+  <!-- PASO 3: EVOLUCIÓN DE LA IA -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et">Paso 3</span> 📜 Evolución de la IA</h2>
+      <p class="sub">La IA no apareció de la noche a la mañana. Ha evolucionado durante décadas hasta llegar a lo que hoy conocemos.</p>
+      <div class="timeline">
+        <div class="evento"><span class="fecha">🧪 1950s — Los inicios</span><p>Los primeros científicos imaginan máquinas que piensan. Se crea el término "Inteligencia Artificial".</p></div>
+        <div class="evento"><span class="fecha">💻 1960s-1980s — IA simbólica</span><p>Los computadores aprenden a seguir reglas lógicas. Son programados manualmente con instrucciones.</p></div>
+        <div class="evento"><span class="fecha">📊 1990s — Machine Learning</span><p>Las máquinas empiezan a <strong>aprender de datos</strong> en vez de solo seguir reglas. Se usan en correos spam y recomendaciones.</p></div>
+        <div class="evento"><span class="fecha">🧠 2010s — Deep Learning</span><p>Redes neuronales profundas que imitan el cerebro humano. Se usan en reconocimiento facial, autos autónomos y traducción.</p></div>
+        <div class="evento"><span class="fecha">💬 2020s — LLMs y Agentes</span><p>Aparecen los <strong>modelos de lenguaje</strong> (ChatGPT, Gemini) y los <strong>agentes de IA</strong> que pueden tomar decisiones y ejecutar tareas de forma autónoma.</p></div>
+      </div>
+      <p style="margin-top:12px;"><span class="res.g">Hoy estamos en la era de los agentes:</span> IA que no solo responde preguntas, sino que <strong>actúa, organiza y ejecuta</strong> por ti.</p>
+    </div>
+  </div>
+
+  <!-- PASO 4: ¿QUÉ ES UN AGENTE DE IA? -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et">Paso 4</span> 🤖 ¿Qué es un Agente de IA?</h2>
+      <p class="sub">Un agente de IA es un sistema que puede <span class="res">tomar decisiones y realizar tareas de forma autónoma</span>, sin que tú le digas exactamente qué hacer en cada paso.</p>
+      <p>La diferencia con una IA normal:</p>
+      <div class="entregable">
+        <h4>IA normal vs. Agente de IA</h4>
+        <p><strong>IA normal (ChatGPT básico):</strong> Le haces una pregunta → responde. Tú decides qué hacer después.</p>
+        <p><strong>Agente de IA:</strong> Le dices "organiza mis documentos" → el agente <span class="res">decide qué hacer</span>: revisa los archivos, los clasifica, los renombra y te entrega el resultado.</p>
+      </div>
+      <div class="info">
+        <h5>💡 Analogía sencilla</h5>
+        <p><strong>IA normal</strong> = un asistente que responde cuando le preguntas.</p>
+        <p><strong>Agente de IA</strong> = un asistente que <span class="res.v">toma la iniciativa</span>, organiza, ejecuta y te entrega el resultado terminado.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 5: PORTALES GRATUITOS DE IA -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et pract">Paso 5</span> 🌐 Portales gratuitos de IA</h2>
+      <p class="sub">No necesitas instalar nada. Existen <span class="res">portales gratuitos</span> que puedes usar desde el navegador de tu computador o celular.</p>
+      <div class="entregable">
+        <h4>🆓 Portales gratuitos recomendados</h4>
+        <ul class="dest">
+          <li><span class="res">OpenCode</span> — portal que conecta con modelos gratuitos y permite trabajar con agentes.</li>
+          <li><span class="res.a">ChatGPT (gratis)</span> — chat.openai.com — modelo GPT-3.5 gratuito.</li>
+          <li><span class="res.v">Gemini (gratis)</span> — gemini.google.com — modelo de Google, gratuito.</li>
+          <li><span class="res.o">Claude (gratis)</span> — claude.ai — modelo de Anthropic, gratuito.</li>
+          <li><span class="res.g">HuggingChat</span> — huggingface.co/chat — modelos open-source gratuitos.</li>
+        </ul>
+      </div>
+      <div class="info">
+        <h5>🔑 Cómo empezar</h5>
+        <p>1) Elige uno de los portales.</p>
+        <p>2) Crea una cuenta gratuita (o úsalo sin cuenta si lo permite).</p>
+        <p>3) Escribe tu primera instrucción en el cuadro de texto.</p>
+        <p>4) ¡Listo! Ya estás usando un agente de IA.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 6: ORGANIZAR DOCUMENTOS -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et pract">Paso 6</span> 📁 Organizar documentos con el agente</h2>
+      <p class="sub">Puedes usar el agente para <span class="res">clasificar, renombrar, resumir y ordenar</span> tus archivos y documentos.</p>
+      <p>¿Cómo hacerlo? Le escribes instrucciones claras como estas:</p>
+      <div class="info">
+        <h5>📋 Ejemplos de instrucciones</h5>
+        <p>"Organiza estos 10 archivos en carpetas: uno para tareas de matemáticas, otro de ciencias y otro de inglés."</p>
+        <p>"Resume este documento de 5 páginas en 10 puntos clave."</p>
+        <p>"Renombra estos archivos con el formato: Materia – Nombre del tema – Fecha."</p>
+        <p>"Crea una tabla donde compares los temas de las tres materias."</p>
+      </div>
+      <p style="margin-top:12px;"><span class="res.g">Consejo:</span> cuanto más <span class="res">clara y específica</span> sea tu instrucción, mejor resultado obtendrás.</p>
+    </div>
+  </div>
+
+  <!-- PASO 7: ESTRUCTURAR IDEAS -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et pract">Paso 7</span> 💡 Estructurar ideas con el agente</h2>
+      <p class="sub">El agente te puede ayudar a <span class="res">ordenar y presentar tus ideas</span> de forma clara y lógica.</p>
+      <p>Si tienes una idea de negocio, un proyecto o un tema para exponer, el agente puede estructurarla paso a paso.</p>
+      <div class="info">
+        <h5>📋 Ejemplos de instrucciones</h5>
+        <p>"Tengo una idea de negocio: vender camisetas personalizadas. Ayúdame a estructurar: qué necesito, cuánto cuesta, a quién se la vendo y cómo la promociono."</p>
+        <p>"Quiero exponer sobre el cambio climático. Organiza mi presentación: introducción, problema, causas, soluciones y conclusión."</p>
+        <p>"Dame un plan de 5 pasos para organizar una feria en el colegio."</p>
+      </div>
+      <div class="ejemplo">💡 <strong>Ejemplo:</strong> Le pides al agente: "Organiza mi idea de negocio de dulces artesanales". Él te entrega: 1) Descripción del producto, 2) Ingredientes y costos, 3) Público objetivo, 4) Dónde vender, 5) Cómo promocionar en redes sociales.</div>
+    </div>
+  </div>
+
+  <!-- PASO 8: GENERAR CONTENIDO -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et pract">Paso 8</span> 📄 Generar contenido con el agente</h2>
+      <p class="sub">El agente puede <span class="res">crear textos, planes, guiones, presentaciones y más</span> a partir de tus instrucciones.</p>
+      <div class="info">
+        <h5>📋 Ejemplos de contenido que puedes generar</h5>
+        <p>📝 <strong>Textos:</strong> ensayos, correos, cartas, resúmenes.</p>
+        <p>📊 <strong>Planes:</strong> plan de negocio, plan de proyecto, cronograma.</p>
+        <p>🎬 <strong>Guiones:</strong> para videos, podcasts, presentaciones.</p>
+        <p>📋 <strong>Listas:</strong> checklist, tabla comparativa, esquemas.</p>
+        <p>💡 <strong>Ideas:</strong> nombres para tu negocio, eslogan, estrategias de marketing.</p>
+      </div>
+      <div class="info">
+        <h5>🔑 Clave para buen contenido</h5>
+        <p><strong>Sé específico:</strong> no le digas "escríbeme algo". Dile: "Escríbeme un correo formal dirigido al director del colegio pidiendo autorización para usar el salón de computadores el viernes."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 9: EL AGENTE COMO HERRAMIENTA -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et pract">Paso 9</span> 🔧 El agente como herramienta de trabajo</h2>
+      <p class="sub">El agente no es solo para tareas del colegio: es una <span class="res">herramienta que te acompaña en tu vida diaria</span>.</p>
+      <div class="info">
+        <h5>💡 ¿Para qué puedes usar el agente?</h5>
+        <p>📚 <strong>Estudio:</strong> resumir apuntes, explicar temas difíciles, crear flashcards.</p>
+        <p>💼 <strong>Emprendimiento:</strong> crear plan de negocio, investigar mercado, diseñar estrategias.</p>
+        <p>🎨 <strong>Creatividad:</strong> escribir historias, diseñar ideas, crear contenido para redes.</p>
+        <p>📋 <strong>Organización:</strong> crear listas de tareas, cronogramas, presupuestos.</p>
+        <p>🗣️ <strong>Comunicación:</strong> redactar correos, preparar discursos, traducir textos.</p>
+      </div>
+      <p style="margin-top:12px;"><span class="res.a">Recuerda:</span> el agente es una <strong>herramienta</strong>. Tú decides qué hacer con ella. Él te ayuda, pero <span class="res">tú eres quien piensa y toma las decisiones finales</span>.</p>
+    </div>
+  </div>
+
+  <!-- PASO 10: LÍMITES Y BUENAS PRÁCTICAS -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et">Paso 10</span> ⚠️ Límites y buenas prácticas</h2>
+      <p class="sub">Los agentes de IA son muy útiles, pero tienen <span class="res">límites</span> que debes conocer.</p>
+      <div class="entregable">
+        <h4>🚫 Lo que un agente de IA NO puede hacer</h4>
+        <ul class="dest">
+          <li><strong>No tiene sentido común:</strong> puede dar respuestas absurdas si la instrucción no es clara.</li>
+          <li><strong>No verifica hechos:</strong> puede inventar datos o fuentes que no existen.</li>
+          <li><strong>No reemplaza tu criterio:</strong> tú debes revisar lo que el agente genera.</li>
+          <li><strong>No conoce tu realidad:</strong> no sabe lo que pasa en tu salón o en tu vida a menos que se lo cuentes.</li>
+        </ul>
+      </div>
+      <div class="info">
+        <h5>✅ Buenas prácticas</h5>
+        <p>✔️ <strong>Verifica siempre</strong> la información que el agente te dé.</p>
+        <p>✔️ <strong>Sé específico</strong> en tus instrucciones.</p>
+        <p>✔️ <strong>No dependas ciegamente:</strong> usa el agente como apoyo, no como sustituto de tu pensamiento.</p>
+        <p>✔️ <strong>Dale crédito:</strong> si usas contenido generado por IA, reconócelo.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 11: EVALUACIÓN -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et">Paso 11</span> 📝 Evaluación</h2>
+      <p class="sub">Responde las <strong>8 preguntas</strong> sobre lo que aprendiste. Tiempo: <span class="res">10 minutos</span>.</p>
+
+      <div id="quiz-ui">
+        <div id="quiz-intro">
+          <div class="temporizador" id="temporizador-intro">⏱️ 10:00</div>
+          <p><strong>Instrucciones:</strong> responderás <strong>8 preguntas</strong>, una a la vez. Tienes <strong>10 minutos</strong>. Una vez la inicies <strong>no podrás repetirla</strong>.</p>
+          <div class="boton-wrap"><button class="btn" id="btn-iniciar">▶️ Comenzar evaluación</button></div>
+        </div>
+        <div id="quiz-run" hidden>
+          <div class="temporizador" id="temporizador"></div>
+          <div id="quiz-alerta" class="alerta" hidden></div>
+          <div id="pregunta-actual"></div>
+          <div class="boton-wrap"><button class="btn" id="btn-siguiente" hidden>➡️ Siguiente</button></div>
+        </div>
+        <div id="quiz-result" hidden></div>
+        <div id="quiz-lock" hidden>
+          <div class="alerta">🔒 Esta evaluación <strong>ya fue realizada</strong> en este equipo y <strong>no se puede repetir</strong>.</div>
+          <div id="quiz-lock-score"></div>
+        </div>
+      </div>
+
+      <!-- BANCO OCULTO (8 preguntas) -->
+      <div id="banco" hidden>
+        <div class="pregunta" data-resp="b"><div class="q">1. ¿Qué es la Inteligencia Artificial?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Un tipo de computadora muy rápida</div><div class="opcion correcta"><span class="letra">B)</span>Un programa que simula capacidades humanas como aprender y resolver problemas</div><div class="opcion"><span class="letra">C)</span>Un robot que camina como un humano</div></div></div>
+
+        <div class="pregunta" data-resp="b"><div class="q">2. ¿En qué década nació la Inteligencia Artificial como campo de estudio?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>En los años 1980</div><div class="opcion correcta"><span class="letra">B)</span>En los años 1950</div><div class="opcion"><span class="letra">C)</span>En los años 2000</div></div></div>
+
+        <div class="pregunta" data-resp="b"><div class="q">3. ¿Qué es un Agente de IA?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Un programa que solo responde preguntas</div><div class="opcion correcta"><span class="letra">B)</span>Un sistema que puede tomar decisiones y realizar tareas de forma autónoma</div><div class="opcion"><span class="letra">C)</span>Un virus de computadora</div></div></div>
+
+        <div class="pregunta" data-resp="b"><div class="q">4. ¿Cuál de estos es un portal gratuito de IA?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Microsoft Word</div><div class="opcion correcta"><span class="letra">B)</span>OpenCode / ChatGPT (gratis) / Gemini</div><div class="opcion"><span class="letra">C)</span>Excel</div></div></div>
+
+        <div class="pregunta" data-resp="a"><div class="q">5. ¿Cómo puedes usar un agente de IA para organizar documentos?</div><div class="opciones"><div class="opcion correcta"><span class="letra">A)</span>Le pides que clasifique, renombre y ordene tus archivos</div><div class="opcion"><span class="letra">B)</span>Solo puedes usarlo para escribir textos</div><div class="opcion"><span class="letra">C)</span>No se puede usar para documentos</div></div></div>
+
+        <div class="pregunta" data-resp="a"><div class="q">6. ¿Qué significa "estructurar ideas" con un agente de IA?</div><div class="opciones"><div class="opcion correcta"><span class="letra">A)</span>Pedirle que ordene y presente tu idea de forma clara y lógica</div><div class="opcion"><span class="letra">B)</span>Dejar que el agente piense por ti</div><div class="opcion"><span class="letra">C)</span>Copiar todo lo que el agente diga sin modificar</div></div></div>
+
+        <div class="pregunta" data-resp="b"><div class="q">7. ¿Cuál es una limitación de los agentes de IA?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>No pueden ayudarte con nada</div><div class="opcion correcta"><span class="letra">B)</span>Pueden cometer errores, no tienen sentido común y dependen de lo que les pidas</div><div class="opcion"><span class="letra">C)</span>Solo funcionan en inglés</div></div></div>
+
+        <div class="pregunta" data-resp="b"><div class="q">8. ¿Por qué es importante usar la IA de forma responsable?</div><div class="opciones"><div class="opcion"><span class="letra">A)</span>Porque la IA es peligrosa y no se debe usar</div><div class="opcion correcta"><span class="letra">B)</span>Porque debes verificar la información, dar crédito y no depender ciegamente</div><div class="opcion"><span class="letra">C)</span>Porque la IA cuesta mucho dinero</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 12: FINAL -->
+  <div class="paso">
+    <div class="caja final">
+      <h2><span class="et">Paso 12</span> 🏁 ¡Listo!</h2>
+      <div class="grande">🎉 Ya sabes qué es un agente de IA y cómo usarlo.</div>
+      <p>Ahora <span class="res">copia la guía completa</span> y <span class="res.g">desarróllala en tu tiempo y en tu espacio</span>. Usa el agente para organizar tus documentos, estructurar tus ideas y generar contenido para tus proyectos.</p>
+      <p style="margin-top:12px;"><strong>Recuerda:</strong> el agente es una herramienta. Tú eres quien piensa, decide y ejecuta.</p>
+      <p style="margin-top:10px;">Portales gratuitos: <span class="res">OpenCode</span> · <span class="res.a">ChatGPT</span> · <span class="res.v">Gemini</span> · <span class="res.o">Claude</span></p>
+      <p style="margin-top:14px;">¡Mucho éxito! 🌟</p>
+    </div>
+  </div>
+
+  <!-- NAVEGACIÓN -->
+  <div class="nav">
+    <button class="btn sec" id="btn-anterior">⬅️ Anterior</button>
+    <button class="btn" id="btn-siguiente-paso">Siguiente ➡️</button>
+  </div>
+
+  <footer>🤖 Taller Evolución y Uso Práctico de los Agentes IA · Trabajo por parejas</footer>
+</div>
+
+<script>
+  (function(){
+    var STORAGE='eval_agentes_ia_estado';
+    var LIMITE=10*60; // 10 minutos
+    var banco=document.getElementById('banco');
+    var preguntas=[];
+
+    banco.querySelectorAll('.pregunta').forEach(function(p){
+      var texto=p.querySelector('.q').textContent.trim();
+      var opts=[];
+      p.querySelectorAll('.opcion').forEach(function(o){
+        opts.push({texto:o.childNodes[o.childNodes.length-1].textContent.trim(), correcta:o.classList.contains('correcta')});
+      });
+      var correctaIdx=opts.findIndex(function(o){return o.correcta;});
+      preguntas.push({q:texto, opts:opts, correctaIdx:correctaIdx});
+    });
+    var TOTAL=preguntas.length;
+
+    var intro=document.getElementById('quiz-intro');
+    var run=document.getElementById('quiz-run');
+    var resultEl=document.getElementById('quiz-result');
+    var lockEl=document.getElementById('quiz-lock');
+    var temporizador=document.getElementById('temporizador');
+    var alerta=document.getElementById('quiz-alerta');
+    var preguntaEl=document.getElementById('pregunta-actual');
+    var btnSiguiente=document.getElementById('btn-siguiente');
+    var btnIniciar=document.getElementById('btn-iniciar');
+
+    var estado=null;
+    try{ estado=localStorage.getItem(STORAGE); }catch(e){}
+
+    if(estado){
+      intro.hidden=true; run.hidden=true; resultEl.hidden=true; lockEl.hidden=false;
+      var res=null; try{ res=JSON.parse(localStorage.getItem('eval_agentes_ia_resultado')); }catch(e){}
+      var scoreEl=document.getElementById('quiz-lock-score');
+      if(res && scoreEl){
+        scoreEl.innerHTML='<div class="alerta" style="background:#dcfce7;border-color:#22c55e;color:#166534;">🏆 Resultado registrado: <strong>'+res.aciertos+' de '+res.total+'</strong> ('+res.pct+'%).</div>';
+      }
+    }
+
+    var idx=0, respuestas=[], seleccion=null, segRestantes=LIMITE, timer=null;
+
+    function fmt(s){
+      var m=Math.floor(s/60), ss=s%60;
+      return (m<10?'0':'')+m+':'+(ss<10?'0':'')+ss;
+    }
+    function alertaMsj(msg, ms){
+      alerta.hidden=false; alerta.textContent=msg;
+      setTimeout(function(){ alerta.hidden=true; }, ms||4000);
+    }
+    function actualizarTemporizador(){
+      temporizador.textContent='⏱️ '+fmt(segRestantes);
+      if(segRestantes<=60) temporizador.classList.add('rojo');
+    }
+    function renderPregunta(){
+      var p=preguntas[idx];
+      preguntaEl.innerHTML='';
+      var num=document.createElement('div'); num.className='num';
+      num.textContent='Pregunta '+(idx+1)+' de '+TOTAL;
+      var q=document.createElement('div'); q.className='q'; q.textContent=p.q;
+      var opc=document.createElement('div');
+      var letras=['A','B','C'];
+      p.opts.forEach(function(o,i){
+        var label=document.createElement('label'); label.className='opcion'+(seleccion===i?' sel':'');
+        var inp=document.createElement('input'); inp.type='radio'; inp.name='resp'; inp.value=i;
+        if(seleccion===i) inp.checked=true;
+        var span=document.createElement('span'); span.style.fontWeight='800'; span.style.color='var(--azul)'; span.textContent=letras[i]+')';
+        var txt=document.createElement('span'); txt.textContent=o.texto;
+        label.appendChild(inp); label.appendChild(span); label.appendChild(txt);
+        label.addEventListener('click', function(){ seleccion=i; renderPregunta(); });
+        opc.appendChild(label);
+      });
+      preguntaEl.appendChild(num); preguntaEl.appendChild(q); preguntaEl.appendChild(opc);
+      btnSiguiente.hidden=(seleccion===null);
+      btnSiguiente.textContent=(idx===TOTAL-1)?'🏁 Finalizar':'➡️ Siguiente';
+    }
+    function finalizar(){
+      clearInterval(timer);
+      var aciertos=0;
+      for(var i=0;i<TOTAL;i++){ if(respuestas[i]===preguntas[i].correctaIdx) aciertos++; }
+      var pct=Math.round(aciertos/TOTAL*100);
+      resultEl.innerHTML='<div class="alerta" style="background:#dcfce7;border-color:#22c55e;color:#166534;">'
+        +'🏆 ¡Evaluación terminada! Tu resultado: <strong>'+aciertos+' de '+TOTAL+'</strong> correctas ('+pct+'%).</div>';
+      intro.hidden=true; run.hidden=true; resultEl.hidden=false; lockEl.hidden=true;
+      try{
+        localStorage.setItem(STORAGE,'completado');
+        localStorage.setItem('eval_agentes_ia_resultado', JSON.stringify({aciertos:aciertos,total:TOTAL,pct:pct}));
+      }catch(e){}
+    }
+    function iniciarTimer(){
+      timer=setInterval(function(){
+        segRestantes--;
+        actualizarTemporizador();
+        if(segRestantes===120) alertaMsj('⏳ Quedan 2 minutos.');
+        if(segRestantes===60) alertaMsj('⚠️ Queda 1 minuto.');
+        if(segRestantes<=0){ clearInterval(timer); finalizar(); }
+      },1000);
+    }
+
+    btnIniciar.addEventListener('click', function(){
+      try{ localStorage.setItem(STORAGE,'iniciado'); }catch(e){}
+      idx=0; respuestas=[]; seleccion=null; segRestantes=LIMITE;
+      aleatorizar();
+      intro.hidden=true; run.hidden=false; resultEl.hidden=true; lockEl.hidden=true;
+      actualizarTemporizador(); renderPregunta(); iniciarTimer();
+    });
+
+    btnSiguiente.addEventListener('click', function(){
+      if(seleccion===null) return;
+      respuestas[idx]=seleccion; seleccion=null;
+      if(idx<TOTAL-1){ idx++; renderPregunta(); } else { finalizar(); }
+    });
+
+    function aleatorizar(){
+      var i,j,t;
+      for(i=preguntas.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=preguntas[i]; preguntas[i]=preguntas[j]; preguntas[j]=t; }
+      preguntas.forEach(function(p){
+        for(i=p.opts.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=p.opts[i]; p.opts[i]=p.opts[j]; p.opts[j]=t; }
+        p.correctaIdx=p.opts.findIndex(function(o){return o.correcta;});
+      });
+    }
+
+    // Reinicio: Ctrl + Shift + R
+    function resetEvaluacion(){
+      if(confirm('⚠️ ¿Reiniciar la evaluación? Se borrará el bloqueo y el resultado.')){
+        try{ localStorage.removeItem(STORAGE); localStorage.removeItem('eval_agentes_ia_resultado'); }catch(e){}
+        location.reload();
+      }
+    }
+    document.addEventListener('keydown', function(e){
+      if(e.ctrlKey && e.shiftKey && (e.key==='R'||e.key==='r')){
+        e.preventDefault();
+        resetEvaluacion();
+      }
+    });
+
+    // ===== GUÍA PASO A PASO =====
+    var pasos=document.querySelectorAll('.paso');
+    var total=pasos.length;
+    var actual=0;
+    var contador=document.getElementById('contador');
+    var tituloPaso=document.getElementById('titulo-paso');
+    var fill=document.getElementById('fill');
+    var btnAnt=document.getElementById('btn-anterior');
+    var btnSig=document.getElementById('btn-siguiente-paso');
+    var titulos=['Bienvenida','¿Qué es la IA?','Evolución de la IA','¿Qué es un Agente?','Portales gratuitos','Organizar documentos','Estructurar ideas','Generar contenido','El agente como herramienta','Límites y buenas prácticas','Evaluación','¡Listo!'];
+
+    function mostrarPaso(n){
+      pasos.forEach(function(p,i){ p.classList.toggle('activo', i===n); });
+      actual=n;
+      contador.textContent='Paso '+(n+1)+' de '+total;
+      tituloPaso.textContent=titulos[n]||'';
+      fill.style.width=((n+1)/total*100)+'%';
+      btnAnt.disabled=(n===0);
+      btnSig.hidden=(n===total-1);
+      btnSig.textContent=(n===total-2)?'🏁 Ver final':'Siguiente ➡️';
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+    btnSig.addEventListener('click', function(){ if(actual<total-1) mostrarPaso(actual+1); });
+    btnAnt.addEventListener('click', function(){ if(actual>0) mostrarPaso(actual-1); });
+    mostrarPaso(0);
+  })();
+</script>
+</body>
+</html>
