@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Taller Diagramas de Flujo: Teoria y Practica</title>
+<style>
+  :root{
+    --azul:#4f46e5; --azul-osc:#3730a3; --verde:#16a34a; --rojo:#dc2626;
+    --oro:#d97706; --fondo:#eef2ff; --blanco:#fff; --texto:#0f172a;
+    --gris:#64748b; --borde:#c7d2fe;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:var(--fondo);color:var(--texto);line-height:1.6;}
+  .wrap{max-width:1000px;margin:0 auto;padding:24px 16px 60px;}
+  header{background:linear-gradient(135deg,var(--azul),var(--azul-osc));color:#fff;border-radius:16px;padding:28px;margin-bottom:18px;}
+  header h1{font-size:1.8rem;margin-bottom:8px;}
+  header p{opacity:.95;}
+  .chip{display:inline-block;background:rgba(255,255,255,.18);padding:6px 14px;border-radius:999px;margin:12px 8px 0 0;font-weight:600;}
+  .barra-acciones{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+  .btn-mini{background:var(--blanco);border:2px solid var(--azul);color:var(--azul);padding:9px 16px;border-radius:10px;font-size:.92rem;cursor:pointer;font-weight:700;}
+  .btn-mini:hover{background:var(--azul);color:#fff;}
+  .progreso{background:var(--blanco);border:1px solid var(--borde);border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  .progreso .contador{font-weight:700;color:var(--azul-osc);}
+  .barra-prog{height:10px;background:#e0e7ff;border-radius:999px;flex:1;min-width:140px;overflow:hidden;}
+  .barra-prog .fill{height:100%;width:0;background:var(--azul);transition:width .3s;}
+  .paso{display:none;}
+  .paso.activo{display:block;animation:ap .35s;}
+  @keyframes ap{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .caja{background:var(--blanco);border:1px solid var(--borde);border-radius:14px;padding:28px;margin-bottom:16px;}
+  .caja h2{font-size:1.42rem;margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2 .et{background:var(--azul);color:#fff;font-size:.76rem;padding:4px 12px;border-radius:999px;text-transform:uppercase;}
+  h2 .et.prac{background:var(--oro);}
+  .sub{color:var(--gris);font-weight:600;margin-bottom:16px;}
+  .nav{display:flex;justify-content:space-between;gap:12px;}
+  .btn{background:var(--azul);color:#fff;border:none;padding:12px 22px;border-radius:10px;font-size:1rem;cursor:pointer;font-weight:700;}
+  .btn:hover{background:var(--azul-osc);}
+  .btn.sec{background:#e0e7ff;color:var(--texto);}
+  .btn.sec:hover{background:#c7d2fe;}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+  .res{color:#dc2626;font-weight:800;}
+  .res.v{color:#7c3aed;}
+  .res.o{color:#ea580c;}
+  .res.a{color:#0891b2;}
+  .res.g{color:#16a34a;}
+  .info{background:#eef2ff;border:1px solid var(--borde);border-radius:10px;padding:14px 18px;margin-top:14px;}
+  .info h5{color:var(--azul-osc);margin-bottom:8px;}
+  .info p{margin:6px 0;}
+  ul.d{margin:6px 0 0 20px;}
+  ul.d li{margin:5px 0;}
+  table.simbolos{width:100%;border-collapse:collapse;margin-top:12px;}
+  table.simbolos th,table.simbolos td{border:1px solid var(--borde);padding:10px;text-align:left;vertical-align:middle;font-size:.95rem;}
+  table.simbolos th{background:#e0e7ff;color:var(--azul-osc);}
+  pre.cod{background:#0f172a;color:#e2e8f0;padding:16px;border-radius:10px;overflow-x:auto;font-family:Consolas,'Courier New',monospace;font-size:.86rem;line-height:1.55;margin-top:10px;}
+  pre.cod b{color:#7dd3fc;font-weight:700;}
+  .diag-caja{background:#fff;border:2px solid var(--borde);border-radius:12px;padding:14px;margin:14px 0;overflow-x:auto;}
+  .diag-caja svg{display:block;min-width:100%;height:auto;margin:0 auto;}
+  .diag-ctrl{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+  .diag-ctrl button{background:#e0e7ff;border:2px solid var(--azul);color:var(--azul-osc);padding:7px 14px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;}
+  .diag-ctrl button:hover{background:var(--azul);color:#fff;}
+  .contador-pasos{background:#fff7ed;border:2px dashed var(--oro);border-radius:10px;padding:10px 16px;display:inline-block;font-weight:800;color:#9a3412;margin:10px 0;}
+  ol.pasos-lista{margin:10px 0 0 22px;}
+  ol.pasos-lista li{margin:5px 0;padding-left:4px;}
+  .temporizador{font-size:2rem;font-weight:800;color:var(--azul);text-align:center;padding:12px;background:#e0e7ff;border:2px solid var(--azul);border-radius:10px;margin:14px 0;}
+  .temporizador.rojo{color:#fff;background:var(--rojo);border-color:var(--rojo);}
+  .alerta{background:#fee2e2;border:1px solid var(--rojo);color:var(--rojo);padding:12px 16px;border-radius:10px;font-weight:700;margin:12px 0;}
+  #pregunta-actual .num{color:var(--gris);font-weight:600;margin-bottom:8px;}
+  #pregunta-actual .q{font-weight:700;font-size:1.15rem;margin-bottom:14px;}
+  #pregunta-actual .opcion{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--borde);border-radius:8px;margin:8px 0;cursor:pointer;background:#eef2ff;}
+  #pregunta-actual .opcion:hover{background:#e0e7ff;}
+  #pregunta-actual .opcion.sel{background:#c7d2fe;border-color:var(--azul);}
+  #pregunta-actual .opcion input{margin:0;}
+  .boton-wrap{text-align:center;margin-top:16px;}
+  footer{text-align:center;color:var(--gris);font-size:.9rem;margin-top:20px;}
+  .final{text-align:center;}
+  .final .grande{font-size:1.6rem;font-weight:800;margin:10px 0;}
+  @keyframes nd{from{opacity:0}to{opacity:1}}
+  .nodo{opacity:0;animation:nd .45s forwards;}
+  @keyframes cn{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  .con{stroke-dasharray:1;stroke-dashoffset:1;animation:cn .5s forwards;}
+  @media print{
+    .nav,.barra-acciones,.progreso,.diag-ctrl,.btn-mini,footer{display:none !important;}
+    .paso{display:block !important;page-break-after:always;}
+    body{background:#fff;}
+    .nodo,.con{opacity:1;stroke-dashoffset:0;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>📊 Taller: Diagramas de Flujo — Teoría y Práctica</h1>
+    <p>Aprende la teoría completa y construye tus primeros diagramas con <strong>4 ejemplos claros</strong>, paso a paso.</p>
+    <span class="chip">📐 4 ejemplos de 10+ pasos</span>
+    <span class="chip">💻 Con código PSeInt</span>
+    <span class="chip">📝 10 preguntas</span>
+  </header>
+
+  <div class="barra-acciones">
+    <button class="btn-mini" id="btn-copiar">📋 Copiar toda la guía</button>
+    <button class="btn-mini" id="btn-imprimir">🖨️ Imprimir la guía</button>
+  </div>
+
+  <div class="progreso">
+    <span class="contador" id="contador">Paso 1 de 13</span>
+    <span id="titulo-paso" style="font-weight:600;">Bienvenida</span>
+    <div class="barra-prog"><div class="fill" id="fill"></div></div>
+  </div>
+
+  <!-- PASO 1 -->
+  <div class="paso activo">
+    <div class="caja">
+      <h2><span class="et">Paso 1</span> 👋 Bienvenida</h2>
+      <p class="sub">Te guío paso a paso. Lee con calma y presiona <strong>"Siguiente"</strong> al final de cada pantalla.</p>
+      <p>En este taller aprenderás <span class="res">la teoría completa de los diagramas de flujo</span> y construirás <span class="res.v">4 diagramas reales</span> de más de 10 pasos cada uno, con su código en PSeInt.</p>
+      <div class="info">
+        <h5>📋 Qué vas a lograr</h5>
+        <ul class="d">
+          <li>Saber <strong>qué es</strong> y <strong>para qué sirve</strong> un diagrama de flujo.</li>
+          <li>Manejar los <strong>6 símbolos</strong> básicos y cuándo usar cada uno.</li>
+          <li>Construir <strong>4 diagramas completos</strong>: proceso, decisión, ciclo y menú.</li>
+          <li>Pasar cada diagrama a <strong>código PSeInt</strong>.</li>
+          <li>Responder una evaluación de <strong>10 preguntas</strong>.</li>
+        </ul>
+      </div>
+      <p style="margin-top:12px;">Al final puedes <span class="res.g">copiar la guía completa</span> con el botón de arriba y desarrollarla en tu tiempo.</p>
+    </div>
+  </div>
+
+  <!-- PASO 2 -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et">Paso 2</span> 📊 ¿Qué es un diagrama de flujo?</h2>
+      <p class="sub">Es una <span class="res">representación gráfica</span> de un algoritmo o proceso, donde cada paso se dibuja con un símbolo y se conectan con flechas.</p>
+      <p>Sirve para mostrar <span class="res.v">qué pasos se hacen, en qué orden y qué decisiones se toman</span>, sin necesidad de leer todo un programa en código.</p>
+      <div class="info">
+        <h5>🔑 Tres palabras clave</h5>
+        <ul class="d">
+          <li><strong>Símbolo</strong>: cada figura representa una acción específica.</li>
+          <li><strong>Flecha</strong>: indica el orden en que se ejecutan los pasos.</li>
+          <li><strong>Sentido</strong>: se lee <strong>de arriba hacia abajo</strong> (y de izquierda a derecha).</li>
+        </ul>
+      </div>
+      <p style="margin-top:12px;"><span class="res.o">Importante:</span> el diagrama de flujo se dibuja <strong>antes</strong> de programar. Primero piensas el proceso, luego lo dibujas y por último lo conviertes en código.</p>
+    </div>
+  </div>
+
+  <!-- PASO 3 -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et">Paso 3</span> 🎯 ¿Para qué sirve?</h2>
+      <p class="sub">Un diagrama de flujo sirve para <span class="res">explicar, ordenar y comunicar</span> cualquier proceso.</p>
+      <div class="info">
+        <h5>💼 4 usos concretos</h5>
+        <ul class="d">
+          <li><strong>1. Enfatizar procesos 📋</strong> — describe un procedimiento paso a paso de forma clara.</li>
+          <li><strong>2. Representar algoritmos 💻</strong> — es la base para programar en cualquier lenguaje.</li>
+          <li><strong>3. Documentar sistemas 📚</strong> — explica cómo funciona un sistema a quien no lo programó.</li>
+          <li><strong>4. Detectar errores 🔍</strong> — si falta una flecha o un símbolo, el error queda visible.</li>
+        </ul>
+      </div>
+      <p style="margin-top:12px;">Un diagrama bien hecho evita confusiones: cualquier persona puede leerlo y entender el proceso aunque no sepa de programación.</p>
+    </div>
+  </div>
+
+  <!-- PASO 4 -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et">Paso 4</span> 🔷 Los símbolos básicos</h2>
+      <p class="sub">Cada figura tiene un <span class="res">significado fijo</span>. Estos son los 6 que vas a usar siempre.</p>
+      <table class="simbolos">
+        <thead><tr><th>Símbolo</th><th>Nombre</th><th>¿Cuándo se usa?</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="width:110px;"><svg width="100" height="46" viewBox="0 0 100 46"><ellipse cx="50" cy="23" rx="38" ry="15" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/></svg></td>
+            <td><strong>Elipse / Óvalo</strong></td>
+            <td><strong>Inicio</strong> y <strong>Fin</strong>. Solo hay uno de cada. Todo diagrama empieza y termina aquí.</td>
+          </tr>
+          <tr>
+            <td><svg width="100" height="46" viewBox="0 0 100 46"><rect x="12" y="9" width="76" height="28" rx="3" fill="#e0f2fe" stroke="#0284c7" stroke-width="2.5"/></svg></td>
+            <td><strong>Rectángulo</strong></td>
+            <td><strong>Proceso</strong>: cualquier operación, cálculo o asignación. Es el símbolo que más se usa.</td>
+          </tr>
+          <tr>
+            <td><svg width="100" height="46" viewBox="0 0 100 46"><polygon points="50,3 97,23 50,43 3,23" fill="#ede9fe" stroke="#7c3aed" stroke-width="2.5"/></svg></td>
+            <td><strong>Rombo / Diamante</strong></td>
+            <td><strong>Decisión</strong>: una pregunta que solo puede ser <strong>Sí/No</strong>. Siempre tiene <strong>dos salidas</strong>.</td>
+          </tr>
+          <tr>
+            <td><svg width="100" height="46" viewBox="0 0 100 46"><polygon points="22,9 98,9 86,37 10,37" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/></svg></td>
+            <td><strong>Paralelogramo</strong></td>
+            <td><strong>Entrada o Salida</strong>: leer datos del usuario o mostrar un resultado en pantalla.</td>
+          </tr>
+          <tr>
+            <td><svg width="100" height="46" viewBox="0 0 100 46"><rect x="12" y="7" width="76" height="26" fill="#fce7f3" stroke="#db2777" stroke-width="2.5"/><path d="M12 33 q9 -7 19 0 t19 0 t19 0 t19 0" fill="none" stroke="#db2777" stroke-width="2.5"/></svg></td>
+            <td><strong>Documento</strong></td>
+            <td>Imprimir o guardar un documento: una factura, un acta, un informe.</td>
+          </tr>
+          <tr>
+            <td><svg width="100" height="46" viewBox="0 0 100 46"><circle cx="50" cy="23" r="14" fill="#e2e8f0" stroke="#475569" stroke-width="2.5"/></svg></td>
+            <td><strong>Conector</strong></td>
+            <td>Une dos partes lejanas del diagrama para que no se cruce con líneas.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="info">
+        <h5>⚡ Regla rápida para recordarlos</h5>
+        <p><strong>Óvalo</strong> = principio y fin · <strong>Rectángulo</strong> = hacer algo · <strong>Rombo</strong> = decidir · <strong>Paralelogramo</strong> = leer o mostrar · <strong>Documento</strong> = imprimir · <strong>Círculo</strong> = conectar.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 5 -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et">Paso 5</span> ➡️ Reglas para dibujar bien</h2>
+      <p class="sub">Un diagrama correcto sigue estas <span class="res">8 reglas</span>. Si las cumples, tu diagrama se entiende.</p>
+      <div class="info">
+        <h5>✅ Las 8 reglas</h5>
+        <ul class="d">
+          <li><strong>1.</strong> Todo diagrama tiene <strong>un solo Inicio y un solo Fin</strong>.</li>
+          <li><strong>2.</strong> El flujo va <strong>de arriba hacia abajo</strong>; las flechas nunca apuntan hacia atrás, salvo en un <span class="res.o">ciclo</span>.</li>
+          <li><strong>3.</strong> El rombo (decisión) tiene <strong>exactamente dos salidas</strong>: <em>Sí/No</em> o <em>Verdadero/Falso</em>.</li>
+          <li><strong>4.</strong> Las dos salidas de una decisión se <strong>etiquetan</strong> (Sí, No) para saber cuál es cuál.</li>
+          <li><strong>5.</strong> No se dibujan <strong>líneas cruzadas</strong>; si se cruzan, usa un conector.</li>
+          <li><strong>6.</strong> Cada símbolo debe tener <strong>una sola entrada y una sola salida</strong> (salvo el Inicio y el Fin).</li>
+          <li><strong>7.</strong> Los textos van dentro del símbolo, <strong>corto y sin punto final</strong>.</li>
+          <li><strong>8.</strong> Un <strong>ciclo</strong> (flecha que vuelve hacia atrás) significa que el proceso <strong>se repite</strong>.</li>
+        </ul>
+      </div>
+      <p style="margin-top:12px;"><span class="res.a">Truco:</span> si tu diagrama no tiene ningún rombo, es un proceso <strong>secuencial</strong> (los pasos siempre son iguales).</p>
+    </div>
+  </div>
+
+  <!-- PASO 6 -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et">Paso 6</span> 🔍 Errores comunes</h2>
+      <p class="sub">Estos son los errores que más se cometen al hacer un diagrama. <span class="res">Evítalos.</span></p>
+      <table class="simbolos">
+        <thead><tr><th>❌ Error</th><th>✅ Cómo corregirlo</th></tr></thead>
+        <tbody>
+          <tr><td>Dos o más rombos con más de 2 salidas</td><td>Divide la decisión en <strong>dos rombos</strong>, uno después del otro.</td></tr>
+          <tr><td>Flechas cruzadas por todo el diagrama</td><td>Usa <strong>conectores</strong> (círculos con letras o números).</td></tr>
+          <tr><td>Un rombo que dice "si el número es par o impar"</td><td>Una decisión solo puede ser Sí/No. Deja la decisión para <strong>una sola condición</strong>.</td></tr>
+          <tr><td>Sin símbolo de Inicio o sin Fin</td><td>Todo diagrama <strong>siempre</strong> empieza en un óvalo y termina en otro.</td></tr>
+          <tr><td>Ciclo sin flecha de regreso</td><td>Si algo se repite, dibuja la <strong>flecha de vuelta</strong> hacia la condición.</td></tr>
+          <tr><td>Textos larguísimos dentro del símbolo</td><td>Divide la idea en <strong>dos rectángulos</strong> o acórtala.</td></tr>
+        </tbody>
+      </table>
+      <div class="info">
+        <h5>🧪 Antes de entregar, pregúntate</h5>
+        <p>1) ¿Tiene Inicio y Fin? · 2) ¿Los rombos tienen 2 salidas etiquetadas? · 3) ¿Las flechas se leen de arriba hacia abajo? · 4) ¿Hay líneas cruzadas?</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 7 -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et prac">Paso 7</span> 📝 Ejemplo 1 — Matricularse en el colegio</h2>
+      <p class="sub">Un proceso <span class="res">secuencial</span>: los pasos siempre son iguales, no hay decisiones. <span class="res.g">12 pasos.</span></p>
+      <div class="contador-pasos">📐 Tipo: SECUENCIAL · Símbolos: óvalo, rectángulo, paralelogramo · 12 pasos</div>
+      <div class="diag-caja">
+        <div class="diag-ctrl"><button id="btn-dg1">▶️ Ver cómo se dibuja</button></div>
+        <div id="dg1"></div>
+      </div>
+      <div class="info">
+        <h5>📖 Cómo se lee</h5>
+        <ol class="pasos-lista">
+          <li>Se <strong>inicia</strong> el proceso.</li>
+          <li>Se lee la convocatoria para saber qué se debe hacer.</li>
+          <li>Se reúnen los documentos (cédula, partidas, certificado).</li>
+          <li>Se llena el formulario.</li>
+          <li>Se adjuntan los documentos al formulario.</li>
+          <li>Se firma la declaración.</li>
+          <li>Se paga la matrícula.</li>
+          <li>Se entrega el comprobante de pago.</li>
+          <li>Se espera la confirmación de la secretaría.</li>
+          <li>Se recibe el carné de estudiante.</li>
+          <li>Se registra la matrícula en el sistema.</li>
+          <li>El proceso <strong>finaliza</strong>.</li>
+        </ol>
+      </div>
+      <h4 style="margin-top:18px;color:var(--azul-osc);">📝 Pseudocódigo</h4>
+      <pre class="cod">PROCESO MatricularseEnElColegio
+  1. Leer la convocatoria de matrícula
+  2. Reunir los documentos requeridos
+  3. Llenar el formulario de matrícula
+  4. Adjuntar los documentos al formulario
+  5. Firmar la declaración
+  6. Pagar el valor de la matrícula
+  7. Entregar el comprobante de pago
+  8. Esperar la confirmación de la secretaría
+  9. Recibir el carné de estudiante
+ 10. Registrar la matrícula en el sistema
+FIN</pre>
+      <h4 style="margin-top:16px;color:var(--azul-osc);">💻 Código PSeInt</h4>
+      <pre class="cod"><b>Algoritmo</b> matricula
+    <b>//</b> Proceso secuencial: no hay decisiones ni ciclos
+    <b>Escribir</b> "1. Leer la convocatoria de matricula"
+    <b>Escribir</b> "2. Reunir los documentos requeridos"
+    <b>Escribir</b> "3. Llenar el formulario de matricula"
+    <b>Escribir</b> "4. Adjuntar los documentos al formulario"
+    <b>Escribir</b> "5. Firmar la declaracion"
+    <b>Escribir</b> "6. Pagar el valor de la matricula"
+    <b>Escribir</b> "7. Entregar el comprobante de pago"
+    <b>Escribir</b> "8. Esperar la confirmacion"
+    <b>Escribir</b> "9. Recibir el carne de estudiante"
+    <b>Escribir</b> "10. Registrar la matricula en el sistema"
+    <b>Escribir</b> "Proceso de matricula completado"
+<b>Fin</b></pre>
+    </div>
+  </div>
+
+  <!-- PASO 8 -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et prac">Paso 8</span> 🔢 Ejemplo 2 — ¿Par o impar? (10 números)</h2>
+      <p class="sub">Introduce el <span class="res.o">ciclo</span>: la flecha que vuelve hacia atrás hace que el proceso se repita. <span class="res.g">11 pasos.</span></p>
+      <div class="contador-pasos">🔄 Tipo: CICLO (repetir) · Símbolos: óvalo, rombo, paralelogramo · 11 pasos</div>
+      <div class="diag-caja">
+        <div class="diag-ctrl"><button id="btn-dg2">▶️ Ver cómo se dibuja</button></div>
+        <div id="dg2"></div>
+      </div>
+      <div class="info">
+        <h5>📖 Cómo se lee</h5>
+        <ol class="pasos-lista">
+          <li><strong>Inicio</strong> del programa.</li>
+          <li>Se declara el total de números a procesar (10) y el contador en 1.</li>
+          <li>Se pregunta: ¿el contador es menor o igual al total? Si es <strong>No</strong>, se termina.</li>
+          <li>Se <strong>lee</strong> un número del usuario.</li>
+          <li>Se calcula el <strong>residuo</strong> de dividirlo entre 2.</li>
+          <li>Se pregunta: ¿el residuo es 0? <strong>Sí</strong> → es PAR. <strong>No</strong> → es IMPAR.</li>
+          <li>Se <strong>muestra</strong> el número con su resultado.</li>
+          <li>Se aumenta el contador en 1.</li>
+          <li>La flecha <strong>vuelve</strong> a la pregunta del paso 3: el ciclo se repite.</li>
+          <li>Cuando el contador supera el total, el proceso <strong>finaliza</strong>.</li>
+        </ol>
+      </div>
+      <div class="info">
+        <h5>💡 Lección clave del ciclo</h5>
+        <p>La <span class="res.o">flecha que sube hacia atrás</span> es la que convierte un proceso en repetitivo. Si la quitas, el algoritmo solo haría <strong>una vuelta</strong>. Recuerda: <strong>condición → proceso → volver a la condición</strong>.</p>
+      </div>
+      <h4 style="margin-top:18px;color:var(--azul-osc);">📝 Pseudocódigo</h4>
+      <pre class="cod">PROCESO ParOImpar
+  Declarar total ← 10
+  Declarar contador ← 1
+
+  MIENTRAS contador &lt;= total HACER
+    Leer número
+    residuo ← número mod 2
+    SI residuo = 0 ENTONCES
+      Mostrar "es PAR"
+    SINO
+      Mostrar "es IMPAR"
+    FIN_SI
+    contador ← contador + 1
+  FIN_MIENTRAS
+FIN</pre>
+      <h4 style="margin-top:16px;color:var(--azul-osc);">💻 Código PSeInt</h4>
+      <pre class="cod"><b>Algoritmo</b> par_impar
+    <b>Definir</b> total <b>Como</b> Entero
+    <b>Definir</b> contador <b>Como</b> Entero
+    <b>Definir</b> numero <b>Como</b> Entero
+    <b>Definir</b> residuo <b>Como</b> Entero
+
+    total &lt;- 10
+    contador &lt;- 1
+
+    <b>Mientras</b> contador &lt;= total <b>Hacer</b>
+        <b>Escribir</b> "Numero ", contador, ": "
+        <b>Leer</b> numero
+        residuo &lt;- numero <b>mod</b> 2
+        <b>Si</b> residuo == 0 <b>Entonces</b>
+            <b>Escribir</b> numero, " es PAR"
+        <b>SiNo</b>
+            <b>Escribir</b> numero, " es IMPAR"
+        <b>FinSi</b>
+        contador &lt;- contador + 1
+    <b>FinMientras</b>
+<b>Fin</b></pre>
+    </div>
+  </div>
+
+  <!-- PASO 9 -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et prac">Paso 9</span> 📊 Ejemplo 3 — Promedio de 5 notas</h2>
+      <p class="sub">El más completo: <span class="res">ciclo + dos decisiones + validación de datos</span>. <span class="res.g">14 pasos.</span></p>
+      <div class="contador-pasos">🔄 Tipo: CICLO + DECISIÓN · Símbolos: todos · 14 pasos</div>
+      <div class="diag-caja">
+        <div class="diag-ctrl"><button id="btn-dg3">▶️ Ver cómo se dibuja</button></div>
+        <div id="dg3"></div>
+      </div>
+      <div class="info">
+        <h5>📖 Cómo se lee</h5>
+        <ol class="pasos-lista">
+          <li><strong>Inicio</strong> del programa.</li>
+          <li>Se declaran las variables: <strong>notas = 5</strong> y <strong>contador = 1</strong>.</li>
+          <li>Se inicializa la <strong>sumatoria en 0</strong>.</li>
+          <li>Se pregunta: ¿el contador es menor o igual a 5? Si <strong>No</strong>, se sale del ciclo y se pasa al cálculo del promedio.</li>
+          <li>Se <strong>lee</strong> una nota.</li>
+          <li>Se pregunta: ¿la nota está entre 0 y 5? Si <strong>No</strong>, se asigna 0 a esa nota.</li>
+          <li>Se <strong>acumula</strong> la nota en la sumatoria.</li>
+          <li>Se aumenta el contador en 1.</li>
+          <li>La flecha <strong>vuelve</strong> al paso 4: se repite por cada nota.</li>
+          <li>Cuando terminan las 5 notas, se calcula el <strong>promedio</strong> (sumatoria ÷ 5).</li>
+          <li>Se pregunta: ¿el promedio es mayor o igual a 3.0?</li>
+          <li><strong>Sí</strong> → se muestra "APROBÓ". <strong>No</strong> → se muestra "REPROBÓ".</li>
+          <li>Se <strong>termina</strong> el programa.</li>
+        </ol>
+      </div>
+      <div class="info">
+        <h5>💡 Fíjate en esto</h5>
+        <p>La <span class="res.v">validación</span> (paso 6) protege al programa de datos inválidos. Y el <span class="res.a">ciclo</span> es lo que le permite leer <strong>5 notas</strong> sin escribir 5 veces las mismas instrucciones. Esa es la <strong>ventaja real</strong> del ciclo.</p>
+      </div>
+      <h4 style="margin-top:18px;color:var(--azul-osc);">📝 Pseudocódigo</h4>
+      <pre class="cod">PROCESO PromedioDeNotas
+  Declarar notas ← 5, contador ← 1, sumatoria ← 0
+
+  MIENTRAS contador &lt;= notas HACER
+    Leer nota
+    SI nota &lt; 0 O nota &gt; 5 ENTONCES
+      nota ← 0
+    FIN_SI
+    sumatoria ← sumatoria + nota
+    contador ← contador + 1
+  FIN_MIENTRAS
+
+  promedio ← sumatoria / notas
+
+  SI promedio &gt;= 3.0 ENTONCES
+    Mostrar "APROBÓ con promedio ", promedio
+  SINO
+    Mostrar "REPROBÓ con promedio ", promedio
+  FIN_SI
+FIN</pre>
+      <h4 style="margin-top:16px;color:var(--azul-osc);">💻 Código PSeInt</h4>
+      <pre class="cod"><b>Algoritmo</b> promedio_notas
+    <b>Definir</b> notas <b>Como</b> Entero
+    <b>Definir</b> contador <b>Como</b> Entero
+    <b>Definir</b> nota <b>Como</b> Real
+    <b>Definir</b> sumatoria <b>Como</b> Real
+    <b>Definir</b> promedio <b>Como</b> Real
+
+    notas &lt;- 5
+    contador &lt;- 1
+    sumatoria &lt;- 0
+
+    <b>Mientras</b> contador &lt;= notas <b>Hacer</b>
+        <b>Escribir</b> "Nota ", contador, ": "
+        <b>Leer</b> nota
+        <b>Si</b> nota &lt; 0 <b>o</b> nota &gt; 5 <b>Entonces</b>
+            <b>Escribir</b> "Nota invalida, se toma como 0"
+            nota &lt;- 0
+        <b>FinSi</b>
+        sumatoria &lt;- sumatoria + nota
+        contador &lt;- contador + 1
+    <b>FinMientras</b>
+
+    promedio &lt;- sumatoria / notas
+
+    <b>Si</b> promedio &gt;= 3.0 <b>Entonces</b>
+        <b>Escribir</b> "APROBO con promedio ", promedio
+    <b>SiNo</b>
+        <b>Escribir</b> "REPROBO con promedio ", promedio
+    <b>FinSi</b>
+<b>Fin</b></pre>
+    </div>
+  </div>
+
+  <!-- PASO 10 -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et prac">Paso 10</span> 🔣 Ejemplo 4 — Calculadora de áreas</h2>
+      <p class="sub">El más avanzado: <span class="res">menú interactivo</span> con 3 opciones y regreso al menú. <span class="res.g">18 pasos.</span></p>
+      <div class="contador-pasos">🔣 Tipo: MENÚ / CICLO · 4 decisiones · 18 pasos</div>
+      <div class="diag-caja">
+        <div class="diag-ctrl"><button id="btn-dg4">▶️ Ver cómo se dibuja</button></div>
+        <div id="dg4"></div>
+      </div>
+      <div class="info">
+        <h5>📖 Cómo se lee</h5>
+        <ol class="pasos-lista">
+          <li><strong>Inicio</strong> del programa.</li>
+          <li>Se <strong>muestra el menú</strong> con las 4 opciones.</li>
+          <li>Se <strong>lee la opción</strong> que elige el usuario.</li>
+          <li>Se pregunta: ¿la opción es 4 (salir)? <strong>Sí</strong> → el programa termina.</li>
+          <li>Se pregunta: ¿la opción es 1? <strong>Sí</strong> → se calcula el área del cuadrado.</li>
+          <li>Se lee el lado → área = lado × lado → se muestra el resultado.</li>
+          <li><span class="res.o">Flecha de regreso</span>: vuelve al menú para pedir otra opción.</li>
+          <li>Se pregunta: ¿la opción es 2? <strong>Sí</strong> → se calcula el área del triángulo.</li>
+          <li>Se lee base y altura → área = (base × altura) / 2 → se muestra.</li>
+          <li><span class="res.o">Flecha de regreso</span>: vuelve al menú.</li>
+          <li>Se pregunta: ¿la opción es 3? <strong>Sí</strong> → se calcula el área del círculo.</li>
+          <li>Se lee el radio → área = 3.1416 × radio² → se muestra.</li>
+          <li><span class="res.o">Flecha de regreso</span>: vuelve al menú.</li>
+          <li>Si ninguna condición se cumplió, se muestra <strong>"Opción no válida"</strong> y vuelve al menú.</li>
+          <li>Se <strong>termina</strong> el programa.</li>
+        </ol>
+      </div>
+      <div class="info">
+        <h5>💡 Dos trucos que ahorran trabajo</h5>
+        <ul class="d">
+          <li>El <strong>ciclo</strong> (flechas de regreso) evita repetir "mostrar menú" y "leer opción" tres veces.</li>
+          <li>La <span class="res.v">decisión en cascada</span> (preguntar 1, luego 2, luego 3) evita escribir 4 rombos separados.</li>
+        </ul>
+      </div>
+      <h4 style="margin-top:18px;color:var(--azul-osc);">📝 Pseudocódigo</h4>
+      <pre class="cod">PROCESO CalculadoraDeAreas
+  REPETIR
+    Mostrar "1. Cuadrado  2. Triángulo  3. Círculo  4. Salir"
+    Leer opción
+    SI opción = 1 ENTONCES
+      Leer lado
+      área ← lado * lado
+      Mostrar "Área del cuadrado: ", área
+    SINO
+      SI opción = 2 ENTONCES
+        Leer base, altura
+        área ← (base * altura) / 2
+        Mostrar "Área del triángulo: ", área
+      SINO
+        SI opción = 3 ENTONCES
+          Leer radio
+          área ← 3.1416 * radio^2
+          Mostrar "Área del círculo: ", área
+        SINO
+          SI opción = 4 ENTONCES
+            Mostrar "Saliendo"
+          SINO
+            Mostrar "Opción no válida"
+          FIN_SI
+        FIN_SI
+      FIN_SI
+    FIN_SI
+  HASTA QUE opción = 4
+FIN</pre>
+      <h4 style="margin-top:16px;color:var(--azul-osc);">💻 Código PSeInt</h4>
+      <pre class="cod"><b>Algoritmo</b> areas
+    <b>Definir</b> opcion <b>Como</b> Entero
+    <b>Definir</b> lado, base, altura, radio <b>Como</b> Real
+    <b>Definir</b> area <b>Como</b> Real
+
+    <b>Repetir</b>
+        <b>Escribir</b> "=== MENU ==="
+        <b>Escribir</b> "1. Area del cuadrado"
+        <b>Escribir</b> "2. Area del triangulo"
+        <b>Escribir</b> "3. Area del circulo"
+        <b>Escribir</b> "4. Salir"
+        <b>Leer</b> opcion
+
+        <b>Segun</b> opcion <b>Hacer</b>
+            <b>Caso</b> 1:
+                <b>Escribir</b> "Lado: "
+                <b>Leer</b> lado
+                area &lt;- lado * lado
+                <b>Escribir</b> "Area del cuadrado: ", area
+            <b>Caso</b> 2:
+                <b>Escribir</b> "Base: "
+                <b>Leer</b> base
+                <b>Escribir</b> "Altura: "
+                <b>Leer</b> altura
+                area &lt;- (base * altura) / 2
+                <b>Escribir</b> "Area del triangulo: ", area
+            <b>Caso</b> 3:
+                <b>Escribir</b> "Radio: "
+                <b>Leer</b> radio
+                area &lt;- 3.1416 * radio^2
+                <b>Escribir</b> "Area del circulo: ", area
+            <b>Caso</b> 4:
+                <b>Escribir</b> "Saliendo del programa"
+            <b>De Otro</b>
+                <b>Escribir</b> "Opcion no valida"
+        <b>FinSegun</b>
+    <b>Hasta Que</b> opcion == 4
+<b>Fin</b></pre>
+    </div>
+  </div>
+
+  <!-- PASO 11 -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et prac">Paso 11</span> 🛠️ Cómo hacer tu propio diagrama</h2>
+      <p class="sub">El método exacto en <span class="res">6 pasos</span>, para cuando te pidan dibujar uno.</p>
+      <div class="info">
+        <h5>🧭 Método de los 6 pasos</h5>
+        <ol class="pasos-lista">
+          <li><strong>1. Lee el problema.</strong> Escribe con tus palabras qué debes lograr.</li>
+          <li><strong>2. Identifica la entrada.</strong> ¿Qué datos te da el usuario? (lecturas / paralelogramos)</li>
+          <li><strong>3. Identifica la salida.</strong> ¿Qué debes mostrar al final? (paralelogramos)</li>
+          <li><strong>4. Lista las operaciones.</strong> Escribe los pasos intermedios como rectángulos, en orden.</li>
+          <li><strong>5. Marca las decisiones.</strong> ¿Hay algo que sea Sí/No? → rombos. ¿Algo se repite? → ciclo.</li>
+          <li><strong>6. Conecta y revisa.</strong> Une con flechas de arriba hacia abajo, pon Inicio y Fin, y verifica las 8 reglas.</li>
+        </ol>
+      </div>
+      <div class="info">
+        <h5>🧪 Ejercicio rápido para practicar</h5>
+        <p>Dibuja el diagrama de: <em>"Pedir una pizza por teléfono"</em>. Usa al menos <strong>8 pasos</strong> y <strong>2 decisiones</strong> (tamaño y bebida).</p>
+        <p>Dibuja el diagrama de: <em>"Calcular el total de una compra con descuento"</em>. Usa al menos <strong>10 pasos</strong> y <strong>1 decisión</strong> (si el total supera $50.000).</p>
+      </div>
+      <div class="info">
+        <h5>💻 Herramientas para dibujarlos</h5>
+        <p>Puedes dibujarlos a mano en tu cuaderno (así lo piden en el colegio), o con herramientas digitales: <strong>draw.io</strong> (gratis, en el navegador), <strong>Lucidchart</strong> o el propio <strong>PSeInt</strong> que los genera automáticamente.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 12 -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et">Paso 12</span> 📝 Evaluación</h2>
+      <p class="sub">Responde las <strong>10 preguntas</strong> sobre lo que aprendiste. Tiempo: <span class="res">12 minutos</span>.</p>
+      <div id="quiz-ui">
+        <div id="quiz-intro">
+          <div class="temporizador" id="temp-intro">⏱️ 12:00</div>
+          <p><strong>Instrucciones:</strong> responderás <strong>10 preguntas</strong>, una a la vez. Tienes <strong>12 minutos</strong>. Una vez la inicies <strong>no podrás repetirla</strong>.</p>
+          <div class="boton-wrap"><button class="btn" id="btn-iniciar">▶️ Comenzar evaluación</button></div>
+        </div>
+        <div id="quiz-run" hidden>
+          <div class="temporizador" id="temp"></div>
+          <div id="quiz-alerta" class="alerta" hidden></div>
+          <div id="pregunta-actual"></div>
+          <div class="boton-wrap"><button class="btn" id="btn-sig" hidden>➡️ Siguiente</button></div>
+        </div>
+        <div id="quiz-result" hidden></div>
+        <div id="quiz-lock" hidden>
+          <div class="alerta">🔒 Esta evaluación <strong>ya fue realizada</strong> en este equipo y <strong>no se puede repetir</strong>.</div>
+          <div id="quiz-lock-score"></div>
+        </div>
+      </div>
+      <div id="banco" hidden>
+        <div class="p"><div class="q">¿Qué es un diagrama de flujo?</div><div class="o"><div class="op"><i>A</i>Una representación gráfica de un proceso, usando símbolos y flechas</div><div class="op c"><i>B</i>Un tipo de computadora portátil</div><div class="op"><i>C</i>Una lista de archivos del computador</div></div></div>
+        <div class="p"><div class="q">¿Qué símbolo representa el Inicio y el Fin del diagrama?</div><div class="o"><div class="op c"><i>A</i>El óvalo o elipse</div><div class="op"><i>B</i>El rombo</div><div class="op"><i>C</i>El paralelogramo</div></div></div>
+        <div class="p"><div class="q">¿Qué símbolo representa una decisión?</div><div class="o"><div class="op"><i>A</i>El rectángulo</div><div class="op c"><i>B</i>El rombo o diamante</div><div class="op"><i>C</i>El círculo</div></div></div>
+        <div class="p"><div class="q">¿Para qué se usa el paralelogramo?</div><div class="o"><div class="op c"><i>A</i>Para leer datos del usuario o mostrar resultados en pantalla</div><div class="op"><i>B</i>Para imprimir un documento</div><div class="op"><i>C</i>Para unir dos partes del diagrama</div></div></div>
+        <div class="p"><div class="q">¿En qué dirección se lee un diagrama de flujo?</div><div class="o"><div class="op c"><i>A</i>De arriba hacia abajo, y de izquierda a derecha</div><div class="op"><i>B</i>En sentido horario alrededor de la hoja</div><div class="op"><i>C</i>En la dirección que elija el dibujante</div></div></div>
+        <div class="p"><div class="q">¿Cuántas salidas tiene un rombo de decisión?</div><div class="o"><div class="op"><i>A</i>Tres: Sí, No y Tal vez</div><div class="op c"><i>B</i>Dos: Sí/No o Verdadero/Falso</div><div class="op"><i>C</i>Cuatro o más, según el caso</div></div></div>
+        <div class="p"><div class="q">¿Qué significa la flecha que regresa hacia atrás en un diagrama?</div><div class="o"><div class="op"><i>A</i>Que el proceso es incorrecto</div><div class="op c"><i>B</i>Que el proceso se repite: hay un ciclo</div><div class="op"><i>C</i>Que hay un error de dibujo</div></div></div>
+        <div class="p"><div class="q">¿Cuál es el problema de dibujar líneas cruzadas en un diagrama?</div><div class="o"><div class="op c"><i>A</i>Generan confusión; se deben usar conectores</div><div class="op"><i>B</i>No es un problema, se permite libremente</div><div class="op"><i>C</i>Las líneas deben ser de color rojo</div></div></div>
+        <div class="p"><div class="q">En el ejemplo de "par o impar", ¿qué condición determina que un número es par?</div><div class="o"><div class="op"><i>A</i>Que el número sea mayor que 100</div><div class="op c"><i>B</i>Que el residuo de dividirlo entre 2 sea 0</div><div class="op"><i>C</i>Que el número sea negativo</div></div></div>
+        <div class="p"><div class="q">¿Por qué los diagramas de flujo se dibujan ANTES de programar?</div><div class="o"><div class="op c"><i>A</i>Porque primero se piensa y ordena el proceso, y luego se convierte en código</div><div class="op"><i>B</i>Porque son la versión final y el código sobra</div><div class="op"><i>C</i>Porque todos los lenguajes los necesitan</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 13 -->
+  <div class="paso">
+    <div class="caja final">
+      <h2><span class="et">Paso 13</span> 🏁 ¡Listo!</h2>
+      <div class="grande">🎉 Ya sabes hacer diagramas de flujo.</div>
+      <p>Aprendiste los <span class="res">6 símbolos</span>, las <span class="res.v">8 reglas</span>, y construiste <span class="res.a">4 diagramas completos</span>: uno secuencial, uno con ciclo, uno con validación y uno con menú.</p>
+      <p style="margin-top:12px;">Ahora usa el botón <span class="res.g">"Copiar toda la guía"</span> para llevarla y practica dibujando tus propios diagramas en tu cuaderno.</p>
+      <p style="margin-top:12px;"><strong>Recuerda:</strong> piensa el proceso → dibújalo → prográmalo.</p>
+      <p style="margin-top:14px;">¡Mucho éxito! 🌟</p>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button class="btn sec" id="btn-ant">⬅️ Anterior</button>
+    <button class="btn" id="btn-sig-paso">Siguiente ➡️</button>
+  </div>
+  <footer>📊 Taller Diagramas de Flujo: Teoría y Práctica</footer>
+</div>
+
+<script>
+/* ══════════ RENDERIZADOR DE DIAGRAMAS DE FLUJO (SVG animado) ══════════ */
+var PAL={
+  inicio:{f:'#dcfce7',s:'#16a34a'}, fin:{f:'#dcfce7',s:'#16a34a'},
+  proceso:{f:'#e0f2fe',s:'#0284c7'}, entrada:{f:'#fef3c7',s:'#d97706'},
+  salida:{f:'#fef3c7',s:'#d97706'}, decision:{f:'#ede9fe',s:'#7c3aed'}
+};
+var CX=300, GAPV=48, AL=20, FLECHA='#334155', FUENTE='Segoe UI,Arial';
+
+function medir(ns){
+  var y=22;
+  ns.forEach(function(n){
+    var ls=String(n.t).split('\n'); n._ls=ls;
+    var ml=ls.reduce(function(a,l){return Math.max(a,l.length);},0);
+    if(n.xr!=null)n._cx=CX+n.xr; else if(n.xl!=null)n._cx=CX+n.xl; else n._cx=CX;
+    if(n.type==='decision'){ n._w=Math.max(300, ml*8+150); n._h=Math.max(78, 28+ls.length*AL); }
+    else if(n.type==='inicio'||n.type==='fin'){ n._w=Math.max(150, ml*8+56); n._h=26+ls.length*AL; }
+    else { n._w=Math.max(270, ml*8+70); n._h=26+ls.length*AL; }
+    n._x=n._cx-n._w/2; n._y=y; n._cy=y+n._h/2;
+    y+=n._h+GAPV;
+  });
+  return y-GAPV+24;
+}
+function pt(n,l){
+  if(l==='top')return[n._cx,n._y];
+  if(l==='bottom')return[n._cx,n._y+n._h];
+  if(l==='left')return[n._x,n._cy];
+  if(l==='right')return[n._x+n._w,n._cy];
+  return[n._cx,n._cy];
+}
+function corredor(ns,a,b,lado){
+  var y0=Math.min(a._cy,b._cy), y1=Math.max(a._cy,b._cy), c;
+  if(lado==='right'){
+    c=-1e9; ns.forEach(function(n){if(n._cy>=y0-2&&n._cy<=y1+2)c=Math.max(c,n._x+n._w);});
+    return Math.max(c,a._x+a._w,b._x+b._w)+42;
+  }
+  c=1e9; ns.forEach(function(n){if(n._cy>=y0-2&&n._cy<=y1+2)c=Math.min(c,n._x);});
+  return Math.min(c,a._x,b._x)-42;
+}
+function str(pts){ return pts.map(function(p){return p[0]+','+p[1];}).join(' '); }
+
+function svgDe(d,mid){
+  var ns=d.nodes, es=d.edges, H=medir(ns);
+  var minL=1e9,maxR=-1e9;
+  ns.forEach(function(n){minL=Math.min(minL,n._x);maxR=Math.max(maxR,n._x+n._w);});
+  var nB=es.filter(function(e){return e.ty==='back';}).length;
+  var backBase=minL-96;
+  var bx0=backBase-Math.max(0,nB-1)*34;
+  var vx=bx0-44;
+  var defs='<defs><marker id="fh-'+mid+'" viewBox="0 0 10 10" refX="9.2" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="'+FLECHA+'"/></marker></defs>';
+
+  var se='', nb=0;
+  es.forEach(function(e,i){
+    var A=ns[e.f], B=ns[e.to], pts=[], lx=0, ly=0, delay=i*0.26;
+    if(e.ty==='right'||e.ty==='left'){
+      var der=(e.ty==='right');
+      var p1=pt(A,der?'right':'left'), p2=pt(B,der?'right':'left');
+      var cx=corredor(ns,A,B,e.ty);
+      pts=[p1,[cx,p1[1]],[cx,p2[1]],p2];
+      lx=cx; ly=p1[1];
+    } else if(e.ty==='back'){
+      var bx=backBase-(nb++)*34;
+      var q1=pt(A,'left'), q2=pt(B,'left');
+      pts=[q1,[bx,q1[1]],[bx,q2[1]],q2];
+      lx=bx; ly=q2[1];
+    } else {
+      var a=pt(A,'bottom'), b=pt(B,'top'), m=a[1]+(b[1]-a[1])/2;
+      pts=[a,[a[0],m],[b[0],m],b];
+      lx=(a[0]+b[0])/2; ly=m;
+    }
+    var lab=e.l?('<text x="'+lx+'" y="'+(ly-8)+'" text-anchor="middle" font-size="13" font-weight="800" fill="#dc2626" font-family="'+FUENTE+'">'+e.l+'</text>'):'';
+    se+='<g style="animation-delay:'+delay+'s"><polyline class="con" pathLength="1" points="'+str(pts)+'" fill="none" stroke="'+FLECHA+'" stroke-width="2.2" marker-end="url(#fh-'+mid+')"/>'+lab+'</g>';
+  });
+
+  var sn='';
+  ns.forEach(function(n,i){
+    var p=PAL[n.type]||PAL.proceso, dl=(i+1)*0.26, shape='', tx=n._cx, ty=n._cy;
+    if(n.type==='inicio'||n.type==='fin'){
+      shape='<ellipse cx="'+n._cx+'" cy="'+n._cy+'" rx="'+(n._w/2)+'" ry="'+(n._h/2)+'" fill="'+p.f+'" stroke="'+p.s+'" stroke-width="2.6"/>';
+    } else if(n.type==='decision'){
+      var rx=n._w/2, ry=n._h/2;
+      shape='<polygon points="'+n._cx+','+(n._cy-ry)+' '+(n._cx+rx)+','+n._cy+' '+n._cx+','+(n._cy+ry)+' '+(n._cx-rx)+','+n._cy+'" fill="'+p.f+'" stroke="'+p.s+'" stroke-width="2.6"/>';
+    } else if(n.type==='entrada'||n.type==='salida'){
+      var sk=Math.min(22,n._w*0.09);
+      shape='<polygon points="'+(n._x+sk)+','+n._y+' '+(n._x+n._w)+','+n._y+' '+(n._x+n._w-sk)+','+(n._y+n._h)+' '+n._x+','+(n._y+n._h)+'" fill="'+p.f+'" stroke="'+p.s+'" stroke-width="2.6"/>';
+    } else {
+      shape='<rect x="'+n._x+'" y="'+n._y+'" width="'+n._w+'" height="'+n._h+'" rx="4" fill="'+p.f+'" stroke="'+p.s+'" stroke-width="2.6"/>';
+    }
+    var st=(n._cy-(n._ls.length-1)*AL/2)+5, tsp='';
+    n._ls.forEach(function(l,k){tsp+='<tspan x="'+tx+'" y="'+(st+k*AL)+'">'+l+'</tspan>';});
+    sn+='<g class="nodo" style="animation-delay:'+dl+'s">'+shape+'<text text-anchor="middle" font-size="14.5" font-weight="600" fill="#0f172a" font-family="'+FUENTE+'">'+tsp+'</text></g>';
+  });
+
+  return '<svg viewBox="'+vx+' 0 '+(maxR+92-vx)+' '+H+'" xmlns="http://www.w3.org/2000/svg">'+defs+se+sn+'</svg>';
+}
+
+/* ══════════ LOS 4 DIAGRAMAS ══════════ */
+var DIAGRAMAS={
+  dg1:{nodes:[
+    {type:'inicio',t:'INICIO'},
+    {type:'proceso',t:'Leer la convocatoria de matrícula'},
+    {type:'entrada',t:'Reunir los documentos (cédula, partidas, certificado)'},
+    {type:'proceso',t:'Llenar el formulario de matrícula'},
+    {type:'entrada',t:'Adjuntar los documentos al formulario'},
+    {type:'proceso',t:'Firmar la declaración'},
+    {type:'proceso',t:'Pagar el valor de la matrícula'},
+    {type:'salida',t:'Entregar el comprobante de pago'},
+    {type:'proceso',t:'Esperar la confirmación de la secretaría'},
+    {type:'proceso',t:'Recibir el carné de estudiante'},
+    {type:'entrada',t:'Registrar la matrícula en el sistema'},
+    {type:'fin',t:'FIN'}],
+   edges:[{f:0,to:1},{f:1,to:2},{f:2,to:3},{f:3,to:4},{f:4,to:5},{f:5,to:6},{f:6,to:7},{f:7,to:8},{f:8,to:9},{f:9,to:10},{f:10,to:11}]},
+
+  dg2:{nodes:[
+    {type:'inicio',t:'INICIO'},
+    {type:'proceso',t:'Declarar: total = 10, contador = 1'},
+    {type:'decision',t:'(contador <= total)?'},
+    {type:'entrada',t:'Leer el número'},
+    {type:'proceso',t:'Calcular residuo = número mod 2'},
+    {type:'decision',t:'(residuo = 0)?'},
+    {type:'proceso',t:'Es PAR',xl:-185},
+    {type:'proceso',t:'Es IMPAR',xr:185},
+    {type:'salida',t:'Mostrar: número y paridad'},
+    {type:'proceso',t:'contador = contador + 1'},
+    {type:'fin',t:'FIN',xr:270}],
+   edges:[{f:0,to:1},{f:1,to:2},{f:2,to:3,l:'Sí'},{f:2,to:10,l:'No',ty:'right'},{f:3,to:4},{f:4,to:5},
+          {f:5,to:6,l:'Sí',ty:'left'},{f:5,to:7,l:'No',ty:'right'},{f:6,to:8},{f:7,to:8},{f:8,to:9},{f:9,to:2,ty:'back'}]},
+
+  dg3:{nodes:[
+    {type:'inicio',t:'INICIO'},
+    {type:'proceso',t:'Declarar: notas = 5, contador = 1'},
+    {type:'proceso',t:'sumatoria = 0'},
+    {type:'decision',t:'(contador <= notas)?'},
+    {type:'entrada',t:'Leer la nota'},
+    {type:'decision',t:'(nota está entre 0 y 5)?'},
+    {type:'proceso',t:'Asignar nota = 0',xl:-190},
+    {type:'proceso',t:'sumatoria = sumatoria + nota'},
+    {type:'proceso',t:'contador = contador + 1'},
+    {type:'proceso',t:'promedio = sumatoria / 5'},
+    {type:'decision',t:'(promedio >= 3.0)?'},
+    {type:'salida',t:'Mostrar "APROBÓ" con el promedio',xr:190},
+    {type:'salida',t:'Mostrar "REPROBÓ" con el promedio',xl:-190},
+    {type:'fin',t:'FIN'}],
+   edges:[{f:0,to:1},{f:1,to:2},{f:2,to:3},{f:3,to:4,l:'Sí'},{f:3,to:9,l:'No',ty:'right'},{f:4,to:5},
+          {f:5,to:6,l:'No',ty:'left'},{f:6,to:7},{f:7,to:8},{f:8,to:3,ty:'back'},
+          {f:9,to:10},{f:10,to:11,l:'Sí',ty:'right'},{f:10,to:12,l:'No',ty:'left'},{f:11,to:13},{f:12,to:13}]},
+
+  dg4:{nodes:[
+    {type:'inicio',t:'INICIO'},
+    {type:'salida',t:'Mostrar el menú de opciones'},
+    {type:'entrada',t:'Leer la opción del usuario'},
+    {type:'decision',t:'(opción = 4)?  salir'},
+    {type:'decision',t:'(opción = 1)?  cuadrado'},
+    {type:'proceso',t:'Leer el lado',xl:-190},
+    {type:'proceso',t:'Área = lado × lado',xl:-190},
+    {type:'salida',t:'Mostrar área del cuadrado',xl:-190},
+    {type:'decision',t:'(opción = 2)?  triángulo'},
+    {type:'proceso',t:'Leer base y altura',xl:-190},
+    {type:'proceso',t:'Área = (base × altura) / 2',xl:-190},
+    {type:'salida',t:'Mostrar área del triángulo',xl:-190},
+    {type:'decision',t:'(opción = 3)?  círculo'},
+    {type:'proceso',t:'Leer el radio',xr:190},
+    {type:'proceso',t:'Área = 3.1416 × radio²',xr:190},
+    {type:'salida',t:'Mostrar área del círculo',xr:190},
+    {type:'proceso',t:'Mostrar "Opción no válida"'},
+    {type:'fin',t:'FIN'}],
+   edges:[{f:0,to:1},{f:1,to:2},{f:2,to:3},
+          {f:3,to:17,l:'Sí',ty:'right'},{f:3,to:4,l:'No'},
+          {f:4,to:5,l:'Sí',ty:'left'},{f:5,to:6},{f:6,to:7},{f:7,to:1,ty:'back'},
+          {f:4,to:8,l:'No'},
+          {f:8,to:9,l:'Sí',ty:'left'},{f:9,to:10},{f:10,to:11},{f:11,to:1,ty:'back'},
+          {f:8,to:12,l:'No'},
+          {f:12,to:13,l:'Sí',ty:'right'},{f:13,to:14},{f:14,to:15},{f:15,to:1,ty:'back'},
+          {f:12,to:16,l:'No'},{f:16,to:1,ty:'back'}]}
+};
+
+function pintar(id){
+  var el=document.getElementById(id);
+  if(el) el.innerHTML=svgDe(DIAGRAMAS[id],id);
+}
+function animar(id){ pintar(id); }
+['dg1','dg2','dg3','dg4'].forEach(function(id){
+  pintar(id);
+  var b=document.getElementById('btn-'+id);
+  if(b) b.addEventListener('click',function(){ animar(id); });
+});
+
+/* ══════════ EVALUACIÓN ══════════ */
+(function(){
+  var ST='eval_dfg_estado', SK='eval_dfg_resultado', LIM=12*60, TOTAL=10;
+  var banco=document.getElementById('banco');
+  var preguntas=[];
+  banco.querySelectorAll('.p').forEach(function(p){
+    var q=p.querySelector('.q').textContent.trim(), opts=[], ci=0;
+    p.querySelectorAll('.op').forEach(function(o,i){
+      var esC=o.classList.contains('c');
+      if(esC) ci=opts.length;
+      opts.push({t:o.textContent.replace(/^[ABC]\s*/,'').trim(), c:esC});
+    });
+    preguntas.push({q:q, opts:opts, ci:ci});
+  });
+
+  var intro=document.getElementById('quiz-intro'), run=document.getElementById('quiz-run');
+  var resEl=document.getElementById('quiz-result'), lockEl=document.getElementById('quiz-lock');
+  var temp=document.getElementById('temp'), alerta=document.getElementById('quiz-alerta');
+  var preEl=document.getElementById('pregunta-actual'), btnSig=document.getElementById('btn-sig');
+  var btnIni=document.getElementById('btn-iniciar');
+
+  var hecho=null;
+  try{ hecho=localStorage.getItem(ST); }catch(e){}
+  if(hecho){
+    intro.hidden=true; run.hidden=true; resEl.hidden=true; lockEl.hidden=false;
+    var r=null; try{ r=JSON.parse(localStorage.getItem(SK)); }catch(e){}
+    var sc=document.getElementById('quiz-lock-score');
+    if(r&&sc) sc.innerHTML='<div class="alerta" style="background:#dcfce7;border-color:#22c55e;color:#166534;">🏆 Resultado registrado: <strong>'+r.a+' de '+r.t+'</strong> ('+r.p+'%).</div>';
+  }
+
+  var idx=0, resp=[], sel=null, seg=LIM, timer=null;
+  function fmt(s){var m=Math.floor(s/60),x=s%60;return (m<10?'0':'')+m+':'+(x<10?'0':'')+x;}
+  function msj(t){alerta.hidden=false;alerta.textContent=t;setTimeout(function(){alerta.hidden=true;},4000);}
+  function tick(){
+    seg--; temp.textContent='⏱️ '+fmt(seg);
+    if(seg<=60) temp.classList.add('rojo');
+    if(seg===180) msj('⏳ Quedan 3 minutos.');
+    if(seg===60) msj('⚠️ Queda 1 minuto.');
+    if(seg<=0){ clearInterval(timer); fin(); }
+  }
+  function render(){
+    var p=preguntas[idx];
+    preEl.innerHTML='';
+    var nm=document.createElement('div'); nm.className='num';
+    nm.textContent='Pregunta '+(idx+1)+' de '+TOTAL;
+    var q=document.createElement('div'); q.className='q'; q.textContent=p.q;
+    var c=document.createElement('div');
+    var L=['A','B','C'];
+    p.opts.forEach(function(o,i){
+      var l=document.createElement('label');
+      l.className='opcion'+(sel===i?' sel':'');
+      var inp=document.createElement('input'); inp.type='radio'; inp.name='r'; inp.checked=(sel===i);
+      var sp=document.createElement('span');
+      sp.style.fontWeight='800'; sp.style.color='#4f46e5'; sp.textContent=L[i]+')';
+      var tx=document.createElement('span'); tx.textContent=o.t;
+      l.appendChild(inp); l.appendChild(sp); l.appendChild(tx);
+      l.addEventListener('click',function(){ sel=i; render(); });
+      c.appendChild(l);
+    });
+    preEl.appendChild(nm); preEl.appendChild(q); preEl.appendChild(c);
+    btnSig.hidden=(sel===null);
+    btnSig.textContent=(idx===TOTAL-1)?'🏁 Finalizar':'➡️ Siguiente';
+  }
+  function barajar(){
+    var i,j,t;
+    for(i=preguntas.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=preguntas[i]; preguntas[i]=preguntas[j]; preguntas[j]=t; }
+    preguntas.forEach(function(p){
+      for(i=p.opts.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=p.opts[i]; p.opts[i]=p.opts[j]; p.opts[j]=t; }
+      p.ci=p.opts.findIndex(function(o){return o.c;});
+    });
+  }
+  function fin(){
+    clearInterval(timer);
+    var ac=0;
+    for(var i=0;i<TOTAL;i++) if(resp[i]===preguntas[i].ci) ac++;
+    var pc=Math.round(ac/TOTAL*100);
+    resEl.innerHTML='<div class="alerta" style="background:#dcfce7;border-color:#22c55e;color:#166534;">🏆 ¡Evaluación terminada! Resultado: <strong>'+ac+' de '+TOTAL+'</strong> correctas ('+pc+'%).</div>';
+    intro.hidden=true; run.hidden=true; resEl.hidden=false; lockEl.hidden=true;
+    try{ localStorage.setItem(ST,'hecho'); localStorage.setItem(SK,JSON.stringify({a:ac,t:TOTAL,p:pc})); }catch(e){}
+  }
+  btnIni.addEventListener('click',function(){
+    try{ localStorage.setItem(ST,'iniciado'); }catch(e){}
+    idx=0; resp=[]; sel=null; seg=LIM; barajar();
+    intro.hidden=true; run.hidden=false; resEl.hidden=true; lockEl.hidden=true;
+    temp.textContent='⏱️ '+fmt(seg); temp.classList.remove('rojo');
+    render(); timer=setInterval(tick,1000);
+  });
+  btnSig.addEventListener('click',function(){
+    if(sel===null) return;
+    resp[idx]=sel; sel=null;
+    if(idx<TOTAL-1){ idx++; render(); } else fin();
+  });
+})();
+
+/* ══════════ COPIAR GUÍA ══════════ */
+function textoDe(el){
+  var out='';
+  el.childNodes.forEach(function(nd){
+    if(nd.nodeType===3){ out+=nd.nodeValue; return; }
+    if(nd.nodeType!==1) return;
+    var tg=nd.tagName.toLowerCase();
+    if(tg==='svg'||tg==='button') return;
+    if(nd.id==='banco'||nd.id==='quiz-ui') return;
+    var disp=getComputedStyle(nd).display;
+    if(disp==='none') return;
+    if(tg==='pre'){ out+='\n'+textoDe(nd).replace(/\s+$/,'')+'\n'; return; }
+    if(tg==='tr'){ out+='\n| '+textoDe(nd).replace(/\s+/g,' ').trim()+' |'; return; }
+    var salto=['div','p','li','h1','h2','h3','h4','h5','table','ol','ul','section'].indexOf(tg)>=0?'\n':'';
+    out+=salto+textoDe(nd);
+  });
+  return out;
+}
+document.getElementById('btn-copiar').addEventListener('click',function(){
+  var pasos=document.querySelectorAll('.paso'), partes=[];
+  pasos.forEach(function(p){ p.style.display='block'; });
+  pasos.forEach(function(p,i){
+    var cab='';
+    var h=p.querySelector('h2');
+    if(h) cab=h.textContent.replace(/\s+/g,' ').trim();
+    partes.push('\n\n══════════════════════════\nPASO '+(i+1)+' DE '+pasos.length+' — '+cab+'\n══════════════════════════\n'+textoDe(p).replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim());
+  });
+  pasos.forEach(function(p){ p.style.display=''; });
+  var txt='TALLER: DIAGRAMAS DE FLUJO — TEORÍA Y PRÁCTICA\nColegio · Grado Once\n\n'+partes.join('\n');
+  var b=document.getElementById('btn-copiar'), t=b.textContent;
+  function ok(){ b.textContent='✅ ¡Guía copiada!'; setTimeout(function(){b.textContent=t;},2600); }
+  function fail(){ b.textContent='⚠️ Copia manual'; setTimeout(function(){b.textContent=t;},2600); }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(ok).catch(function(){ legacy(); });
+  } else legacy();
+  function legacy(){
+    var ta=document.createElement('textarea');
+    ta.value=txt; ta.style.position='fixed'; ta.style.left='-9999px';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy') ? ok() : fail(); }catch(e){ fail(); }
+    document.body.removeChild(ta);
+  }
+});
+document.getElementById('btn-imprimir').addEventListener('click',function(){ window.print(); });
+
+/* ══════════ NAVEGACIÓN GUIADA ══════════ */
+(function(){
+  var pasos=document.querySelectorAll('.paso'), T=pasos.length, act=0;
+  var c=document.getElementById('contador'), tp=document.getElementById('titulo-paso'),
+      fl=document.getElementById('fill'), ba=document.getElementById('btn-ant'),
+      bs=document.getElementById('btn-sig-paso');
+  var tit=['Bienvenida','¿Qué es un diagrama de flujo?','¿Para qué sirve?','Los símbolos básicos',
+           'Reglas para dibujar bien','Errores comunes','Ejemplo 1: Matricularse',
+           'Ejemplo 2: Par o impar','Ejemplo 3: Promedio de notas','Ejemplo 4: Calculadora de áreas',
+           'Cómo hacer tu propio diagrama','Evaluación','¡Listo!'];
+  function ver(n){
+    pasos.forEach(function(p,i){ p.classList.toggle('activo', i===n); });
+    act=n;
+    c.textContent='Paso '+(n+1)+' de '+T;
+    tp.textContent=tit[n]||'';
+    fl.style.width=((n+1)/T*100)+'%';
+    ba.disabled=(n===0);
+    bs.hidden=(n===T-1);
+    bs.textContent=(n===T-2)?'🏁 Ver el final':'Siguiente ➡️';
+    window.scrollTo({top:0,behavior:'smooth'});
+    var dg=pasos[n].querySelector('.diag-caja div[id^=dg]');
+    if(dg) pintar(dg.id);
+  }
+  bs.addEventListener('click',function(){ if(act<T-1) ver(act+1); });
+  ba.addEventListener('click',function(){ if(act>0) ver(act-1); });
+  ver(0);
+})();
+
+/* ══════════ RESET DOCENTE (Ctrl+Shift+R) ══════════ */
+document.addEventListener('keydown',function(e){
+  if(e.ctrlKey&&e.shiftKey&&(e.key==='R'||e.key==='r')){
+    e.preventDefault();
+    if(confirm('⚠️ ¿Reiniciar la evaluación? Se borrará el bloqueo y el resultado.')){
+      try{ localStorage.removeItem('eval_dfg_estado'); localStorage.removeItem('eval_dfg_resultado'); }catch(e){}
+      location.reload();
+    }
+  }
+});
+</script>
+</body>
+</html>
