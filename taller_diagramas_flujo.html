@@ -64,16 +64,21 @@
   .temporizador{font-size:2rem;font-weight:800;color:var(--azul);text-align:center;padding:12px;background:#e0e7ff;border:2px solid var(--azul);border-radius:10px;margin:14px 0;}
   .temporizador.rojo{color:#fff;background:var(--rojo);border-color:var(--rojo);}
   .alerta{background:#fee2e2;border:1px solid var(--rojo);color:var(--rojo);padding:12px 16px;border-radius:10px;font-weight:700;margin:12px 0;}
-  #pregunta-actual .num{color:var(--gris);font-weight:600;margin-bottom:8px;}
-  #pregunta-actual .q{font-weight:700;font-size:1.15rem;margin-bottom:14px;}
-  #pregunta-actual .opcion{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--borde);border-radius:8px;margin:8px 0;cursor:pointer;background:#eef2ff;}
-  #pregunta-actual .opcion:hover{background:#e0e7ff;}
-  #pregunta-actual .opcion.sel{background:#c7d2fe;border-color:var(--azul);}
-  #pregunta-actual .opcion input{margin:0;}
-  .boton-wrap{text-align:center;margin-top:16px;}
   footer{text-align:center;color:var(--gris);font-size:.9rem;margin-top:20px;}
   .final{text-align:center;}
   .final .grande{font-size:1.6rem;font-weight:800;margin:10px 0;}
+  .tarjetas{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;margin-top:14px;}
+  .tarjeta{background:#fff;border:2px solid var(--borde);border-radius:12px;padding:16px;border-left:6px solid var(--oro);}
+  .tarjeta h4{font-size:1.05rem;margin-bottom:6px;color:var(--azul-osc);}
+  .tarjeta .meta{display:inline-block;font-size:.8rem;font-weight:800;color:#9a3412;background:#fff7ed;border:1px dashed var(--oro);border-radius:999px;padding:3px 11px;margin-bottom:8px;}
+  .tarjeta p{font-size:.93rem;margin:4px 0;}
+  .tarjeta ul{margin:8px 0 0 18px;font-size:.9rem;}
+  .tarjeta li{margin:3px 0;}
+  .check{background:#f0fdf4;border:2px solid #86efac;border-radius:10px;padding:14px 18px;margin-top:12px;}
+  .check ul{margin:6px 0 0 22px;}
+  .check li{margin:6px 0;font-size:.96rem;}
+  .entrega{background:#ede9fe;border:2px dashed var(--azul);border-radius:12px;padding:16px 18px;margin-top:14px;text-align:center;}
+  .entrega .big{font-size:1.15rem;font-weight:800;color:var(--azul-osc);}
   @keyframes nd{from{opacity:0}to{opacity:1}}
   .nodo{opacity:0;animation:nd .45s forwards;}
   @keyframes cn{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
@@ -93,7 +98,7 @@
     <p>Aprende la teoría completa y construye tus primeros diagramas con <strong>4 ejemplos claros</strong>, paso a paso.</p>
     <span class="chip">📐 4 ejemplos de 10+ pasos</span>
     <span class="chip">💻 Con código PSeInt</span>
-    <span class="chip">📝 10 preguntas</span>
+    <span class="chip">✍️ Tarea: tu propio diagrama</span>
   </header>
 
   <div class="barra-acciones">
@@ -102,7 +107,7 @@
   </div>
 
   <div class="progreso">
-    <span class="contador" id="contador">Paso 1 de 13</span>
+    <span class="contador" id="contador">Paso 1 de 15</span>
     <span id="titulo-paso" style="font-weight:600;">Bienvenida</span>
     <div class="barra-prog"><div class="fill" id="fill"></div></div>
   </div>
@@ -120,10 +125,10 @@
           <li>Manejar los <strong>6 símbolos</strong> básicos y cuándo usar cada uno.</li>
           <li>Construir <strong>4 diagramas completos</strong>: proceso, decisión, ciclo y menú.</li>
           <li>Pasar cada diagrama a <strong>código PSeInt</strong>.</li>
-          <li>Responder una evaluación de <strong>10 preguntas</strong>.</li>
+          <li><span class="res.g">Crear tu propio diagrama de flujo</span> en PowerPoint o Paint.</li>
         </ul>
       </div>
-      <p style="margin-top:12px;">Al final puedes <span class="res.g">copiar la guía completa</span> con el botón de arriba y desarrollarla en tu tiempo.</p>
+      <p style="margin-top:12px;">Al final tienes una <span class="res.g">tarea real para entregar</span>: vas a dibujar un diagrama de flujo <strong>tuyo</strong>, elegido de una lista de 8 opciones.</p>
     </div>
   </div>
 
@@ -610,48 +615,209 @@ FIN</pre>
   <!-- PASO 12 -->
   <div class="paso">
     <div class="caja">
-      <h2><span class="et">Paso 12</span> 📝 Evaluación</h2>
-      <p class="sub">Responde las <strong>10 preguntas</strong> sobre lo que aprendiste. Tiempo: <span class="res">12 minutos</span>.</p>
-      <div id="quiz-ui">
-        <div id="quiz-intro">
-          <div class="temporizador" id="temp-intro">⏱️ 12:00</div>
-          <p><strong>Instrucciones:</strong> responderás <strong>10 preguntas</strong>, una a la vez. Tienes <strong>12 minutos</strong>. Una vez la inicies <strong>no podrás repetirla</strong>.</p>
-          <div class="boton-wrap"><button class="btn" id="btn-iniciar">▶️ Comenzar evaluación</button></div>
-        </div>
-        <div id="quiz-run" hidden>
-          <div class="temporizador" id="temp"></div>
-          <div id="quiz-alerta" class="alerta" hidden></div>
-          <div id="pregunta-actual"></div>
-          <div class="boton-wrap"><button class="btn" id="btn-sig" hidden>➡️ Siguiente</button></div>
-        </div>
-        <div id="quiz-result" hidden></div>
-        <div id="quiz-lock" hidden>
-          <div class="alerta">🔒 Esta evaluación <strong>ya fue realizada</strong> en este equipo y <strong>no se puede repetir</strong>.</div>
-          <div id="quiz-lock-score"></div>
-        </div>
+      <h2><span class="et prac">Paso 12</span> ✍️ Tu trabajo — crea tu propio diagrama</h2>
+      <p class="sub">Ahora te toca a ti. Elige <span class="res">1 de los 8 temas</span> del paso siguiente y dibuja su diagrama de flujo.</p>
+      <div class="info">
+        <h5>📌 Las reglas del trabajo</h5>
+        <ul class="d">
+          <li><strong>1.</strong> Es <span class="res.o">individual</span>: cada persona hace el suyo.</li>
+          <li><strong>2.</strong> Lo haces en <strong>PowerPoint</strong> o en <strong>Paint</strong> (o a mano en el cuaderno si lo prefieres).</li>
+          <li><strong>3.</strong> El tema lo <strong>eliges tú</strong> de la lista del paso 13.</li>
+          <li><strong>4.</strong> Debe tener <strong>mínimo 10 pasos</strong>.</li>
+          <li><strong>5.</strong> Debe incluir <strong>al menos 2 decisiones</strong> (rombos con Sí/No).</li>
+          <li><strong>6.</strong> Si algo se repite, <strong>incluye el ciclo</strong> (la flecha que vuelve).</li>
+          <li><strong>7.</strong> Usa los <strong>símbolos correctos</strong>: óvalo, rectángulo, rombo y paralelogramo.</li>
+          <li><strong>8.</strong> Entrega el archivo <strong>o una foto</strong> de tu diagrama.</li>
+        </ul>
       </div>
-      <div id="banco" hidden>
-        <div class="p"><div class="q">¿Qué es un diagrama de flujo?</div><div class="o"><div class="op"><i>A</i>Una representación gráfica de un proceso, usando símbolos y flechas</div><div class="op c"><i>B</i>Un tipo de computadora portátil</div><div class="op"><i>C</i>Una lista de archivos del computador</div></div></div>
-        <div class="p"><div class="q">¿Qué símbolo representa el Inicio y el Fin del diagrama?</div><div class="o"><div class="op c"><i>A</i>El óvalo o elipse</div><div class="op"><i>B</i>El rombo</div><div class="op"><i>C</i>El paralelogramo</div></div></div>
-        <div class="p"><div class="q">¿Qué símbolo representa una decisión?</div><div class="o"><div class="op"><i>A</i>El rectángulo</div><div class="op c"><i>B</i>El rombo o diamante</div><div class="op"><i>C</i>El círculo</div></div></div>
-        <div class="p"><div class="q">¿Para qué se usa el paralelogramo?</div><div class="o"><div class="op c"><i>A</i>Para leer datos del usuario o mostrar resultados en pantalla</div><div class="op"><i>B</i>Para imprimir un documento</div><div class="op"><i>C</i>Para unir dos partes del diagrama</div></div></div>
-        <div class="p"><div class="q">¿En qué dirección se lee un diagrama de flujo?</div><div class="o"><div class="op c"><i>A</i>De arriba hacia abajo, y de izquierda a derecha</div><div class="op"><i>B</i>En sentido horario alrededor de la hoja</div><div class="op"><i>C</i>En la dirección que elija el dibujante</div></div></div>
-        <div class="p"><div class="q">¿Cuántas salidas tiene un rombo de decisión?</div><div class="o"><div class="op"><i>A</i>Tres: Sí, No y Tal vez</div><div class="op c"><i>B</i>Dos: Sí/No o Verdadero/Falso</div><div class="op"><i>C</i>Cuatro o más, según el caso</div></div></div>
-        <div class="p"><div class="q">¿Qué significa la flecha que regresa hacia atrás en un diagrama?</div><div class="o"><div class="op"><i>A</i>Que el proceso es incorrecto</div><div class="op c"><i>B</i>Que el proceso se repite: hay un ciclo</div><div class="op"><i>C</i>Que hay un error de dibujo</div></div></div>
-        <div class="p"><div class="q">¿Cuál es el problema de dibujar líneas cruzadas en un diagrama?</div><div class="o"><div class="op c"><i>A</i>Generan confusión; se deben usar conectores</div><div class="op"><i>B</i>No es un problema, se permite libremente</div><div class="op"><i>C</i>Las líneas deben ser de color rojo</div></div></div>
-        <div class="p"><div class="q">En el ejemplo de "par o impar", ¿qué condición determina que un número es par?</div><div class="o"><div class="op"><i>A</i>Que el número sea mayor que 100</div><div class="op c"><i>B</i>Que el residuo de dividirlo entre 2 sea 0</div><div class="op"><i>C</i>Que el número sea negativo</div></div></div>
-        <div class="p"><div class="q">¿Por qué los diagramas de flujo se dibujan ANTES de programar?</div><div class="o"><div class="op c"><i>A</i>Porque primero se piensa y ordena el proceso, y luego se convierte en código</div><div class="op"><i>B</i>Porque son la versión final y el código sobra</div><div class="op"><i>C</i>Porque todos los lenguajes los necesitan</div></div></div>
+      <div class="entrega">
+        <div class="big">📤 ¿Qué entregas?</div>
+        <p style="margin-top:8px;">Un solo archivo (o foto) con tu diagrama de flujo terminado.<br>
+        <strong>Nombre del archivo:</strong> <code>Diagrama_TuNombre</code><br>
+        <strong>Formato:</strong> .pptx, .png o .jpg</p>
+      </div>
+      <div class="info">
+        <h5>💡 Consejo antes de empezar</h5>
+        <p>Primero escribe la lista de pasos en el cuaderno o en una hoja, <strong>sin dibujar</strong>. Cuando tengas tus 10 o más pasos en orden, recién ahí pásalos a símbolos. Así tu diagrama sale limpio y no te queda a medias.</p>
       </div>
     </div>
   </div>
 
   <!-- PASO 13 -->
   <div class="paso">
+    <div class="caja">
+      <h2><span class="et prac">Paso 13</span> 📋 Los 8 diagramas que puedes hacer</h2>
+      <p class="sub">Elige <span class="res">uno</span>. Cada uno trae indicados los pasos y las decisiones que debe tener.</p>
+      <div class="tarjetas">
+
+        <div class="tarjeta">
+          <h4>🍕 Pedir una pizza por teléfono</h4>
+          <span class="meta">Decisión · 12 pasos</span>
+          <p>Debe incluir decisiones sobre:</p>
+          <ul>
+            <li>¿Qué tamaño de pizza?</li>
+            <li>¿Lleva ingredientes extra?</li>
+            <li>¿Paga con efectivo o tarjeta?</li>
+            <li>¿A qué dirección la envían?</li>
+          </ul>
+        </div>
+
+        <div class="tarjeta">
+          <h4>🚶 Cómo llegar al colegio sin llegar tarde</h4>
+          <span class="meta">Ciclo + Decisión · 12 pasos</span>
+          <p>Debe incluir el ciclo de <strong>despertarse</strong> y decisiones sobre:</p>
+          <ul>
+            <li>¿Son las 5:30? (ciclo de volver a dormir)</li>
+            <li>¿Está lloviendo? (llevar paraguas)</li>
+            <li>¿Hay bus disponible? (si no, caminar)</li>
+          </ul>
+        </div>
+
+        <div class="tarjeta">
+          <h4>📅 Plan de estudio para un examen</h4>
+          <span class="meta">Ciclo + Decisión · 13 pasos</span>
+          <p>Debe incluir el ciclo de <strong>estudiar los 5 temas</strong> y la decisión:</p>
+          <ul>
+            <li>¿Entendí el tema? → si no, volver a estudiarlo</li>
+            <li>¿Ya studied todos los temas? → hacer simulacro</li>
+          </ul>
+        </div>
+
+        <div class="tarjeta">
+          <h4>💼 De mi idea a mi Startup</h4>
+          <span class="meta">Ciclo + Decisión · 14 pasos</span>
+          <p>El diagrama del emprendimiento. Decisiones sobre:</p>
+          <ul>
+            <li>¿Mi idea le sirve a alguien?</li>
+            <li>¿Tengo el dinero para producirlo?</li>
+            <li>¿Ya vendí mi producto?</li>
+            <li>(con ciclo: volver a ajustar si no vendió)</li>
+          </ul>
+        </div>
+
+        <div class="tarjeta">
+          <h4>🍳 Cocinar mi plato favorito</h4>
+          <span class="meta">Secuencial + Decisión · 10 pasos</span>
+          <p>El más sencillo. Usa un paralelogramo al inicio (recolectar ingredientes) y la decisión:</p>
+          <ul>
+            <li>¿Quedó bien de sabor?</li>
+            <li>Si no → ajustar (repetir un paso)</li>
+          </ul>
+        </div>
+
+        <div class="tarjeta">
+          <h4>📱 Publicar un proyecto en redes sociales</h4>
+          <span class="meta">Decisión + Ciclo · 12 pasos</span>
+          <p>Decisiones sobre:</p>
+          <ul>
+            <li>¿Tiene buena iluminación?</li>
+            <li>¿Cuántos “me gusta” tiene?</li>
+            <li>Si pocos → cambiar la hora y volver a publicar (ciclo)</li>
+          </ul>
+        </div>
+
+        <div class="tarjeta">
+          <h4>💰 Calcular el presupuesto de un evento</h4>
+          <span class="meta">Ciclo + Decisión · 11 pasos</span>
+          <p>Debe incluir el ciclo de <strong>sumar el costo de cada invitado</strong> y la decisión:</p>
+          <ul>
+            <li>¿El total supera el presupuesto? → reducir gastos</li>
+            <li>Si no → cerrar el evento</li>
+          </ul>
+        </div>
+
+        <div class="tarjeta">
+          <h4>🔍 Buscar mi primer trabajo</h4>
+          <span class="meta">Decisión + Ciclo · 13 pasos</span>
+          <p>Decisiones sobre:</p>
+          <ul>
+            <li>¿Me respondieron el correo?</li>
+            <li>¿Me contrataron? → si no, pedir orientación y volver a intentar (ciclo)</li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="info">
+        <h5>🎯 ¿Cuál elijo?</h5>
+        <p>Si no sabes cuál escoger, toma el <span class="res">número 4 (De mi idea a mi Startup)</span>: es el más completo y combina <strong>ciclo, decisiones y salida de datos</strong>. Igual puedes inventar tu propio tema si se te ocurre uno mejor.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 14 -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et prac">Paso 14</span> 🎨 Cómo hacerlo en PowerPoint o Paint</h2>
+      <p class="sub">No necesitas saber programar. Solo usar las <span class="res">formas y flechas</span> del programa.</p>
+
+      <div class="info">
+        <h5>🖥️ En PowerPoint (recomendado)</h5>
+        <ol class="pasos-lista">
+          <li>Abre PowerPoint y crea una <strong>diapositiva en blanco</strong>.</li>
+          <li>Ve a <strong>Insertar → Formas</strong>. Ahí están todas las figuras.</li>
+          <li>Elige <strong>Óvalo</strong> para el Inicio y el Fin.</li>
+          <li>Elige <strong>Rectángulo</strong> para cada proceso.</li>
+          <li>Elige <strong>Rombo</strong> (diamante) para cada decisión.</li>
+          <li>Elige <strong>Paralelogramo</strong> para leer datos o mostrar resultados.</li>
+          <li>Elige <strong>Forma de flecha</strong> y úsala para unir los pasos, siempre hacia abajo.</li>
+          <li>Haz clic dentro de cada figura y <strong>escribe el texto</strong>.</li>
+          <li>Cambia el color del borde: clic derecho sobre la forma → <strong>Contorno de forma</strong>.</li>
+          <li>Guarda como <strong>.pptx</strong> y también expórtalo a <strong>PDF</strong> o imagen.</li>
+        </ol>
+      </div>
+
+      <div class="info">
+        <h5>🎨 En Paint</h5>
+        <ol class="pasos-lista">
+          <li>Abre <strong>Paint</strong> y crea un lienzo <strong>vertical (tamaño completo)</strong>, no cuadrado.</li>
+          <li>En <strong>Herramientas de formas</strong>, elige la figura y dibújala arrastrando.</li>
+          <li>Para el <strong>texto dentro</strong>, usa la herramienta <strong>A</strong> o <strong>Texto</strong>.</li>
+          <li>Para las <strong>flechas</strong>, usa el lápiz con grosor grueso y pon la punta de la flecha con la mano al final.</li>
+          <li>Si te equivocas, usa <strong>Ctrl + Z</strong> para deshacer.</li>
+          <li>Guarda como <strong>.png</strong> desde <strong>Archivo → Guardar como</strong>.</li>
+        </ol>
+      </div>
+
+      <div class="check">
+        <h5 style="color:#166534;margin-bottom:4px;">✅ Lista de chequeo — revisa antes de entregar</h5>
+        <ul>
+          <li>☐ Tiene <strong>Inicio</strong> y <strong>Fin</strong> (dos óvalos).</li>
+          <li>☐ Tiene <strong>mínimo 10 pasos</strong>.</li>
+          <li>☐ Tiene <strong>al menos 2 rombos</strong> de decisión con sus dos salidas (Sí/No).</li>
+          <li>☐ Las dos salidas de cada rombo están <strong>etiquetadas</strong>.</li>
+          <li>☐ Si algo se repite, tiene la <strong>flecha de regreso</strong> (ciclo).</li>
+          <li>☐ Las flechas se leen <strong>de arriba hacia abajo</strong>.</li>
+          <li>☐ <strong>No hay líneas cruzadas</strong>.</li>
+          <li>☐ Usé paralelogramo para leer datos o mostrar resultados.</li>
+          <li>☐ El texto está <strong>dentro</strong> de cada figura y es corto.</li>
+          <li>☐ Se entiende el proceso <strong>sin que nadie te lo explique</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="info">
+        <h5>🏆 Criterios para que tu diagrama quede bien</h5>
+        <ul class="d">
+          <li><strong>Ordenado:</strong> los símbolos alineados y con el mismo tamaño.</li>
+          <li><strong>Claro:</strong> el texto se lee sin esfuerzo.</li>
+          <li><strong>Completo:</strong> no le falta ningún paso del proceso real.</li>
+          <li><strong>Correcto:</strong> cada símbolo usado para lo que corresponde.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 15 -->
+  <div class="paso">
     <div class="caja final">
-      <h2><span class="et">Paso 13</span> 🏁 ¡Listo!</h2>
+      <h2><span class="et">Paso 15</span> 🏁 ¡Listo!</h2>
       <div class="grande">🎉 Ya sabes hacer diagramas de flujo.</div>
-      <p>Aprendiste los <span class="res">6 símbolos</span>, las <span class="res.v">8 reglas</span>, y construiste <span class="res.a">4 diagramas completos</span>: uno secuencial, uno con ciclo, uno con validación y uno con menú.</p>
-      <p style="margin-top:12px;">Ahora usa el botón <span class="res.g">"Copiar toda la guía"</span> para llevarla y practica dibujando tus propios diagramas en tu cuaderno.</p>
+      <p>Aprendiste los <span class="res">6 símbolos</span>, las <span class="res.v">8 reglas</span>, y estudiaste <span class="res.a">4 diagramas completos</span>: uno secuencial, uno con ciclo, uno con validación y uno con menú.</p>
+      <div class="entrega">
+        <div class="big">✍️ Tu misión ahora</div>
+        <p style="margin-top:8px;">Elige <strong>1 de los 8 temas</strong> del paso 13 y crea tu propio diagrama de flujo.<br>
+        <strong>Mínimo 10 pasos · al menos 2 decisiones · hecho en PowerPoint o Paint</strong></p>
+      </div>
+      <p style="margin-top:12px;">Usa el botón <span class="res.g">"Copiar toda la guía"</span> para llevarte los 15 pasos y trabajar con calma.</p>
       <p style="margin-top:12px;"><strong>Recuerda:</strong> piensa el proceso → dibújalo → prográmalo.</p>
       <p style="margin-top:14px;">¡Mucho éxito! 🌟</p>
     </div>
@@ -851,100 +1017,6 @@ function animar(id){ pintar(id); }
   if(b) b.addEventListener('click',function(){ animar(id); });
 });
 
-/* ══════════ EVALUACIÓN ══════════ */
-(function(){
-  var ST='eval_dfg_estado', SK='eval_dfg_resultado', LIM=12*60, TOTAL=10;
-  var banco=document.getElementById('banco');
-  var preguntas=[];
-  banco.querySelectorAll('.p').forEach(function(p){
-    var q=p.querySelector('.q').textContent.trim(), opts=[], ci=0;
-    p.querySelectorAll('.op').forEach(function(o,i){
-      var esC=o.classList.contains('c');
-      if(esC) ci=opts.length;
-      opts.push({t:o.textContent.replace(/^[ABC]\s*/,'').trim(), c:esC});
-    });
-    preguntas.push({q:q, opts:opts, ci:ci});
-  });
-
-  var intro=document.getElementById('quiz-intro'), run=document.getElementById('quiz-run');
-  var resEl=document.getElementById('quiz-result'), lockEl=document.getElementById('quiz-lock');
-  var temp=document.getElementById('temp'), alerta=document.getElementById('quiz-alerta');
-  var preEl=document.getElementById('pregunta-actual'), btnSig=document.getElementById('btn-sig');
-  var btnIni=document.getElementById('btn-iniciar');
-
-  var hecho=null;
-  try{ hecho=localStorage.getItem(ST); }catch(e){}
-  if(hecho){
-    intro.hidden=true; run.hidden=true; resEl.hidden=true; lockEl.hidden=false;
-    var r=null; try{ r=JSON.parse(localStorage.getItem(SK)); }catch(e){}
-    var sc=document.getElementById('quiz-lock-score');
-    if(r&&sc) sc.innerHTML='<div class="alerta" style="background:#dcfce7;border-color:#22c55e;color:#166534;">🏆 Resultado registrado: <strong>'+r.a+' de '+r.t+'</strong> ('+r.p+'%).</div>';
-  }
-
-  var idx=0, resp=[], sel=null, seg=LIM, timer=null;
-  function fmt(s){var m=Math.floor(s/60),x=s%60;return (m<10?'0':'')+m+':'+(x<10?'0':'')+x;}
-  function msj(t){alerta.hidden=false;alerta.textContent=t;setTimeout(function(){alerta.hidden=true;},4000);}
-  function tick(){
-    seg--; temp.textContent='⏱️ '+fmt(seg);
-    if(seg<=60) temp.classList.add('rojo');
-    if(seg===180) msj('⏳ Quedan 3 minutos.');
-    if(seg===60) msj('⚠️ Queda 1 minuto.');
-    if(seg<=0){ clearInterval(timer); fin(); }
-  }
-  function render(){
-    var p=preguntas[idx];
-    preEl.innerHTML='';
-    var nm=document.createElement('div'); nm.className='num';
-    nm.textContent='Pregunta '+(idx+1)+' de '+TOTAL;
-    var q=document.createElement('div'); q.className='q'; q.textContent=p.q;
-    var c=document.createElement('div');
-    var L=['A','B','C'];
-    p.opts.forEach(function(o,i){
-      var l=document.createElement('label');
-      l.className='opcion'+(sel===i?' sel':'');
-      var inp=document.createElement('input'); inp.type='radio'; inp.name='r'; inp.checked=(sel===i);
-      var sp=document.createElement('span');
-      sp.style.fontWeight='800'; sp.style.color='#4f46e5'; sp.textContent=L[i]+')';
-      var tx=document.createElement('span'); tx.textContent=o.t;
-      l.appendChild(inp); l.appendChild(sp); l.appendChild(tx);
-      l.addEventListener('click',function(){ sel=i; render(); });
-      c.appendChild(l);
-    });
-    preEl.appendChild(nm); preEl.appendChild(q); preEl.appendChild(c);
-    btnSig.hidden=(sel===null);
-    btnSig.textContent=(idx===TOTAL-1)?'🏁 Finalizar':'➡️ Siguiente';
-  }
-  function barajar(){
-    var i,j,t;
-    for(i=preguntas.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=preguntas[i]; preguntas[i]=preguntas[j]; preguntas[j]=t; }
-    preguntas.forEach(function(p){
-      for(i=p.opts.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=p.opts[i]; p.opts[i]=p.opts[j]; p.opts[j]=t; }
-      p.ci=p.opts.findIndex(function(o){return o.c;});
-    });
-  }
-  function fin(){
-    clearInterval(timer);
-    var ac=0;
-    for(var i=0;i<TOTAL;i++) if(resp[i]===preguntas[i].ci) ac++;
-    var pc=Math.round(ac/TOTAL*100);
-    resEl.innerHTML='<div class="alerta" style="background:#dcfce7;border-color:#22c55e;color:#166534;">🏆 ¡Evaluación terminada! Resultado: <strong>'+ac+' de '+TOTAL+'</strong> correctas ('+pc+'%).</div>';
-    intro.hidden=true; run.hidden=true; resEl.hidden=false; lockEl.hidden=true;
-    try{ localStorage.setItem(ST,'hecho'); localStorage.setItem(SK,JSON.stringify({a:ac,t:TOTAL,p:pc})); }catch(e){}
-  }
-  btnIni.addEventListener('click',function(){
-    try{ localStorage.setItem(ST,'iniciado'); }catch(e){}
-    idx=0; resp=[]; sel=null; seg=LIM; barajar();
-    intro.hidden=true; run.hidden=false; resEl.hidden=true; lockEl.hidden=true;
-    temp.textContent='⏱️ '+fmt(seg); temp.classList.remove('rojo');
-    render(); timer=setInterval(tick,1000);
-  });
-  btnSig.addEventListener('click',function(){
-    if(sel===null) return;
-    resp[idx]=sel; sel=null;
-    if(idx<TOTAL-1){ idx++; render(); } else fin();
-  });
-})();
-
 /* ══════════ COPIAR GUÍA ══════════ */
 function textoDe(el){
   var out='';
@@ -953,7 +1025,7 @@ function textoDe(el){
     if(nd.nodeType!==1) return;
     var tg=nd.tagName.toLowerCase();
     if(tg==='svg'||tg==='button') return;
-    if(nd.id==='banco'||nd.id==='quiz-ui') return;
+    if(nd.id==='banco') return;
     var disp=getComputedStyle(nd).display;
     if(disp==='none') return;
     if(tg==='pre'){ out+='\n'+textoDe(nd).replace(/\s+$/,'')+'\n'; return; }
@@ -999,7 +1071,8 @@ document.getElementById('btn-imprimir').addEventListener('click',function(){ win
   var tit=['Bienvenida','¿Qué es un diagrama de flujo?','¿Para qué sirve?','Los símbolos básicos',
            'Reglas para dibujar bien','Errores comunes','Ejemplo 1: Matricularse',
            'Ejemplo 2: Par o impar','Ejemplo 3: Promedio de notas','Ejemplo 4: Calculadora de áreas',
-           'Cómo hacer tu propio diagrama','Evaluación','¡Listo!'];
+           'Cómo hacer tu propio diagrama','Tu trabajo (la tarea)','Los 8 temas para elegir',
+           'Cómo hacerlo en PowerPoint o Paint','¡Listo!'];
   function ver(n){
     pasos.forEach(function(p,i){ p.classList.toggle('activo', i===n); });
     act=n;
@@ -1018,16 +1091,6 @@ document.getElementById('btn-imprimir').addEventListener('click',function(){ win
   ver(0);
 })();
 
-/* ══════════ RESET DOCENTE (Ctrl+Shift+R) ══════════ */
-document.addEventListener('keydown',function(e){
-  if(e.ctrlKey&&e.shiftKey&&(e.key==='R'||e.key==='r')){
-    e.preventDefault();
-    if(confirm('⚠️ ¿Reiniciar la evaluación? Se borrará el bloqueo y el resultado.')){
-      try{ localStorage.removeItem('eval_dfg_estado'); localStorage.removeItem('eval_dfg_resultado'); }catch(e){}
-      location.reload();
-    }
-  }
-});
 </script>
 </body>
 </html>
