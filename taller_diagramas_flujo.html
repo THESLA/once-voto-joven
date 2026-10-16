@@ -79,6 +79,17 @@
   .check li{margin:6px 0;font-size:.96rem;}
   .entrega{background:#ede9fe;border:2px dashed var(--azul);border-radius:12px;padding:16px 18px;margin-top:14px;text-align:center;}
   .entrega .big{font-size:1.15rem;font-weight:800;color:var(--azul-osc);}
+  .btn-web{display:inline-block;background:var(--azul);color:#fff!important;padding:15px 30px;border-radius:12px;font-size:1.12rem;font-weight:800;text-decoration:none;margin:10px 0;box-shadow:0 5px 14px rgba(79,70,229,.35);}
+  .btn-web:hover{background:var(--azul-osc);transform:translateY(-2px);}
+  .url-web{font-family:Consolas,monospace;font-size:1.05rem;background:#fff;border:2px dashed var(--azul);border-radius:10px;padding:10px 16px;display:inline-block;margin:8px 0;word-break:break-all;font-weight:700;color:var(--azul-osc);}
+  .ventajas{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px;}
+  .ventaja{background:#fff;border:2px solid var(--borde);border-radius:10px;padding:12px 14px;text-align:center;}
+  .ventaja .ic{font-size:1.7rem;}
+  .ventaja p{font-size:.9rem;margin-top:4px;}
+  .paso-a-paso{counter-reset:ap;list-style:none;margin:12px 0 0 0;padding:0;}
+  .paso-a-paso li{counter-increment:ap;position:relative;padding:10px 12px 10px 46px;margin:7px 0;background:#fff;border:2px solid var(--borde);border-radius:10px;font-size:.96rem;}
+  .paso-a-paso li::before{content:counter(ap);position:absolute;left:10px;top:9px;width:26px;height:26px;background:var(--azul);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;}
+  .paso-a-paso li b{color:var(--azul-osc);}
   @keyframes nd{from{opacity:0}to{opacity:1}}
   .nodo{opacity:0;animation:nd .45s forwards;}
   @keyframes cn{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
@@ -98,7 +109,7 @@
     <p>Aprende la teoría completa y construye tus primeros diagramas con <strong>4 ejemplos claros</strong>, paso a paso.</p>
     <span class="chip">📐 4 ejemplos de 10+ pasos</span>
     <span class="chip">💻 Con código PSeInt</span>
-    <span class="chip">✍️ Tarea: tu propio diagrama</span>
+    <span class="chip">✍️ Tarea en diagrams.net</span>
   </header>
 
   <div class="barra-acciones">
@@ -107,7 +118,7 @@
   </div>
 
   <div class="progreso">
-    <span class="contador" id="contador">Paso 1 de 15</span>
+    <span class="contador" id="contador">Paso 1 de 16</span>
     <span id="titulo-paso" style="font-weight:600;">Bienvenida</span>
     <div class="barra-prog"><div class="fill" id="fill"></div></div>
   </div>
@@ -621,24 +632,29 @@ FIN</pre>
         <h5>📌 Las reglas del trabajo</h5>
         <ul class="d">
           <li><strong>1.</strong> Es <span class="res.o">individual</span>: cada persona hace el suyo.</li>
-          <li><strong>2.</strong> Lo haces en <strong>PowerPoint</strong> o en <strong>Paint</strong> (o a mano en el cuaderno si lo prefieres).</li>
+          <li><strong>2.</strong> Lo haces en <span class="res.g"><strong>diagrams.net</strong></span> (gratis y sin registro). Si no tienes internet, usa PowerPoint o Paint.</li>
           <li><strong>3.</strong> El tema lo <strong>eliges tú</strong> de la lista del paso 13.</li>
           <li><strong>4.</strong> Debe tener <strong>mínimo 10 pasos</strong>.</li>
           <li><strong>5.</strong> Debe incluir <strong>al menos 2 decisiones</strong> (rombos con Sí/No).</li>
           <li><strong>6.</strong> Si algo se repite, <strong>incluye el ciclo</strong> (la flecha que vuelve).</li>
           <li><strong>7.</strong> Usa los <strong>símbolos correctos</strong>: óvalo, rectángulo, rombo y paralelogramo.</li>
-          <li><strong>8.</strong> Entrega el archivo <strong>o una foto</strong> de tu diagrama.</li>
+          <li><strong>8.</strong> Entrega el archivo <strong>PDF o PNG</strong> (o una foto de tu diagrama).</li>
         </ul>
       </div>
       <div class="entrega">
         <div class="big">📤 ¿Qué entregas?</div>
-        <p style="margin-top:8px;">Un solo archivo (o foto) con tu diagrama de flujo terminado.<br>
+        <p style="margin-top:8px;">Un solo archivo con tu diagrama de flujo terminado.<br>
         <strong>Nombre del archivo:</strong> <code>Diagrama_TuNombre</code><br>
-        <strong>Formato:</strong> .pptx, .png o .jpg</p>
+        <strong>Formato:</strong> <strong>PDF</strong> o <strong>PNG</strong> (lo exportas desde diagrams.net)<br>
+        <strong>Herramienta:</strong> diagrams.net <span style="color:var(--gris);font-weight:400">(paso 14)</span></p>
       </div>
       <div class="info">
         <h5>💡 Consejo antes de empezar</h5>
         <p>Primero escribe la lista de pasos en el cuaderno o en una hoja, <strong>sin dibujar</strong>. Cuando tengas tus 10 o más pasos en orden, recién ahí pásalos a símbolos. Así tu diagrama sale limpio y no te queda a medias.</p>
+      </div>
+      <div class="info" style="background:#f0fdf4;border-color:#86efac;">
+        <h5 style="color:#166534;">🚀 ¿Listo para empezar? Ve al paso 14</h5>
+        <p>Allí te enseño <strong>paso a paso</strong> cómo usar <strong>diagrams.net</strong>, la página donde vas a dibujar tu diagrama. Es gratis, no pide registro y ya tiene todos los símbolos.</p>
       </div>
     </div>
   </div>
@@ -747,8 +763,75 @@ FIN</pre>
   <!-- PASO 14 -->
   <div class="paso">
     <div class="caja">
-      <h2><span class="et prac">Paso 14</span> 🎨 Cómo hacerlo en PowerPoint o Paint</h2>
-      <p class="sub">No necesitas saber programar. Solo usar las <span class="res">formas y flechas</span> del programa.</p>
+      <h2><span class="et prac">Paso 14</span> 🎨 La página donde vas a hacerlo: diagrams.net</h2>
+      <p class="sub">Esta es la <span class="res.g">herramienta oficial</span> del taller. Es <strong>gratis, no pide registro</strong> y ya tiene todos los símbolos.</p>
+
+      <div style="text-align:center;">
+        <a class="btn-web" href="https://app.diagrams.net" target="_blank" rel="noopener">🚀 Abrir diagrams.net</a><br>
+        <span class="url-web">https://app.diagrams.net</span>
+      </div>
+
+      <div class="ventajas">
+        <div class="ventaja"><div class="ic">💸</div><p><strong>Gratis</strong> y sin límites</p></div>
+        <div class="ventaja"><div class="ic">🚫</div><p><strong>Sin registro</strong> ni contraseña</p></div>
+        <div class="ventaja"><div class="ic">🔷</div><p>Trae la biblioteca <strong>Flowchart</strong> completa</p></div>
+        <div class="ventaja"><div class="ic">📱</div><p>Funciona en <strong>celular y computador</strong></p></div>
+        <div class="ventaja"><div class="ic">📄</div><p>Exporta a <strong>PDF, PNG, JPG y SVG</strong></p></div>
+        <div class="ventaja"><div class="ic">🔒</div><p>Tu trabajo <strong>no se sube</strong> a ningún servidor</p></div>
+      </div>
+
+      <div class="info">
+        <h5>🖱️ Cómo se usa — sigue estos 9 pasos</h5>
+        <ol class="paso-a-paso">
+          <li><b>Abre el enlace.</b> Entra a <strong>app.diagrams.net</strong> (te lo dejo arriba, solo dale clic).</li>
+          <li><b>Pulsa "Start now"</b> en la esquina superior derecha.</li>
+          <li><b>Te pregunta dónde guardar.</b> Elige la opción <strong>"Decide later"</strong> (decidir después). Así <b>no necesitas cuenta ni correo</b>.</li>
+          <li><b>Busca la sección "Flowchart"</b> en el panel de la izquierda. Ahí están todos los símbolos. Si no la ves, baja hasta el final de la lista de formas.</li>
+          <li><b>Arrastra el óvalo</b> al lienzo y haz <b>doble clic</b> encima para escribir <strong>INICIO</strong>.</li>
+          <li><b>Arrastra los demás símbolos</b> (rectángulos, rombos y paralelogramos) y várelos poner <b>de arriba hacia abajo</b>.</li>
+          <li><b>Une los pasos:</b> pasa el mouse encima de una figura y aparecerá una <strong>flechita azul</strong>. Arrástrala hasta la siguiente figura para crear la flecha.</li>
+          <li><b>Escribe el texto</b> de cada símbolo con <b>doble clic</b> dentro. Usa textos cortos.</li>
+          <li><b>Exporta tu trabajo:</b> ve a <strong>File → Export as → PDF</strong> (o PNG). Se descarga directo a tu computador.</li>
+        </ol>
+      </div>
+
+      <div class="info">
+        <h5>⚡ Atajos que te van a servir</h5>
+        <table class="simbolos">
+          <thead><tr><th>Atajo</th><th>Para qué sirve</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Ctrl + C / Ctrl + V</strong></td><td>Copiar y pegar una figura (y todo el texto que lleva dentro)</td></tr>
+            <tr><td><strong>Ctrl + D</strong></td><td><strong>Duplicar</strong> la figura seleccionada → ideal para los 5–10 procesos iguales</td></tr>
+            <tr><td><strong>Ctrl + Z</strong></td><td>Deshacer lo último que hiciste</td></tr>
+            <tr><td><strong>Ctrl + S</strong></td><td>Guardar tu archivo .drawio para seguir editando después</td></tr>
+            <tr><td>Clic derecho → <strong>Edit Style</strong></td><td>Cambiar el color, el borde y la letra del símbolo</td></tr>
+            <tr><td><strong>Ctrl + rueda</strong></td><td>Acercar o alejar el diagrama</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info">
+        <h5>🔁 ¿Cómo dibujo el ciclo (la flecha que vuelve)?</h5>
+        <p>En diagrams.net no sale automático, pero es fácil: usa la <strong>herramienta de línea o flecha</strong> del panel izquierdo y dibuja la flecha <strong>desde el último paso hacia arriba</strong>, hasta la condición. Después ponle el texto <strong>"Sí"</strong> o <strong>"Volver"</strong> con doble clic.</p>
+      </div>
+
+      <div class="info" style="background:#fff7ed;border-color:var(--oro);">
+        <h5 style="color:#9a3412;">🔄 ¿Se te felló esa página? Usa una de estas igual de gratis</h5>
+        <ul class="d">
+          <li><strong>Canva</strong> — <span style="word-break:break-all;">canva.com</span> · busca "diagrama de flujo". Muy bonito, pide cuenta.</li>
+          <li><strong>Whimsical</strong> — <span style="word-break:break-all;">whimsical.co/create/flowchart</span> · el más fácil de todos.</li>
+          <li><strong>ProcessOn</strong> — <span style="word-break:break-all;">processon.io</span> · <strong>interfaz en español</strong>, 9 archivos gratis.</li>
+          <li><strong>Sin internet</strong> → ve al paso 15 y hazlo en PowerPoint o Paint.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 15 -->
+  <div class="paso">
+    <div class="caja">
+      <h2><span class="et prac">Paso 15</span> 🖥️ Plan B — en PowerPoint o Paint</h2>
+      <p class="sub">Si no tienes internet en el aula, haz tu diagrama con estos programas. <span class="res">El resultado es el mismo.</span></p>
 
       <div class="info">
         <h5>🖥️ En PowerPoint (recomendado)</h5>
@@ -806,16 +889,16 @@ FIN</pre>
     </div>
   </div>
 
-  <!-- PASO 15 -->
+  <!-- PASO 16 -->
   <div class="paso">
     <div class="caja final">
-      <h2><span class="et">Paso 15</span> 🏁 ¡Listo!</h2>
+      <h2><span class="et">Paso 16</span> 🏁 ¡Listo!</h2>
       <div class="grande">🎉 Ya sabes hacer diagramas de flujo.</div>
       <p>Aprendiste los <span class="res">6 símbolos</span>, las <span class="res.v">8 reglas</span>, y estudiaste <span class="res.a">4 diagramas completos</span>: uno secuencial, uno con ciclo, uno con validación y uno con menú.</p>
       <div class="entrega">
         <div class="big">✍️ Tu misión ahora</div>
-        <p style="margin-top:8px;">Elige <strong>1 de los 8 temas</strong> del paso 13 y crea tu propio diagrama de flujo.<br>
-        <strong>Mínimo 10 pasos · al menos 2 decisiones · hecho en PowerPoint o Paint</strong></p>
+        <p style="margin-top:8px;">Abre <a href="https://app.diagrams.net" target="_blank" rel="noopener" style="color:var(--azul);font-weight:800;">app.diagrams.net</a>, elige <strong>1 de los 8 temas</strong> del paso 13 y crea tu diagrama de flujo.<br>
+        <strong>Mínimo 10 pasos · al menos 2 decisiones · hecho en diagrams.net</strong></p>
       </div>
       <p style="margin-top:12px;">Usa el botón <span class="res.g">"Copiar toda la guía"</span> para llevarte los 15 pasos y trabajar con calma.</p>
       <p style="margin-top:12px;"><strong>Recuerda:</strong> piensa el proceso → dibújalo → prográmalo.</p>
@@ -1072,7 +1155,7 @@ document.getElementById('btn-imprimir').addEventListener('click',function(){ win
            'Reglas para dibujar bien','Errores comunes','Ejemplo 1: Matricularse',
            'Ejemplo 2: Par o impar','Ejemplo 3: Promedio de notas','Ejemplo 4: Calculadora de áreas',
            'Cómo hacer tu propio diagrama','Tu trabajo (la tarea)','Los 8 temas para elegir',
-           'Cómo hacerlo en PowerPoint o Paint','¡Listo!'];
+           'La página: diagrams.net','Plan B: PowerPoint o Paint','¡Listo!'];
   function ver(n){
     pasos.forEach(function(p,i){ p.classList.toggle('activo', i===n); });
     act=n;
